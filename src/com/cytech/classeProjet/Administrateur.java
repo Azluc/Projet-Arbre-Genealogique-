@@ -2,7 +2,7 @@ package com.cytech.classeProjet;
 import java.util.*;
 
 /**
- * Salut
+ * S
  */
 public class Administrateur {
 
