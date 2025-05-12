@@ -28,6 +28,11 @@ public class Personne {
      */
     public Personne(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces) {
         // TODO implement here
+    	this.nom=nom;
+    	this.prenom=prenom;
+    	this.nationalite=nationalite
+    	this.dateNaissance=dateNaissance;
+    	this.dateDeces=dateDeces;
     }
 
     /**
