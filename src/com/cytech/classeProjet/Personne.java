@@ -39,21 +39,23 @@ public class Personne {
      * 
      */
     public String getPrenom() {
-        return this.nom;
+        return this.prenom;
     }
 
     /**
      * 
      */
-    public void getNom() {
+    public String getNom() {
         // TODO implement here
+    	return this.nom;
     }
 
     /**
      * 
      */
-    public void getNationalite() {
+    public String getNationalite() {
         // TODO implement here
+    	return this.nationalite;
     }
 
     /**
@@ -61,6 +63,7 @@ public class Personne {
      */
     public void setNationalite(String nationalite) {
         // TODO implement here
+    	this.nationalite=nationalite
     }
 
     /**
@@ -68,6 +71,7 @@ public class Personne {
      */
     public void setDateNaissance(Date date) {
         // TODO implement here
+    	this.dateNaissance=date
     }
 
     /**
@@ -75,6 +79,7 @@ public class Personne {
      */
     public void setDateDeces(Date date) {
         // TODO implement here
+    	this.dateDeces=date;
     }
 
 }
