@@ -7,7 +7,7 @@ import java.util.*;
 public class Administrateur {
 
     /**
-     * Default constructor
+     * Default constructor x
      */
     public Administrateur() {
     }
