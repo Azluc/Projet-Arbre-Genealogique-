@@ -1,4 +1,4 @@
-package cytech.projet;
+package com.cytech.classeProjet;
 import java.util.*;
 
 /**

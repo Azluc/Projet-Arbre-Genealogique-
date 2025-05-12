@@ -1,3 +1,4 @@
+package com.cytech.classeProjet;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public class StatistiqueConsultation {
     /**
      * @param nombreConsultation
      */
-    public void augmenterConsultation(void nombreConsultation) {
+    public void augmenterConsultation(Double nombreConsultation) {
         // TODO implement here
     }
 

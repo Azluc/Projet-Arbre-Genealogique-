@@ -1,4 +1,4 @@
-
+package com.cytech.classeProjet;
 import java.util.*;
 
 /**
@@ -6,36 +6,18 @@ import java.util.*;
  */
 public class Personne {
 
-    /**
-     * Default constructor
-     */
+    private String nom;
+    private String prenom;
+    private String nationalite;
+    private Date dateNaissance;
+    private Date dateDeces;
     public Personne() {
     }
 
     /**
      * 
      */
-    private String nom;
 
-    /**
-     * 
-     */
-    private String prenom;
-
-    /**
-     * 
-     */
-    private String nationalite;
-
-    /**
-     * 
-     */
-    private Date dateNaissance;
-
-    /**
-     * 
-     */
-    private Date dateDeces;
 
     /**
      * @param nom 
@@ -44,15 +26,15 @@ public class Personne {
      * @param dateNaissance 
      * @param dateDeces
      */
-    public void Personne(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces) {
+    public Personne(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces) {
         // TODO implement here
     }
 
     /**
      * 
      */
-    public void getPrenom() {
-        // TODO implement here
+    public String getPrenom() {
+        return this.nom;
     }
 
     /**

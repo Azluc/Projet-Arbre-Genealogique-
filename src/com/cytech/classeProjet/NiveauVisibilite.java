@@ -1,3 +1,4 @@
+package com.cytech.classeProjet;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class NiveauVisibilite {
     /**
      * 
      */
-    public void protege;
+    public  int protege;
 
     /**
      * 
