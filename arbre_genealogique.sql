@@ -92,14 +92,14 @@ CREATE TABLE partage_souvenir (
     FOREIGN KEY (id_destinataire) REFERENCES utilisateur(id)
 );
 
--- Table des statistiques de consultation
+-- Table des statistiques de consultatio
 CREATE TABLE statistiques_consultation (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur INT,
     id_visiteur INT,
     date_consultation DATETIME,
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id),
-    FOREIGN KEY (id_visiteur) REFERENCES utilisateur(id)
+    FOREIGN KEY (id_visiteur) REFERENCES utilisateur(id) 
 );
 
 
