@@ -11,20 +11,15 @@ public class Utilisateur extends Personne {
     private String email;
     private String motDePasse;
     private Double numeroSecuriteSociale;
-    private Double telephone;
+    private String telephone;
     private String adresse;
-    /**
-     * Default constructor
-     */
-    public Utilisateur() {
-    	super();
-    }
+    
     public Utilisateur(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces
-    		,Double codePublic,Double codePrive,String email, String motDePasse,Double numeroSecuriteSociale,Double telephone,
+    		,Double codePublic,Double codePrive,String email, String motDePasse,Double numeroSecuriteSociale,String telephone,
     		String adresse) {
     	super(nom, prenom, nationalite, dateNaissance, dateDeces);
     	this.codePublic=codePublic;
-    	this.codePrive=codePrive
+    	this.codePrive=codePrive;
     	this.email = email;
     	this.motDePasse = motDePasse;
     	this.numeroSecuriteSociale = numeroSecuriteSociale;
@@ -86,15 +81,15 @@ public class Utilisateur extends Personne {
     /**
      * 
      */
-    public Double getTelephone() {
+    public String getTelephone() {
         // TODO implement here
-    	return this.telephone
+    	return this.telephone;
     }
 
     /**
      * @param telephone
      */
-    public void setTelephone(double telephone) {
+    public void setTelephone(String telephone) {
         // TODO implement here
     	this.telephone=telephone;
     }
