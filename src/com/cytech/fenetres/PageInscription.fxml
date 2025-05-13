@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="549.0" prefWidth="527.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cytech.fenetres.PageInscriptionController">
+   <children>
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="10.0" top="20.0" />
+               </padding>
+               <children>
+                  <Label scaleX="2.5" scaleY="2.5" text="INSCRIPTION" />
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <VBox alignment="CENTER" spacing="15.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="205.0" spacing="10.0">
+                     <children>
+                        <Label text="Votre prénom :" />
+                        <TextField fx:id="champPrenom" prefHeight="24.0" prefWidth="178.0" promptText="Prénom" />
+                     </children>
+                  </HBox>
+                   
+                        <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label text="Votre nom :">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="champNom" prefHeight="24.0" prefWidth="178.0" promptText="Nom" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label text="Votre email :" />
+                        <TextField fx:id="champEmail" prefHeight="24.0" prefWidth="178.0" promptText="email">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="166.0" spacing="10.0">
+                     <children>
+                        <Label text="Votre nationalité :" />
+                        <TextField fx:id="champNationalite" prefHeight="24.0" prefWidth="178.0" promptText="Nationalité">
+                           <HBox.margin>
+                              <Insets right="19.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="146.0" spacing="10.0">
+                     <children>
+                        <Label text="Votre date de naissance :" />
+                        <DatePicker fx:id="champDateNaissance" prefHeight="25.0" prefWidth="178.0" promptText="Date de Naissance">
+                           <HBox.margin>
+                              <Insets right="70.0" />
+                           </HBox.margin>
+                        </DatePicker>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="127.0" spacing="10.0">
+                     <children>
+                        <Label text="Votre adresse :" />
+                        <TextField fx:id="champAdresse" prefHeight="24.0" prefWidth="178.0" promptText="adresse" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="107.0" spacing="10.0">
+                     <children>
+                        <Label text="Votre numéro de téléphone :">
+                           <HBox.margin>
+                              <Insets left="-90.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="champTelephone" prefHeight="24.0" prefWidth="178.0" promptText="Numéro téléphone" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="330.0" spacing="10.0">
+                     <children>
+                        <Label text="Numéro de sécurité sociale :">
+                           <HBox.margin>
+                              <Insets left="-90.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="champNumeroSS" prefHeight="24.0" prefWidth="178.0" promptText="Numéro sécurité sociale" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="360.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#choisirPhotoNumerique" text="Choisir Photo" />
+                        <TextField fx:id="lienPhotoNumerique" prefHeight="24.0" prefWidth="178.0" promptText="Pièce numérique" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="30.0" layoutY="379.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#choisirPieceIdentite" text="Choisir pièce d'identité" />
+                        <TextField fx:id="lienPieceIdentite" prefHeight="24.0" prefWidth="178.0" promptText="Pièce d'identité" />
+                     </children>
+                     <padding>
+                        <Insets right="60.0" />
+                     </padding>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#confirmationBoutonInscription" text="S'inscrire">
+                     <VBox.margin>
+                        <Insets left="200.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="boutonRetour" mnemonicParsing="false" onAction="#retourBoutonPageInscription" text="Retour">
+                     <VBox.margin>
+                        <Insets left="215.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="20.0" top="10.0" />
+               </padding>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
