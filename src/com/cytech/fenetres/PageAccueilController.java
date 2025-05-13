@@ -27,7 +27,7 @@ public class PageAccueilController {
             System.out.println("Erreur : main est null");
         }
 	}
-	// Event Listener on Button.onAction
+	//  Event Listener on Button.onAction
 	@FXML
     public void boutonConnexionUtilisateurPageAccueil(ActionEvent event) {
         if (main != null) {
