@@ -7,62 +7,68 @@ import java.util.*;
  */
 public class ArbreGenealogique {
 
-    /**
-     * Default constructor
-     */
-    public ArbreGenealogique() {
-    }
-
-    /**
-     * 
-     */
     private Double id;
-
-    /**
-     * 
-     */
     private NiveauVisibilite visibilite;
-
-    /**
-     * 
-     */
     private Personne racine;
-
-    /**
-     * @param id 
-     * @param visibilite 
-     * @param racine
-     */
-    public void ArbreGenealogique(Double id, NiveauVisibilite visibilite, Personne racine) {
-        // TODO implement here
+    
+    private List<Personne> personnes;
+    
+    public ArbreGenealogique(Double id, NiveauVisibilite visibilite, Personne racine) {
+        this.id = id;
+        this.visibilite = visibilite;
+        this.racine = racine;
+        this.personnes = new ArrayList<>();
+        this.personnes.add(racine); // on commence par la racine
     }
 
-    /**
-     * 
-     */
-    public void changerVisibiliteArbre() {
-        // TODO implement here
+    public void changerVisibiliteArbre(NiveauVisibilite nouvelleVisibilite) {
+        this.visibilite = nouvelleVisibilite;
     }
 
-    /**
-     * @param listePersonne
-     */
-    public void rechercherPersonne(Personne listePersonne) {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void genererAffichageGraphique() {
-        // TODO implement here
+   
+    public Personne rechercherPersonne(String nom, String prenom) {
+        for (Personne p : personnes) {
+            if (p.getNom().equalsIgnoreCase(nom) && p.getPrenom().equalsIgnoreCase(prenom)) {
+                return p;
+            }
+        }
+        return null; // Si la personne n'est pas trouvée
     }
 
     /**
      * 
      */
     public void genererAffichageTextuel() {
-        // TODO implement here
+        System.out.println("Arbre Généalogique (visibilité : " + visibilite + ")");
+        for (Personne p : personnes) {
+            p.afficherInfos();
+        }
     }
 
+    /**
+     * 
+     */
+    public void genererAffichageGraphique() {
+        System.out.println("[Graphique] - Non encore implémenté.");
+    }
+
+    public void ajouterPersonne(Personne p) {
+        this.personnes.add(p);
+    }
+
+    public Double getId() {
+        return id;
+    }
+
+    public NiveauVisibilite getVisibilite() {
+        return visibilite;
+    }
+
+    public Personne getRacine() {
+        return racine;
+    }
+
+    public List<Personne> getPersonnes() {
+        return personnes;
+    }
 }
