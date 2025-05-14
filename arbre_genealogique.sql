@@ -15,8 +15,8 @@ CREATE TABLE utilisateur (
     code_prive VARCHAR(100) UNIQUE,
     adresse TEXT,
     telephone VARCHAR(20),
-    photo varchar(200),
-    carte_identite varchar(200)
+    photo LONGBLOB,
+    carte_identite LONGBLOB
 );
 
 -- Table des arbres
@@ -60,18 +60,26 @@ CREATE TABLE relation_parente (
     FOREIGN KEY (id_cible) REFERENCES noeud_personne(id)
 );
 
--- Table des demandes d’adhésion
-CREATE TABLE demande_adhesion (
+-- Table des administrateur
+CREATE TABLE administrateur (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(50),
-    prenom VARCHAR(50),
-    date_naissance DATE,
+    identifiant VARCHAR(50),
+    mot_de_passe VARCHAR(50)
+);
+
+-- Table des demandes d’adhésion
+CREATE TABLE IF NOT EXISTS demande_adhesion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    date_naissance DATE NOT NULL,
     nationalite VARCHAR(50),
     numero_securite_sociale VARCHAR(20),
     email VARCHAR(100),
+    adresse TEXT,
+    telephone VARCHAR(20),
     photo LONGBLOB,
-    carte_identite LONGBLOB,
-    statut ENUM('EN_ATTENTE', 'ACCEPTEE', 'REFUSEE')
+    carte_identite LONGBLOB
 );
 
 -- Table des souvenirs (partage entre membres liés)
