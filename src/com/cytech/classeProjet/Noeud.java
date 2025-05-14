@@ -28,7 +28,7 @@ public class Noeud {
             if (p.getNom().equals(nouvellePersonne.getNom()) && p.getPrenom().equals(nouvellePersonne.getPrenom())) {
                 parent.set(i, nouvellePersonne);
                 modifie = true;
-                System.out.println(" Parent modifié : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
+                System.out.println(" Le parent est modifié : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
             }
         }
 
@@ -37,12 +37,12 @@ public class Noeud {
             if (p.getNom().equals(nouvellePersonne.getNom()) && p.getPrenom().equals(nouvellePersonne.getPrenom())) {
                 enfant.set(i, nouvellePersonne);
                 modifie = true;
-                System.out.println(" Enfant modifié : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
+                System.out.println(" L'enfant est modifé : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
             }
         }
 
         if (!modifie) {
-            System.out.println(" Personne non trouvée dans ce nœud.");
+            System.out.println(" La personne est non trouvée dans ce nœud.");
         }
     }
 
