@@ -3,30 +3,9 @@ package com.cytech.classeProjet;
 
 import java.util.*;
 
-/**
- * 
- */
-public class NiveauVisibilite {
 
-    /**
-     * Default constructor
-     */
-    public NiveauVisibilite() {
-    }
-
-    /**
-     * 
-     */
-    public void public;
-
-    /**
-     * 
-     */
-    public  int protege;
-
-    /**
-     * 
-     */
-    public void prive;
-
+public enum NiveauVisibilite {
+    public_,   // Visible par tous (note : on évite le mot réservé "public")
+    protege,   // Visible uniquement par les membres de l’arbre
+    prive      // Visible uniquement par l'utilisateur
 }
