@@ -69,23 +69,3 @@ public class Utilisateur extends Personne {
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
-
-    public EtatInscription getEtatInscription() {
-        return etatInscription;
-    }
-
-    public void setEtatInscription(EtatInscription etatInscription) {
-        this.etatInscription = etatInscription;
-    }
-
-    
-    public void effacerInformations() {
-        this.codePublic = null;
-        this.codePrive = null;
-        this.email = null;
-        this.motDePasse = null;
-        this.numeroSecuriteSociale = null;
-        this.telephone = null;
-        this.adresse = null;
-    }
-}
