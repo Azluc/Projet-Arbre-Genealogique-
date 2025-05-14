@@ -1,7 +1,0 @@
-package com.cytech.classeProjet;
-
-public enum EtatInscription {
-    Attente,
-    Valide,
-    rejete
-}
