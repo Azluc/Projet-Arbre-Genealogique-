@@ -129,12 +129,32 @@ public class PageInscriptionController {
 
             // Exécution de la requête
             cursor.executeUpdate();
-            System.out.println("Demande d'adhésion insérée avec succès !");
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.initOwner(main.getPrimaryStage());
+            alert.setTitle("Inscription réussie");
+            alert.setHeaderText("L'inscription a été effectuée avec succès");
+            alert.setContentText("Un administrateur se charge de vérifier vos information. Vous pouvez maintenant retourner à la page d'accueil.");
+            alert.showAndWait();
+            effacerInformationChamp();
             
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors de l'insertion dans la base de données.");
         }
+    }
+    
+    public void effacerInformationChamp() {
+    	// efface les champs de texte saisie par l'utilisateur
+    	champNom.clear();
+    	champDateNaissance.setValue(null);
+		champPrenom.clear();
+		champEmail.clear();
+		champAdresse.clear();
+		champNationalite.clear();
+		champTelephone.clear();
+		champNumeroSS.clear();
+		lienPieceIdentite.clear();
+		lienPhotoNumerique.clear();
     }
     
     // Event Listener on Button.onAction
@@ -154,30 +174,14 @@ public class PageInscriptionController {
     		String photoNumerique = lienPhotoNumerique.getText();
     		
     		insertionDemandeBaseDonnes(nom, prenom, email, adresse, nationalite, dateNaissance, telephone, numeroSS, pieceIdentite, photoNumerique);
-			System.out.println("Nom: " + champNom.getText());
-			System.out.println("Prénom: " + champPrenom.getText());
-			System.out.println("Email: " + champEmail.getText());
-			System.out.println("Adresse: " + champAdresse.getText());
-			System.out.println("Nationalité: " + champNationalite.getText());
-
-			 
-			String dateNaissanceStr = (champDateNaissance.getValue() != null)
-			    ? Date.from(champDateNaissance.getValue().atStartOfDay(ZoneId.of("Europe/Paris")).toInstant()).toString()
-			    : "Non renseignée";
-			System.out.println("Date de naissance: " + dateNaissanceStr);
-
-			System.out.println("Téléphone: " + champTelephone.getText());
-			System.out.println("Numéro SS: " + champNumeroSS.getText());
-			System.out.println("Pièce identité: " + lienPieceIdentite.getText());
-			System.out.println("Photo numérique: " + lienPhotoNumerique.getText());
 		}
 		else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.initOwner(main.getPrimaryStage());
-			alert.setTitle("Inscription impossible");
-			alert.setHeaderText("L'inscription n'a pu aboutir");
-			alert.setContentText("Veuillez remplir tout les champs et/ou adresse mail déja utilisée");
-			alert.showAndWait();
+			Alert alerte = new Alert(AlertType.ERROR);
+			alerte.initOwner(main.getPrimaryStage());
+			alerte.setTitle("Inscription impossible");
+			alerte.setHeaderText("L'inscription n'a pu aboutir");
+			alerte.setContentText("Veuillez remplir tout les champs et/ou adresse mail déja utilisée");
+			alerte.showAndWait();
 		}
 	}
 	

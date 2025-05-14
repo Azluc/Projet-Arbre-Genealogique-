@@ -22,5 +22,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ActivationJakarta"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JakartaMail"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MailCommun"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
