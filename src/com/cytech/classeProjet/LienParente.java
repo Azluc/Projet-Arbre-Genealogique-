@@ -1,95 +1,48 @@
 package com.cytech.classeProjet;
 
-import java.util.*;
-
-/**
- * 
- */
 public class LienParente {
 
-    /**
-     * Default constructor
-     */
-    public LienParente() {
-    }
-
-    /**
-     * 
-     */
     private Personne personneSource;
+    private Personne personneDestination;
+    private TypeRelation typeRelation;
+    private Double profondeur;
 
-    /**
-     * 
-     */
-    public Personne personneDestination;
-
-    /**
-     * 
-     */
-    public TypeRelation typeRelation;
-
-    /**
-     * 
-     */
-    public Double profondeur;
-
-    /**
-     * @param personneSource 
-     * @param personneDestination 
-     * @param typeRelation 
-     * @param profondeur
-     */
-    public void LienParente(Personne personneSource, Personne personneDestination, TypeRelation typeRelation, Double profondeur) {
-        // TODO implement here
+    public LienParente(Personne personneSource, Personne personneDestination, TypeRelation typeRelation, Double profondeur) {
+        this.personneSource = personneSource;
+        this.personneDestination = personneDestination;
+        this.typeRelation = typeRelation;
+        this.profondeur = profondeur;
     }
 
-    /**
-     * 
-     */
-    public void verifierCoherence() {
-        // TODO implement here
+    public Personne getPersonneSource() {
+        return personneSource;
     }
 
-    /**
-     * 
-     */
-    public void getPersonneSource() {
-        // TODO implement here
+    public void setPersonneSource(Personne personneSource) {
+        this.personneSource = personneSource;
     }
 
-    /**
-     * 
-     */
-    public void setPersonneSource() {
-        // TODO implement here
+    public Personne getPersonneDestination() {
+        return personneDestination;
     }
 
-    /**
-     * 
-     */
-    public void getTypeRelation() {
-        // TODO implement here
+    public void setPersonneDestination(Personne personneDestination) {
+        this.personneDestination = personneDestination;
     }
 
-    /**
-     * 
-     */
-    public void setTypeRelation() {
-        // TODO implement here
+    public TypeRelation getTypeRelation() {
+        return typeRelation;
     }
 
-    /**
-     * 
-     */
-    public void getProfondeur() {
-        // TODO implement here
+    public void setTypeRelation(TypeRelation typeRelation) {
+        this.typeRelation = typeRelation;
     }
 
-    /**
-     * 
-     */
-    public void setProfondeur() {
-        // TODO implement here
+    public Double getProfondeur() {
+        return profondeur;
     }
 
+    public void setProfondeur(Double profondeur) {
+        this.profondeur = profondeur;
+    }
 }
