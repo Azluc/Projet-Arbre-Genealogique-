@@ -1,10 +1,7 @@
 package com.cytech.classeProjet;
 
-import java.util.*;
+import java.util.Date;
 
-/**
- * 
- */
 public class Utilisateur extends Personne {
     private Double codePublic;
     private Double codePrive;
@@ -13,111 +10,82 @@ public class Utilisateur extends Personne {
     private Double numeroSecuriteSociale;
     private String telephone;
     private String adresse;
-    
-    public Utilisateur(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces
-    		,Double codePublic,Double codePrive,String email, String motDePasse,Double numeroSecuriteSociale,String telephone,
-    		String adresse) {
-    	super(nom, prenom, nationalite, dateNaissance, dateDeces);
-    	this.codePublic=codePublic;
-    	this.codePrive=codePrive;
-    	this.email = email;
-    	this.motDePasse = motDePasse;
-    	this.numeroSecuriteSociale = numeroSecuriteSociale;
-    	this.telephone=telephone;
-    	this.adresse=adresse;}	
+    private EtatInscription etatInscription;
+
+    public Utilisateur(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces,
+                       Double codePublic, Double codePrive, String email, String motDePasse,
+                       Double numeroSecuriteSociale, String telephone, String adresse) {
+        super(nom, prenom, nationalite, dateNaissance, dateDeces);
+        this.codePublic = codePublic;
+        this.codePrive = codePrive;
+        this.email = email;
+        this.motDePasse = motDePasse;
+        this.numeroSecuriteSociale = numeroSecuriteSociale;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.etatInscription = EtatInscription.Attente;
+    }
+
     public Double getCodePublic() {
-        // TODO implement here
-    	return this.codePublic;
+        return codePublic;
     }
 
-    /**
-     * 
-     */
     public Double getCodePrive() {
-        // TODO implement here
-    	return this.codePrive;
+        return codePrive;
     }
 
-    /**
-     * 
-     */
     public String getMotDePasse() {
-        // TODO implement here
-    	return this.motDePasse;
+        return motDePasse;
     }
 
-    /**
-     * @param motDePasse
-     */
     public void setMotDePasse(String motDePasse) {
-        // TODO implement here
-    	this.motDePasse=motDePasse;
+        this.motDePasse = motDePasse;
     }
 
-    /**
-     * 
-     */
     public String getEmail() {
-        // TODO implement here
-    	return this.email;
+        return email;
     }
 
-    /**
-     * @param email
-     */
     public void setEmail(String email) {
-        // TODO implement here
-    	this.email=email;
+        this.email = email;
     }
 
-    /**
-     * 
-     */
     public Double getNumeroSecuriteSociale() {
-        // TODO implement here
-    	return this.numeroSecuriteSociale;
+        return numeroSecuriteSociale;
     }
 
-    /**
-     * 
-     */
     public String getTelephone() {
-        // TODO implement here
-    	return this.telephone;
+        return telephone;
     }
 
-    /**
-     * @param telephone
-     */
     public void setTelephone(String telephone) {
-        // TODO implement here
-    	this.telephone=telephone;
+        this.telephone = telephone;
     }
 
-    /**
-     * 
-     */
     public String getAdresse() {
-        // TODO implement here
-    	return this.adresse;
+        return adresse;
     }
 
-    /**
-     * @param adresse
-     */
     public void setAdresse(String adresse) {
-        // TODO implement here
-    	this.adresse=adresse;
+        this.adresse = adresse;
     }
 
-    /**
-     * @param codePublic 
-     * @param codePrive 
-     * @param email 
-     * @param motDePasse 
-     * @param numeroSecuriteSociale 
-     * @param telephone 
-     * @param adresse
-     */
-   
+    public EtatInscription getEtatInscription() {
+        return etatInscription;
+    }
+
+    public void setEtatInscription(EtatInscription etatInscription) {
+        this.etatInscription = etatInscription;
+    }
+
+    
+    public void effacerInformations() {
+        this.codePublic = null;
+        this.codePrive = null;
+        this.email = null;
+        this.motDePasse = null;
+        this.numeroSecuriteSociale = null;
+        this.telephone = null;
+        this.adresse = null;
+    }
 }
