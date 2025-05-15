@@ -1,0 +1,28 @@
+public static void insererUtilisateur(Connection conn, Utilisateur u) throws SQLException {
+    String sql = "INSERT INTO utilisateur (id, nom, prenom, nationalite, date_naissance, date_deces, " +
+                 "code_public, code_prive, email, mot_de_passe, numero_securite_sociale, telephone, adresse) " +
+                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, u.getId());
+        stmt.setString(2, u.getNom());
+        stmt.setString(3, u.getPrenom());
+        stmt.setString(4, u.getNationalite());
+        stmt.setDate(5, new java.sql.Date(u.getDateNaissance().getTime()));
+        if (u.getDateDeces() != null) {
+            stmt.setDate(6, new java.sql.Date(u.getDateDeces().getTime()));
+        } else {
+            stmt.setNull(6, java.sql.Types.DATE);
+        }
+        stmt.setDouble(7, u.getCodePublic());
+        stmt.setDouble(8, u.getCodePrive());
+        stmt.setString(9, u.getEmail());
+        stmt.setString(10, u.getMotDePasse());
+        stmt.setDouble(11, u.getNumeroSecuriteSociale());
+        stmt.setString(12, u.getTelephone());
+        stmt.setString(13, u.getAdresse());
+
+        stmt.executeUpdate();
+        System.out.println(" Utilisateur inséré avec succès !");
+    }
+}
