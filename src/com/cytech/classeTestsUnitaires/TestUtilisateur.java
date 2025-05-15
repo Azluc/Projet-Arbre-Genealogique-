@@ -100,7 +100,7 @@ public class TestUtilisateur extends TestCase {
     	        Utilisateur.verifierCoherenceDates(utilisateurV.getDateNaissance(), utilisateurV.getDateDeces());
     	        fail("Une exception aurait dû être levée pour des dates incohérentes !");
     	    } catch (Exception e) {
-    	        System.out.println("Exception attendue : " + e.getMessage());
+    	        System.out.println("Exception attendue: " + e.getMessage());
     	    }
     	}
 
