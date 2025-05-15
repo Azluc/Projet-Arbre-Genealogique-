@@ -20,7 +20,6 @@ public class Personne {
         this.dateDeces = dateDeces;
     }
 
-    // Vérification logique
     public static boolean verifierCoherenceDates(Date dateNaissance, Date dateDeces) throws Exception {
         if (dateNaissance == null && dateDeces == null) {
             throw new Exception("Les dates ne doivent pas être nulles.");
