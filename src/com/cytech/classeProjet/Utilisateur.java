@@ -10,7 +10,7 @@ public class Utilisateur extends Personne {
     private Double numeroSecuriteSociale;
     private String telephone;
     private String adresse;
-    private EtatInscription etatInscription;
+    
 
     public Utilisateur(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces,
                        Double codePublic, Double codePrive, String email, String motDePasse,
@@ -23,7 +23,7 @@ public class Utilisateur extends Personne {
         this.numeroSecuriteSociale = numeroSecuriteSociale;
         this.telephone = telephone;
         this.adresse = adresse;
-        this.etatInscription = EtatInscription.Attente;
+     
     }
 
     public Double getCodePublic() {
@@ -68,4 +68,4 @@ public class Utilisateur extends Personne {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
-    }
+    }}
