@@ -9,7 +9,6 @@ public class GestionArbreGenealogique {
         Noeud noeudEnfant = new Noeud();
         noeudEnfant.ajouterPersonne(enfant);
 
-        // Mise à jour des liens
         noeudParent.getEnfants().add(enfant);
         noeudEnfant.getParents().add(parent);
 
