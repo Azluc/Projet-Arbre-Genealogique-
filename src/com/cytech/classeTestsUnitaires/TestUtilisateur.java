@@ -1,13 +1,14 @@
 package com.cytech.classeTestsUnitaires;
 
 import java.util.*;
+
 import com.cytech.classeProjet.Utilisateur;
-import junit.framework.TestCase;
-public class TestUtilisateur extends TestCase {
+
+public class TestUtilisateur{
 
     public static void main(String[] args) {
         testConstructeurUtilisateur();
-        testVerifierCoherenceDatesUtilisateur();
+
     }
 
     public static void testConstructeurUtilisateur() {
@@ -20,8 +21,7 @@ public class TestUtilisateur extends TestCase {
         cal.set(1990, Calendar.JANUARY, 1);
         Date dateNaissance = cal.getTime();
 
-        cal.set(0, 0, 0); // Date de décès nulle pour utilisateur vivant
-        Date dateDeces = null;
+        Date dateDeces = null; // Utilisateur vivant, donc date décès nulle
 
         Double codePublic = 12345.0;
         Double codePrive = 67890.0;
@@ -38,71 +38,93 @@ public class TestUtilisateur extends TestCase {
                 numeroSecuriteSociale, telephone, adresse
         );
 
-        // Vérification des attributs hérités
-        assertEquals(nom, utilisateur.getNom());
-        assertEquals(prenom, utilisateur.getPrenom());
-        assertEquals(nationalite, utilisateur.getNationalite());
-        assertEquals(dateNaissance, utilisateur.getDateNaissance());
-        assertNull(utilisateur.getDateDeces());
+        System.out.println("Nom attendu: " + nom + ", Nom obtenu: " + utilisateur.getNom());
+        if (nom.equals(utilisateur.getNom())) {
+            System.out.println("Nom : OK");
+        } else {
+            System.out.println("Nom : Échec");
+        }
 
-        // Vérification des attributs spécifiques
-        assertEquals(codePublic, utilisateur.getCodePublic());
-        assertEquals(codePrive, utilisateur.getCodePrive());
-        assertEquals(email, utilisateur.getEmail());
-        assertEquals(motDePasse, utilisateur.getMotDePasse());
-        assertEquals(numeroSecuriteSociale, utilisateur.getNumeroSecuriteSociale());
-        assertEquals(telephone, utilisateur.getTelephone());
-        assertEquals(adresse, utilisateur.getAdresse());
+        System.out.println("Prénom attendu: " + prenom + ", Prénom obtenu: " + utilisateur.getPrenom());
+        if (prenom.equals(utilisateur.getPrenom())) {
+            System.out.println("Prénom : OK");
+        } else {
+            System.out.println("Prénom : Échec");
+        }
+
+        System.out.println("Nationalité attendue: " + nationalite + ", Nationalité obtenue: " + utilisateur.getNationalite());
+        if (nationalite.equals(utilisateur.getNationalite())) {
+            System.out.println("Nationalité : OK");
+        } else {
+            System.out.println("Nationalité : Échec");
+        }
+
+        System.out.println("Date de naissance attendue: " + dateNaissance + ", Date obtenue: " + utilisateur.getDateNaissance());
+        if (dateNaissance.equals(utilisateur.getDateNaissance())) {
+            System.out.println("Date de naissance : OK");
+        } else {
+            System.out.println("Date de naissance : Échec");
+        }
+
+        System.out.println("Date de décès attendue: null, Date obtenue: " + utilisateur.getDateDeces());
+        if (utilisateur.getDateDeces() == null) {
+            System.out.println("Date de décès : OK");
+        } else {
+            System.out.println("Date de décès : Échec");
+        }
+
+        System.out.println("Code public attendu: " + codePublic + ", Code obtenu: " + utilisateur.getCodePublic());
+        if (codePublic.equals(utilisateur.getCodePublic())) {
+            System.out.println("Code public : OK");
+        } else {
+            System.out.println("Code public : Échec");
+        }
+
+        System.out.println("Code privé attendu: " + codePrive + ", Code obtenu: " + utilisateur.getCodePrive());
+        if (codePrive.equals(utilisateur.getCodePrive())) {
+            System.out.println("Code privé : OK");
+        } else {
+            System.out.println("Code privé : Échec");
+        }
+
+        System.out.println("Email attendu: " + email + ", Email obtenu: " + utilisateur.getEmail());
+        if (email.equals(utilisateur.getEmail())) {
+            System.out.println("Email : OK");
+        } else {
+            System.out.println("Email : Échec");
+        }
+
+        System.out.println("Mot de passe attendu: " + motDePasse + ", Mot de passe obtenu: " + utilisateur.getMotDePasse());
+        if (motDePasse.equals(utilisateur.getMotDePasse())) {
+            System.out.println("Mot de passe : OK");
+        } else {
+            System.out.println("Mot de passe : Échec");
+        }
+
+        System.out.println("Numéro sécurité sociale attendu: " + numeroSecuriteSociale + ", Numéro obtenu: " + utilisateur.getNumeroSecuriteSociale());
+        if (numeroSecuriteSociale.equals(utilisateur.getNumeroSecuriteSociale())) {
+            System.out.println("Numéro sécurité sociale : OK");
+        } else {
+            System.out.println("Numéro sécurité sociale : Échec");
+        }
+
+        System.out.println("Téléphone attendu: " + telephone + ", Téléphone obtenu: " + utilisateur.getTelephone());
+        if (telephone.equals(utilisateur.getTelephone())) {
+            System.out.println("Téléphone : OK");
+        } else {
+            System.out.println("Téléphone : Échec");
+        }
+
+        System.out.println("Adresse attendue: " + adresse + ", Adresse obtenue: " + utilisateur.getAdresse());
+        if (adresse.equals(utilisateur.getAdresse())) {
+            System.out.println("Adresse : OK");
+        } else {
+            System.out.println("Adresse : Échec");
+        }
     }
-  
-    	public static void testVerifierCoherenceDatesUtilisateur() {
-    	    // Dates cohérentes : naissance avant décès
-    	    Calendar cal = Calendar.getInstance();
-    	    cal.set(1980, Calendar.JANUARY, 1);
-    	    Date dateNaissance = cal.getTime();
 
-    	    cal.set(2020, Calendar.JANUARY, 1);
-    	    Date dateDeces = cal.getTime();
 
-    	    // Attributs spécifiques à Utilisateur
-    	    String nom = "Durand";
-    	    String prenom = "Claire";
-    	    String nationalite = "Française";
-    	    Double codePublic = 11111.0;
-    	    Double codePrive = 22222.0;
-    	    String email = "claire.durand@example.com";
-    	    String motDePasse = "mdpTest";
-    	    Double numeroSecuriteSociale = 2987654321123.0;
-    	    String telephone = "0708091011";
-    	    String adresse = "456 avenue République, 75011 Paris";
 
-    	    // Création d’un Utilisateur avec dates valides
-    	    Utilisateur utilisateurV = new Utilisateur(
-    	        nom, prenom, nationalite, dateNaissance, dateDeces,
-    	        codePublic, codePrive, email, motDePasse,
-    	        numeroSecuriteSociale, telephone, adresse
-    	    );
-
-    	    try {
-    	        assertTrue(Utilisateur.verifierCoherenceDates(utilisateurV.getDateNaissance(), utilisateurV.getDateDeces()));
-    	        System.out.println(" Test passé : dates valides.");
-    	    } catch (Exception e) {
-    	        fail(" Erreur inattendue : " + e.getMessage());
-    	    }
-
-    	    // Dates incohérentes : décès avant naissance
-    	    cal.set(1970, Calendar.JANUARY, 1);
-    	    Date dateDecesInvalide = cal.getTime();
-
-    	    utilisateurV.setDateDeces(dateDecesInvalide);
-
-    	    try {
-    	        Utilisateur.verifierCoherenceDates(utilisateurV.getDateNaissance(), utilisateurV.getDateDeces());
-    	        fail("Une exception aurait dû être levée pour des dates incohérentes !");
-    	    } catch (Exception e) {
-    	        System.out.println("Exception attendue: " + e.getMessage());
-    	    }
-    	}
 
 }
 

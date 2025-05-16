@@ -4,15 +4,13 @@ import java.util.Date;
 
 public class Personne {
 
-    private int id;
     private String nom;
     private String prenom;
     private String nationalite;
     private Date dateNaissance;
     private Date dateDeces;
 
-    public Personne(int id, String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces) {
-        this.id = id;
+    public Personne(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces) {
         this.nom = nom;
         this.prenom = prenom;
         this.nationalite = nationalite;
@@ -29,22 +27,37 @@ public class Personne {
         throw new Exception("La date de naissance doit être avant la date de décès !");
     }
 
-    // Getters / Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+	public String getNationalite() {
+		return nationalite;
+	}
 
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
+	public void setNationalite(String nationalite) {
+		this.nationalite = nationalite;
+	}
 
-    public String getPrenom() { return prenom; }
-    public void setPrenom(String prenom) { this.prenom = prenom; }
+	public Date getDateNaissance() {
+		return dateNaissance;
+	}
 
-    public String getNationalite() { return nationalite; }
-    public void setNationalite(String nationalite) { this.nationalite = nationalite; }
+	public void setDateNaissance(Date dateNaissance) {
+		this.dateNaissance = dateNaissance;
+	}
 
-    public Date getDateNaissance() { return dateNaissance; }
-    public void setDateNaissance(Date dateNaissance) { this.dateNaissance = dateNaissance; }
+	public Date getDateDeces() {
+		return dateDeces;
+	}
 
-    public Date getDateDeces() { return dateDeces; }
-    public void setDateDeces(Date dateDeces) { this.dateDeces = dateDeces; }
+	public void setDateDeces(Date dateDeces) {
+		this.dateDeces = dateDeces;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+    
 }

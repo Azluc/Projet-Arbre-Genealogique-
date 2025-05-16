@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="672.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cytech.view.InterfaceBarmanController">
+   <children>
+      <SplitPane dividerPositions="0.3445855614973261" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Button layoutX="26.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleCocktailsButton" prefHeight="26.0" prefWidth="150.0" text="Modifier votre profil" />
+                  <Button layoutY="1.0" mnemonicParsing="false" onAction="#handleCocktailsButton" prefHeight="26.0" prefWidth="150.0" text="se déconnecter" />
+                  <Button layoutX="26.0" layoutY="130.0" mnemonicParsing="false" onAction="#handleBoissonAButton" prefHeight="26.0" prefWidth="203.0" text="ajouter une personne" />
+                  <Button layoutX="26.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="partager des ressources" />
+                  <Button layoutX="26.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="générer arbre graphiquement" />
+                  <Button layoutX="26.0" layoutY="206.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="générer arbre textuel" />
+                  <Button layoutX="26.0" layoutY="242.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="faire des requêtes" />
+                  <Button layoutX="26.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="consulter l'arbre d'un autre utilisateur" />
+                  <Button layoutX="26.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleCocktailsButton" prefHeight="26.0" prefWidth="150.0" text="Consulter annuaire" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox prefHeight="670.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox prefHeight="156.0" prefWidth="567.0" spacing="20.0">
+                           <children>
+                              <Label text="BONJOUR">
+                                 <font>
+                                    <Font name="System Bold" size="23.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="10.0">
+                                 <font>
+                                    <Font name="System Bold" size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label prefHeight="28.0" prefWidth="530.0" text="Bienvenue sur notre application, pour commencer, veuillez sélectionner">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label text="une dès options situées en haut à gauche">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

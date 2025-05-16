@@ -11,8 +11,8 @@ CREATE TABLE utilisateur (
     numero_securite_sociale VARCHAR(20),
     email VARCHAR(100),
     mot_de_passe VARCHAR(100),
-    code_public VARCHAR(100) UNIQUE,
-    code_prive VARCHAR(100) UNIQUE,
+    code_public INT UNIQUE,
+    code_prive INT UNIQUE,
     adresse TEXT,
     telephone VARCHAR(20),
     photo LONGBLOB,
@@ -20,48 +20,60 @@ CREATE TABLE utilisateur (
 );
 
 -- Table des arbres
-CREATE TABLE arbre (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_utilisateur INT NOT NULL,
-    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id)
+CREATE TABLE IF NOT EXISTS Arbre (
+    id_arbre INT AUTO_INCREMENT PRIMARY KEY
 );
 
--- Table des personnes (noeuds)
-CREATE TABLE personne (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(50),
-    prenom VARCHAR(50),
-    date_naissance DATE,
-    genre VARCHAR(10),
-    adresse TEXT,
-    email VARCHAR(100),
-    telephone VARCHAR(20),
-    est_inscrit BOOLEAN DEFAULT FALSE
-);
-
--- Table des noeuds dans l’arbre
-CREATE TABLE noeud_personne (
+-- Table des personnes (noeuds) modifiée
+CREATE TABLE IF NOT EXISTS Personne (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_arbre INT NOT NULL,
-    id_personne INT NOT NULL,
-    lien_parente VARCHAR(50),
-    visibilite ENUM('PUBLIC', 'PRIVATE', 'PROTECTED'),
-    FOREIGN KEY (id_arbre) REFERENCES arbre(id),
-    FOREIGN KEY (id_personne) REFERENCES personne(id)
+    nom VARCHAR(100),
+    prenom VARCHAR(100),
+    profondeur INT,
+    dateNaissance DATE,
+    dateDeces DATE DEFAULT NULL,
+    est_temporaire BOOLEAN DEFAULT FALSE,
+    relation ENUM(
+        'MOI', 'PERE', 'MERE', 'FRERE', 'SOEUR',
+        'ONCLE', 'TANTE', 'COUSIN', 'COUSINE',
+        'GRAND_PERE', 'GRAND_MERE', 'ARRIERE_GRAND_PERE', 'ARRIERE_GRAND_MERE'
+    ),
+    origine_lien ENUM('PATERNEL', 'MATERNEL') DEFAULT NULL,
+    FOREIGN KEY (id_arbre) REFERENCES Arbre(id_arbre),
+    UNIQUE(id_arbre, nom, prenom, profondeur)
 );
 
--- Table des liens parentaux entre noeuds (relations bidirectionnelles possibles)
-CREATE TABLE relation_parente (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_source INT NOT NULL,
-    id_cible INT NOT NULL,
-    type_relation VARCHAR(50),
-    FOREIGN KEY (id_source) REFERENCES noeud_personne(id),
-    FOREIGN KEY (id_cible) REFERENCES noeud_personne(id)
+-- Table des relations de type Parent_enfant
+CREATE TABLE IF NOT EXISTS Parent_Enfant (
+    id_arbre INT NOT NULL,
+    nom_parent VARCHAR(100) NOT NULL,
+    prenom_parent VARCHAR(100) NOT NULL,
+    nom_enfant VARCHAR(100) NOT NULL,
+    prenom_enfant VARCHAR(100) NOT NULL,
+    UNIQUE(id_arbre, nom_parent, prenom_parent, nom_enfant, prenom_enfant)
+);
+
+CREATE TABLE IF NOT EXISTS UnionConjugale (
+    id_arbre INT NOT NULL,
+    nom_conjoint1 VARCHAR(100) NOT NULL,
+    prenom_conjoint1 VARCHAR(100) NOT NULL,
+    nom_conjoint2 VARCHAR(100) NOT NULL,
+    prenom_conjoint2 VARCHAR(100) NOT NULL,
+    UNIQUE(id_arbre, nom_conjoint1, prenom_conjoint1, nom_conjoint2, prenom_conjoint2)
+);
+
+CREATE TABLE IF NOT EXISTS Frere_Soeur (
+    id_arbre INT NOT NULL,
+    nom1 VARCHAR(100) NOT NULL,
+    prenom1 VARCHAR(100) NOT NULL,
+    nom2 VARCHAR(100) NOT NULL,
+    prenom2 VARCHAR(100) NOT NULL,
+    UNIQUE(id_arbre, nom1, prenom1, nom2, prenom2)
 );
 
 -- Table des administrateur
-CREATE TABLE administrateur (
+CREATE TABLE IF NOT EXISTS administrateur (
     id INT AUTO_INCREMENT PRIMARY KEY,
     identifiant VARCHAR(50),
     mot_de_passe VARCHAR(50)
@@ -91,26 +103,13 @@ CREATE TABLE souvenir (
     FOREIGN KEY (id_auteur) REFERENCES utilisateur(id)
 );
 
--- Table de partage des souvenirs
-CREATE TABLE partage_souvenir (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_souvenir INT,
-    id_destinataire INT,
-    FOREIGN KEY (id_souvenir) REFERENCES souvenir(id),
-    FOREIGN KEY (id_destinataire) REFERENCES utilisateur(id)
-);
-
--- Table des statistiques de consultatio
+-- Table des statistiques de consultation
 CREATE TABLE statistiques_consultation (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur INT,
     id_visiteur INT,
     date_consultation DATETIME,
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id),
-    FOREIGN KEY (id_visiteur) REFERENCES utilisateur(id) 
+    FOREIGN KEY (id_visiteur) REFERENCES utilisateur(id)
 );
-
-
-
-
 
