@@ -1,50 +1,99 @@
 package com.cytech.classeProjet;
 
-import org.junit.jupiter.api.Test;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+/**
+ * Classe représentant un arbre généalogique contenant des personnes
+ * et une visibilité associée.
+ */
+public class ArbreGenealogique {
 
-public class ArbreGenealogiqueTest {
+    private Double id;
+    private NiveauVisibilite visibilite;
+    private Personne racine;
+    private List<Personne> personnes;
 
-    @Test
-    public void testAjoutPersonne() {
-        Personne racine = new Personne("Dupont", "Claire", "Française",
-                new GregorianCalendar(1980, Calendar.JANUARY, 1).getTime(), null);
-
-        ArbreGenealogique arbre = new ArbreGenealogique(1.0, NiveauVisibilite.public_, racine);
-
-        Personne enfant = new Personne("Dupont", "Lucas", "Française",
-                new GregorianCalendar(2010, Calendar.MARCH, 10).getTime(), null);
-
-        arbre.ajouterPersonne(enfant);
-
-        assertEquals(2, arbre.getPersonnes().size());
-        assertTrue(arbre.getPersonnes().contains(enfant));
+    /**
+     * Constructeur de l'arbre généalogique.
+     *
+     * @param id         identifiant unique de l’arbre
+     * @param visibilite niveau de visibilité
+     * @param racine     personne racine (point de départ)
+     */
+    public ArbreGenealogique(Double id, NiveauVisibilite visibilite, Personne racine) {
+        this.id = id;
+        this.visibilite = visibilite;
+        this.racine = racine;
+        this.personnes = new ArrayList<>();
+        this.personnes.add(racine); // Ajout de la racine au départ
     }
 
-    @Test
-    public void testRecherchePersonneExistante() {
-        Personne racine = new Personne("Durand", "Alice", "Française",
-                new GregorianCalendar(1985, Calendar.JUNE, 15).getTime(), null);
-
-        ArbreGenealogique arbre = new ArbreGenealogique(2.0, NiveauVisibilite.prive, racine);
-
-        Personne result = arbre.rechercherPersonne("Durand", "Alice");
-
-        assertNotNull(result);
-        assertEquals("Durand", result.getNom());
+    /**
+     * Change le niveau de visibilité de l'arbre.
+     *
+     * @param nouvelleVisibilite le nouveau niveau
+     */
+    public void changerVisibiliteArbre(NiveauVisibilite nouvelleVisibilite) {
+        this.visibilite = nouvelleVisibilite;
     }
 
-    @Test
-    public void testChangerVisibilite() {
-        Personne racine = new Personne("Martin", "Paul", "Française",
-                new GregorianCalendar(1975, Calendar.APRIL, 5).getTime(), null);
+    /**
+     * Ajoute une personne à l’arbre.
+     *
+     * @param p la personne à ajouter
+     */
+    public void ajouterPersonne(Personne p) {
+        this.personnes.add(p);
+    }
 
-        ArbreGenealogique arbre = new ArbreGenealogique(3.0, NiveauVisibilite.prive, racine);
+    /**
+     * Recherche une personne par nom et prénom.
+     *
+     * @param nom    nom à rechercher
+     * @param prenom prénom à rechercher
+     * @return la personne trouvée, sinon null
+     */
+    public Personne rechercherPersonne(String nom, String prenom) {
+        for (Personne p : personnes) {
+            if (p.getNom().equalsIgnoreCase(nom) && p.getPrenom().equalsIgnoreCase(prenom)) {
+                return p;
+            }
+        }
+        return null;
+    }
 
-        arbre.changerVisibiliteArbre(NiveauVisibilite.protege);
+    /**
+     * Affiche l’arbre de façon textuelle dans la console.
+     */
+    public void genererAffichageTextuel() {
+        System.out.println("Arbre Généalogique (visibilité : " + visibilite + ")");
+        for (Personne p : personnes) {
+            p.afficherInfos();
+        }
+    }
 
-        assertEquals(NiveauVisibilite.protege, arbre.getVisibilite());
+    /**
+     * Affichage graphique (non implémenté pour le moment).
+     */
+    public void genererAffichageGraphique() {
+        System.out.println("[Affichage graphique non implémenté]");
+    }
+
+    // --- Getters ---
+
+    public Double getId() {
+        return id;
+    }
+
+    public NiveauVisibilite getVisibilite() {
+        return visibilite;
+    }
+
+    public Personne getRacine() {
+        return racine;
+    }
+
+    public List<Personne> getPersonnes() {
+        return personnes;
     }
 }
