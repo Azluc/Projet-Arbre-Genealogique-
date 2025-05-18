@@ -5,9 +5,9 @@ package com.cytech.classeProjet;
  * possibles pour un arbre ou un nœud dans l'application.
  */
 public enum NiveauVisibilite {
-    public_("Public"),     // Visible par tous les utilisateurs
+    public_("Public"),     // Visible par tous
     protege("Protégé"),    // Visible uniquement par les membres de l’arbre
-    prive("Privé");        // Visible uniquement par l'utilisateur lui-même
+    prive("Privé");        // Visible uniquement par l'utilisateur
 
     private final String label;
 
@@ -25,9 +25,9 @@ public enum NiveauVisibilite {
     }
 
     /**
-     * Convertit un texte saisi en console ou interface en une valeur de l'enum.
+     * Convertit une chaîne de texte en NiveauVisibilite.
      *
-     * @param input texte comme "1", "public", "protégé", etc.
+     * @param input chaîne comme "1", "public", "protégé", etc.
      * @return NiveauVisibilite correspondant
      * @throws IllegalArgumentException si aucun niveau ne correspond
      */
