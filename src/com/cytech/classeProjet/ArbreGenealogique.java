@@ -1,74 +1,50 @@
 package com.cytech.classeProjet;
 
+import org.junit.jupiter.api.Test;
 import java.util.*;
 
-/**
- * 
- */
-public class ArbreGenealogique {
+import static org.junit.jupiter.api.Assertions.*;
 
-    private Double id;
-    private NiveauVisibilite visibilite;
-    private Personne racine;
-    
-    private List<Personne> personnes;
-    
-    public ArbreGenealogique(Double id, NiveauVisibilite visibilite, Personne racine) {
-        this.id = id;
-        this.visibilite = visibilite;
-        this.racine = racine;
-        this.personnes = new ArrayList<>();
-        this.personnes.add(racine); // on commence par la racine
+public class ArbreGenealogiqueTest {
+
+    @Test
+    public void testAjoutPersonne() {
+        Personne racine = new Personne("Dupont", "Claire", "Française",
+                new GregorianCalendar(1980, Calendar.JANUARY, 1).getTime(), null);
+
+        ArbreGenealogique arbre = new ArbreGenealogique(1.0, NiveauVisibilite.public_, racine);
+
+        Personne enfant = new Personne("Dupont", "Lucas", "Française",
+                new GregorianCalendar(2010, Calendar.MARCH, 10).getTime(), null);
+
+        arbre.ajouterPersonne(enfant);
+
+        assertEquals(2, arbre.getPersonnes().size());
+        assertTrue(arbre.getPersonnes().contains(enfant));
     }
 
-    public void changerVisibiliteArbre(NiveauVisibilite nouvelleVisibilite) {
-        this.visibilite = nouvelleVisibilite;
+    @Test
+    public void testRecherchePersonneExistante() {
+        Personne racine = new Personne("Durand", "Alice", "Française",
+                new GregorianCalendar(1985, Calendar.JUNE, 15).getTime(), null);
+
+        ArbreGenealogique arbre = new ArbreGenealogique(2.0, NiveauVisibilite.prive, racine);
+
+        Personne result = arbre.rechercherPersonne("Durand", "Alice");
+
+        assertNotNull(result);
+        assertEquals("Durand", result.getNom());
     }
 
-   
-    public Personne rechercherPersonne(String nom, String prenom) {
-        for (Personne p : personnes) {
-            if (p.getNom().equalsIgnoreCase(nom) && p.getPrenom().equalsIgnoreCase(prenom)) {
-                return p;
-            }
-        }
-        return null; // Si la personne n'est pas trouvée
-    }
+    @Test
+    public void testChangerVisibilite() {
+        Personne racine = new Personne("Martin", "Paul", "Française",
+                new GregorianCalendar(1975, Calendar.APRIL, 5).getTime(), null);
 
-    /**
-     * 
-     */
-    public void genererAffichageTextuel() {
-        System.out.println("Arbre Généalogique (visibilité : " + visibilite + ")");
-        for (Personne p : personnes) {
-            p.afficherInfos();
-        }
-    }
+        ArbreGenealogique arbre = new ArbreGenealogique(3.0, NiveauVisibilite.prive, racine);
 
-    /**
-     * 
-     */
-    public void genererAffichageGraphique() {
-        System.out.println("[Graphique] - Non encore implémenté.");
-    }
+        arbre.changerVisibiliteArbre(NiveauVisibilite.protege);
 
-    public void ajouterPersonne(Personne p) {
-        this.personnes.add(p);
-    }
-
-    public Double getId() {
-        return id;
-    }
-
-    public NiveauVisibilite getVisibilite() {
-        return visibilite;
-    }
-
-    public Personne getRacine() {
-        return racine;
-    }
-
-    public List<Personne> getPersonnes() {
-        return personnes;
+        assertEquals(NiveauVisibilite.protege, arbre.getVisibilite());
     }
 }
