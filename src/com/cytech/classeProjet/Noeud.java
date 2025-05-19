@@ -3,54 +3,58 @@ package com.cytech.classeProjet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe représentant un nœud dans l'arbre généalogique
+ * avec une personne, ses parents et ses enfants.
+ */
 public class Noeud {
 
-    private List<Personne> parent;
-    private List<Personne> enfant;
+    private Personne personne; // personne centrale de ce nœud
+    private List<Personne> parents;
+    private List<Personne> enfants;
 
     public Noeud() {
-        this.parent = new ArrayList<>();
-        this.enfant = new ArrayList<>();
+        this.parents = new ArrayList<>();
+        this.enfants = new ArrayList<>();
     }
 
-    public void ajouterPersonne(Personne personne) {
-        if (personne != null) {
-            enfant.add(personne);
-            System.out.println(" l'enfant ajouté est : " + personne.getPrenom() + " " + personne.getNom());
+    public void setPersonne(Personne personne) {
+        this.personne = personne;
+    }
+
+    public Personne getPersonne() {
+        return personne;
+    }
+
+    public void ajouterParent(Personne parent) {
+        if (parent != null && !parents.contains(parent)) {
+            parents.add(parent);
+            System.out.println("Parent ajouté : " + parent.getPrenom() + " " + parent.getNom());
+        }
+    }
+
+    public void ajouterEnfant(Personne enfant) {
+        if (enfant != null && !enfants.contains(enfant)) {
+            enfants.add(enfant);
+            System.out.println("Enfant ajouté : " + enfant.getPrenom() + " " + enfant.getNom());
         }
     }
 
     public void modifierPersonne(Personne nouvellePersonne) {
-        boolean modifie = false;
-
-        for (int i = 0; i < parent.size(); i++) {
-            Personne p = parent.get(i);
-            if (p.getNom().equals(nouvellePersonne.getNom()) && p.getPrenom().equals(nouvellePersonne.getPrenom())) {
-                parent.set(i, nouvellePersonne);
-                modifie = true;
-                System.out.println(" Le parent est modifié : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
-            }
-        }
-
-        for (int i = 0; i < enfant.size(); i++) {
-            Personne p = enfant.get(i);
-            if (p.getNom().equals(nouvellePersonne.getNom()) && p.getPrenom().equals(nouvellePersonne.getPrenom())) {
-                enfant.set(i, nouvellePersonne);
-                modifie = true;
-                System.out.println(" L'enfant est modifé : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
-            }
-        }
-
-        if (!modifie) {
-            System.out.println(" La personne est non trouvée dans ce nœud.");
+        if (personne != null && personne.getNom().equals(nouvellePersonne.getNom())
+                && personne.getPrenom().equals(nouvellePersonne.getPrenom())) {
+            this.personne = nouvellePersonne;
+            System.out.println("Personne du nœud modifiée : " + nouvellePersonne.getPrenom() + " " + nouvellePersonne.getNom());
+        } else {
+            System.out.println("Aucune correspondance dans ce nœud pour modifier.");
         }
     }
 
     public List<Personne> getParents() {
-        return parent;
+        return parents;
     }
 
     public List<Personne> getEnfants() {
-        return enfant;
+        return enfants;
     }
 }
