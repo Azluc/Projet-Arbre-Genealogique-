@@ -11,8 +11,8 @@ CREATE TABLE utilisateur (
     numero_securite_sociale VARCHAR(20),
     email VARCHAR(100),
     mot_de_passe VARCHAR(100),
-    code_public INT UNIQUE,
-    code_prive INT UNIQUE,
+    code_public int UNIQUE,
+    code_prive int UNIQUE,
     adresse TEXT,
     telephone VARCHAR(20),
     photo LONGBLOB,
@@ -91,7 +91,9 @@ CREATE TABLE IF NOT EXISTS demande_adhesion (
     adresse TEXT,
     telephone VARCHAR(20),
     photo LONGBLOB,
-    carte_identite LONGBLOB
+    photoLien TEXT,
+    carte_identite LONGBLOB,
+    carte_identiteLien TEXT
 );
 
 -- Table des souvenirs (partage entre membres liés)

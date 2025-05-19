@@ -18,6 +18,7 @@ public class TestGestionUtilisateurBDD {
 	}
 	public static void testInsertion() {
 	    try {
+	    	//Erreur a corriger pour la gestion Utilisateur !!!!!!!!!!!!!!!!!
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	        Date dateNaissance = sdf.parse("1990-01-01");
 

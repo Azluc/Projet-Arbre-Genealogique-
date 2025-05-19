@@ -1,0 +1,19 @@
+package com.cytech.classeProjet;
+
+ 
+//L'ensemble des relations possibles que peux prendre les autres personnes de l'arbre
+public enum Relation {
+ PERE,MERE,
+ FRERE,SOEUR,
+ ONCLE,TANTE,
+ COUSIN,COUSINE, 
+ PETIT_COUSIN, PETITE_COUSINE, 
+ NEVEU, NIECE, 
+ PETIT_NEVEU,PETITE_NIECE, 
+ GRAND_PERE,GRAND_MERE,
+ FILS,FILLE,
+ PETITE_FILLE,PETIT_FILS,
+ ARRIERE_PETIT_FILS,ARRIERE_PETITE_FILLE,
+ ARRIERE_GRAND_PERE,ARRIERE_GRAND_MERE,
+ EPOUX,EPOUSE
+}

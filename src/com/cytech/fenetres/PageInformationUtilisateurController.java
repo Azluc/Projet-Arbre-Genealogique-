@@ -4,6 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import com.cytech.Main;
+import com.cytech.gestionBDD.GestionDemandeAdhesionBdd;
+import com.cytech.gestionBDD.GestionUtilisateurBDD;
+
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
@@ -13,11 +17,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.ZoneId;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 
 public class PageInformationUtilisateurController {
@@ -113,14 +131,21 @@ public class PageInformationUtilisateurController {
 
         return random.nextInt(1_000_000) + 1;
     }
+    
+    
+     
+    
     // Event Listener on Button[#boutonAccepter].onAction
     @FXML
-    public void boutonAccepterAdhesion(ActionEvent event) {
+    public void boutonAccepterAdhesion(ActionEvent event) throws IOException, SQLException {
 
         //preparation des codes publics et prives
         int codePublic = genererNombreAleatoire();
         int codePrive = genererNombreAleatoire();
 
+        String codePublicToString = Integer.toString(codePublic);
+        String codePriveToString = Integer.toString(codePrive);
+        
         String expediteur = "administrateur@gmail.com";  // Ton adresse email
         String destinataire = emailBDD.getText();  // L'adresse de test
 
@@ -141,8 +166,8 @@ public class PageInformationUtilisateurController {
             message.setSubject("Envoie des codes public et privées");  // Sujet de l'email
             message.setText("Bonjour,"
                     + "Vous trouverez ci-joint votre code public et votre code privée"
-                    + "CodePublic : " +codePublic
-                    + "CodePrivé : " +codePrive
+                    + "CodePublic : " +codePublicToString
+                    + "CodePrivé : " +codePriveToString
                     +"Cordialement.");  // Corps du message
 
             // Envoi du message
@@ -157,6 +182,60 @@ public class PageInformationUtilisateurController {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        
+        String nom = nomBDD.getText();
+		String prenom = prenomBDD.getText();
+		String email = emailBDD.getText();
+		String adresse = adresseBDD.getText();
+		String nationalite = nationaliteBDD.getText();
+		 
+		
+		String telephone = numeroTelephoneBDD.getText();
+		String numeroSS = NumeroSecuBDD.getText();
+		
+		List<String> listeLiens = GestionDemandeAdhesionBdd.getLiensParEmail(email);
+		String lienPhoto = listeLiens.get(0);
+		String lienIdentite = listeLiens.get(1);
+		
+		
+        // Lire le fichier image et le convertir en tableau de bytes
+        File fichierPhoto = new File(lienPhoto);
+        byte[] photoBytes = Files.readAllBytes(fichierPhoto.toPath());
+        
+        File fichierCarteIdentite = new File(lienIdentite);
+        byte[] carteIdentiteBytes = Files.readAllBytes(fichierCarteIdentite.toPath());
+		
+		
+		/*
+		Image imageIdentite = photoIdentite.getImage();
+		BufferedImage bufferedImageIdentite = SwingFXUtils.fromFXImage(imageIdentite, null);
+		ByteArrayOutputStream pieceIdentiteStream = new ByteArrayOutputStream();
+		ImageIO.write(bufferedImageIdentite, "png", pieceIdentiteStream);
+		byte[] pieceIdentiteBytes = pieceIdentiteStream.toByteArray();
+
+		// Conversion de la photo numérique
+		Image imageNumerique = photoNumerique.getImage();
+		BufferedImage bufferedImageNumerique = SwingFXUtils.fromFXImage(imageNumerique, null);
+		ByteArrayOutputStream photoNumeriqueStream = new ByteArrayOutputStream();
+		ImageIO.write(bufferedImageNumerique, "png", photoNumeriqueStream);
+		byte[] photoNumeriqueBytes = photoNumeriqueStream.toByteArray();
+		*/
+		// Appel de la méthode d'ajout
+		GestionUtilisateurBDD.AjouterUtilisateur(
+				nom,
+				prenom,
+				dateNaissanceValue.getText(),
+				nationalite,
+		    numeroSS,
+		    email,
+		    "-1",
+		    codePublic,
+		    codePrive,
+		    adresse,
+		    telephone,
+		    photoBytes,  // byte[] pour la pièce d'identité
+		    carteIdentiteBytes  // byte[] pour la photo numérique
+		);
     }
 
 
