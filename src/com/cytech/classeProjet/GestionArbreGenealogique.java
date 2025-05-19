@@ -7,24 +7,23 @@ public class GestionArbreGenealogique {
     public static void ajouterFils(Personne parent, Personne enfant, Map<Personne, Noeud> arbre) {
         Noeud noeudParent = arbre.get(parent);
         Noeud noeudEnfant = new Noeud();
-        noeudEnfant.ajouterPersonne(enfant);
+        noeudEnfant.setPersonne(enfant);
 
-        noeudParent.getEnfants().add(enfant);
-        noeudEnfant.getParents().add(parent);
+        noeudParent.ajouterEnfant(enfant);
+        noeudEnfant.ajouterParent(parent);
 
         arbre.put(enfant, noeudEnfant);
     }
 
-
     public static void ajouterFrereOuSoeur(Personne personne, Personne frere, Map<Personne, Noeud> arbre) {
         Noeud noeudPerso = arbre.get(personne);
         Noeud noeudFrere = new Noeud();
-        noeudFrere.ajouterPersonne(frere);
+        noeudFrere.setPersonne(frere);
 
         for (Personne parent : noeudPerso.getParents()) {
             Noeud noeudParent = arbre.get(parent);
-            noeudParent.getEnfants().add(frere);
-            noeudFrere.getParents().add(parent);
+            noeudParent.ajouterEnfant(frere);
+            noeudFrere.ajouterParent(parent);
         }
 
         arbre.put(frere, noeudFrere);
@@ -33,12 +32,12 @@ public class GestionArbreGenealogique {
     public static void ajouterFrereParent(Personne parent, Personne oncle, Map<Personne, Noeud> arbre) {
         Noeud noeudParent = arbre.get(parent);
         Noeud noeudOncle = new Noeud();
-        noeudOncle.ajouterPersonne(oncle);
+        noeudOncle.setPersonne(oncle);
 
         for (Personne grandParent : noeudParent.getParents()) {
             Noeud noeudGP = arbre.get(grandParent);
-            noeudGP.getEnfants().add(oncle);
-            noeudOncle.getParents().add(grandParent);
+            noeudGP.ajouterEnfant(oncle);
+            noeudOncle.ajouterParent(grandParent);
         }
 
         arbre.put(oncle, noeudOncle);
@@ -50,29 +49,7 @@ public class GestionArbreGenealogique {
 
     public static void ajouterCousinDirect(Personne moi, Personne cousin, Map<Personne, Noeud> arbre, List<LienParente> liens) {
         Noeud noeudCousin = new Noeud();
-        noeudCousin.ajouterPersonne(cousin);
+        noeudCousin.setPersonne(cousin);
         arbre.put(cousin, noeudCousin);
 
-        LienParente lien = new LienParente(moi, cousin, TypeRelation.COLLATERAL, 2.0);
-        liens.add(lien);
-    }
-
-    public static void ajouterGrandParent(Personne petitFils, Personne grandParent, Map<Personne, Noeud> arbre) {
-        Noeud noeudPetit = arbre.get(petitFils);
-        Noeud noeudGP = new Noeud();
-        noeudGP.ajouterPersonne(grandParent);
-
-        for (Personne parent : noeudPetit.getParents()) {
-            Noeud noeudParent = arbre.get(parent);
-            noeudParent.getParents().add(grandParent);
-            noeudGP.getEnfants().add(parent);
-        }
-
-        arbre.put(grandParent, noeudGP);
-    }
-
-    public static void ajouterLienParente(Personne source, Personne cible, TypeRelation type, double profondeur, List<LienParente> liens) {
-        LienParente lien = new LienParente(source, cible, type, profondeur);
-        liens.add(lien);
-    }
-}
+        LienParente lien = new Lien
