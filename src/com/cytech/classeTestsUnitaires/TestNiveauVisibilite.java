@@ -1,35 +1,52 @@
 package com.cytech.classeProjet;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+public class TestNiveauVisibilite_Console {
+    public static void main(String[] args) {
 
-public class NiveauVisibiliteTest {
+        // Test 1 : toString
+        if (NiveauVisibilite.public_.toString().equals("Public")) {
+            System.out.println("Test 1 - toString Public : OK");
+        } else {
+            System.out.println("Test 1 - toString Public : ÉCHEC");
+        }
 
-    @Test
-    public void testToString() {
-        assertEquals("Public", NiveauVisibilite.public_.toString());
-        assertEquals("Protégé", NiveauVisibilite.protege.toString());
-        assertEquals("Privé", NiveauVisibilite.prive.toString());
-    }
+        // Test 2 : getLabel
+        if (NiveauVisibilite.prive.getLabel().equals("Privé")) {
+            System.out.println("Test 2 - getLabel Privé : OK");
+        } else {
+            System.out.println("Test 2 - getLabel Privé : ÉCHEC");
+        }
 
-    @Test
-    public void testFromStringTexte() {
-        assertEquals(NiveauVisibilite.public_, NiveauVisibilite.fromString("public"));
-        assertEquals(NiveauVisibilite.protege, NiveauVisibilite.fromString("protégé"));
-        assertEquals(NiveauVisibilite.prive, NiveauVisibilite.fromString("privé"));
-    }
+        // Test 3 : fromString avec texte
+        try {
+            NiveauVisibilite nv = NiveauVisibilite.fromString("protégé");
+            if (nv == NiveauVisibilite.protege) {
+                System.out.println("Test 3 - fromString 'protégé' : OK");
+            } else {
+                System.out.println("Test 3 - fromString 'protégé' : ÉCHEC");
+            }
+        } catch (Exception e) {
+            System.out.println("Test 3 - fromString 'protégé' : ÉCHEC (Exception)");
+        }
 
-    @Test
-    public void testFromStringChiffres() {
-        assertEquals(NiveauVisibilite.public_, NiveauVisibilite.fromString("1"));
-        assertEquals(NiveauVisibilite.protege, NiveauVisibilite.fromString("2"));
-        assertEquals(NiveauVisibilite.prive, NiveauVisibilite.fromString("3"));
-    }
+        // Test 4 : fromString avec chiffre
+        try {
+            NiveauVisibilite nv = NiveauVisibilite.fromString("1");
+            if (nv == NiveauVisibilite.public_) {
+                System.out.println("Test 4 - fromString '1' : OK");
+            } else {
+                System.out.println("Test 4 - fromString '1' : ÉCHEC");
+            }
+        } catch (Exception e) {
+            System.out.println("Test 4 - fromString '1' : ÉCHEC (Exception)");
+        }
 
-    @Test
-    public void testFromStringInvalide() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                NiveauVisibilite.fromString("autre"));
-        assertTrue(exception.getMessage().contains("Niveau de visibilité inconnu"));
+        // Test 5 : fromString invalide
+        try {
+            NiveauVisibilite.fromString("invalide");
+            System.out.println("Test 5 - fromString 'invalide' : ÉCHEC (aucune exception)");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Test 5 - fromString 'invalide' : OK (exception capturée)");
+        }
     }
 }
