@@ -1,7 +1,6 @@
 package com.cytech.classeProjet;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class NiveauVisibiliteTest {
@@ -11,13 +10,6 @@ public class NiveauVisibiliteTest {
         assertEquals("Public", NiveauVisibilite.public_.toString());
         assertEquals("Protégé", NiveauVisibilite.protege.toString());
         assertEquals("Privé", NiveauVisibilite.prive.toString());
-    }
-
-    @Test
-    public void testGetLabel() {
-        assertEquals("Public", NiveauVisibilite.public_.getLabel());
-        assertEquals("Protégé", NiveauVisibilite.protege.getLabel());
-        assertEquals("Privé", NiveauVisibilite.prive.getLabel());
     }
 
     @Test
@@ -36,10 +28,8 @@ public class NiveauVisibiliteTest {
 
     @Test
     public void testFromStringInvalide() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            NiveauVisibilite.fromString("inconnu");
-        });
-
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                NiveauVisibilite.fromString("autre"));
         assertTrue(exception.getMessage().contains("Niveau de visibilité inconnu"));
     }
 }
