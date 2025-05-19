@@ -1,41 +1,36 @@
 package com.cytech.classeProjet;
 
-import java.util.*;
 
-/**
- * 
- */
 public class StatistiqueConsultation {
 
-    /**
-     * Default constructor
-     */
-    public StatistiqueConsultation() {
-    }
-
-    /**
-     * 
-     */
-    private Double nombreConsultation;
-
-    /**
-     * 
-     */
+    private double nombreConsultation;
     private Utilisateur consultant;
 
-    /**
-     * @param nombreConsultation 
-     * @param consultant
-     */
-    public void StatistiqueConsultation(Double nombreConsultation, Utilisateur consultant) {
-        // TODO implement here
+    public StatistiqueConsultation(double nombreConsultation, Utilisateur consultant) {
+        this.nombreConsultation = nombreConsultation;
+        this.consultant = consultant;
     }
 
-    /**
-     * @param nombreConsultation
-     */
-    public void augmenterConsultation(Double nombreConsultation) {
-        // TODO implement here
+    public void augmenterConsultation(double nombre) {
+        this.nombreConsultation += nombre;
     }
 
-}
+    public double getNombreConsultation() {
+        return nombreConsultation;
+    }
+
+    public Utilisateur getConsultant() {
+        return consultant;
+    }
+
+    public void setNombreConsultation(double nombreConsultation) {
+        this.nombreConsultation = nombreConsultation;
+    }
+
+    public void setConsultant(Utilisateur consultant) {
+        this.consultant = consultant;
+    }
+
+    @Override
+    public String toString() {
+        return "Consultations
