@@ -52,4 +52,26 @@ public class GestionArbreGenealogique {
         noeudCousin.setPersonne(cousin);
         arbre.put(cousin, noeudCousin);
 
-        LienParente lien = new Lien
+        LienParente lien = new LienParente(moi, cousin, TypeRelation.collateral, 2.0);
+        liens.add(lien);
+    }
+
+    public static void ajouterGrandParent(Personne petitFils, Personne grandParent, Map<Personne, Noeud> arbre) {
+        Noeud noeudPetit = arbre.get(petitFils);
+        Noeud noeudGP = new Noeud();
+        noeudGP.setPersonne(grandParent);
+
+        for (Personne parent : noeudPetit.getParents()) {
+            Noeud noeudParent = arbre.get(parent);
+            noeudParent.ajouterParent(grandParent);
+            noeudGP.ajouterEnfant(parent);
+        }
+
+        arbre.put(grandParent, noeudGP);
+    }
+
+    public static void ajouterLienParente(Personne source, Personne cible, TypeRelation type, double profondeur, List<LienParente> liens) {
+        LienParente lien = new LienParente(source, cible, type, profondeur);
+        liens.add(lien);
+    }
+}
