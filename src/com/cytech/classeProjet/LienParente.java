@@ -9,7 +9,7 @@ import java.util.List;
 
 public class LienParente {
     
-    private ArbreGenealogique arbre;  // référence à l'arbre
+    private ArbreGenealogique arbre;   // référence à l'arbre
     private List<Lien> liens;  // liste de liens individuels
 
     public LienParente(ArbreGenealogique arbre) {

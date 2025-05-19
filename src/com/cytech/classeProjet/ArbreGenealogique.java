@@ -9,7 +9,7 @@ public class ArbreGenealogique {
     private Personne racine;
     private int id_arbre;
     private Set<Personne> personnes;
-    //private List<LienParente> liens = new ArrayList<>();
+     //private List<LienParente> liens = new ArrayList<>();
     private LienParente liensParente;
     
     

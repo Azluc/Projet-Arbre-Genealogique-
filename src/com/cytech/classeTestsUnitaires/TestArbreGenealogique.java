@@ -29,7 +29,7 @@ public class TestArbreGenealogique {
         ArbreGenealogique arbre = new ArbreGenealogique(racine, 1, new HashSet<>());
         arbre.getPersonnes().add(racine);
         
-        // Ici, création unique de l'objet LienParente associé à l'arbre
+         // Ici, création unique de l'objet LienParente associé à l'arbre
         /*LienParente liensParente = new LienParente(arbre);
         liensParente.setLiensParente(arbre);*/
         LienParente liensParente = new LienParente(arbre);

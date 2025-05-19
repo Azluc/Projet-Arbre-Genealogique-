@@ -1,5 +1,5 @@
 package com.cytech.classeProjet;
 
 public enum Cote {
-	MATERNEL, PATERNEL, NEUTRE
+	MATERNEL,  PATERNEL,  NEUTRE
 }

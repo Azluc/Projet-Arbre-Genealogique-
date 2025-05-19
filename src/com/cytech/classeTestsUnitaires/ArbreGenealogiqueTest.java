@@ -6,7 +6,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ArbreGenealogiqueTest {
-
+	/*
+	 * Faire test Classique sans Junit avec des if et else
+	 * */
     @Test
     public void testAjoutPersonne() {
         Personne racine = new Personne("Dupont", "Claire", "Française",
