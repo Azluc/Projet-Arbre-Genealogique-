@@ -1,126 +1,47 @@
-package com.cytech.classeTestsUnitaires;
+package com.cytech.classeProjet;
 
+import org.junit.jupiter.api.Test;
 import java.util.Calendar;
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.cytech.classeProjet.Personne;
- 
+public class TestPersonne {
 
-public class TestPersonne{
+    @Test
+    public void testCreationPersonne() {
+        Date naissance = new Date();
+        Personne p = new Personne("Martin", "Lucie", "Française", naissance, null);
 
-    public static void main(String[] args) {
-        testConstructeurPersonne();
-        testVerifierCoherenceDates();
+        assertEquals("Martin", p.getNom());
+        assertEquals("Lucie", p.getPrenom());
+        assertEquals("Française", p.getNationalite());
+        assertEquals(naissance, p.getDateNaissance());
+        assertNull(p.getDateDeces());
     }
 
-    public static void testConstructeurPersonne() {
+    @Test
+    public void testCoherenceDates_OK() throws Exception {
+        Date naissance = new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime();
+        Date deces = new GregorianCalendar(2050, Calendar.JANUARY, 1).getTime();
 
-        // Création d'une Personne
-        String nom = "nom1";
-        String prenom = "prenom1";
-        String nationalite = "France";
-
-
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.set(2000, Calendar.JANUARY, 1);  // 1er janvier 2000
-        Date dateNaissance = calendrier.getTime();
-
-        Calendar calendrier2 = Calendar.getInstance();
-        calendrier2.set(2010, Calendar.MAY, 16);  // 16 Mai 2010
-        Date dateDeces = calendrier2.getTime();
-
-
-
-        Personne personne = new Personne(nom, prenom, nationalite, dateNaissance, dateDeces);
-
-        // Vérification des attributs
-        if (!prenom.equals(personne.getPrenom())) {
-            System.out.println("Échec : le prénom attendu est " + prenom + " mais obtenu : " + personne.getPrenom());
-        } else {
-            System.out.println("Prénom : OK");
-        }
-
-        if (!nom.equals(personne.getNom())) {
-            System.out.println("Échec : le nom attendu est " + nom + " mais obtenu : " + personne.getNom());
-        } else {
-            System.out.println("Nom : OK");
-        }
-
-        if (!nationalite.equals(personne.getNationalite())) {
-            System.out.println("Échec : la nationalité attendue est " + nationalite + " mais obtenue : " + personne.getNationalite());
-        } else {
-            System.out.println("Nationalité : OK");
-        }
-
-        if (!dateNaissance.equals(personne.getDateNaissance())) {
-            System.out.println("Échec : la date de naissance attendue est " + dateNaissance + " mais obtenue : " + personne.getDateNaissance());
-        } else {
-            System.out.println("Date de naissance : OK");
-        }
-
-        if (dateDeces == null) {
-            if (personne.getDateDeces() != null) {
-                System.out.println("Échec : date de décès attendue null mais obtenue : " + personne.getDateDeces());
-            } else {
-                System.out.println("Date de décès : OK (null)");
-            }
-        } else {
-            if (!dateDeces.equals(personne.getDateDeces())) {
-                System.out.println("Échec : la date de décès attendue est " + dateDeces + " mais obtenue : " + personne.getDateDeces());
-            } else {
-                System.out.println("Date de décès : OK");
-            }
-        }
+        assertTrue(Personne.verifierCoherenceDates(naissance, deces));
     }
 
-    public static void testVerifierCoherenceDates() {
-        String nom = "nomPersonne";
-        String prenom = "prenomPersonne";
-        String nationalite = "France";
-
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.set(2000, Calendar.JANUARY, 1);  // 1er janvier 2000
-        Date dateNaissance = calendrier.getTime();
-
-        Calendar calendrier2 = Calendar.getInstance();
-        calendrier2.set(1990, Calendar.MAY, 15);  // 15 Mai 1990
-        Date dateDeces = calendrier2.getTime();
-
-        Personne personne = new Personne(nom, prenom, nationalite, dateNaissance, dateDeces);
-
-        // Vérifie que la date de naissance est bien avant la date de décès
-        // Ici une erreur est attendue car dateNaissance > dateDeces
-        System.out.print("L'erreur suivante est attendue : ");
-        try {
-            Personne.verifierCoherenceDates(personne.getDateNaissance(), personne.getDateDeces());
-            System.out.println("Échec : exception attendue mais non levée");
-        } catch (Exception e) {
-            System.out.println("OK - Exception levée : " + e.getMessage());
-        }
-
-        // Inverse les dates (maintenant dateNaissance < dateDeces)
-        personne.setDateNaissance(dateDeces);
-        personne.setDateDeces(dateNaissance);
-
-        try {
-            boolean resultat = Personne.verifierCoherenceDates(personne.getDateNaissance(), personne.getDateDeces());
-            if (resultat) {
-                System.out.println("Vérification des dates : OK");
-            } else {
-                System.out.println("Vérification des dates : Échec - résultat false inattendu");
-            }
-        } catch (Exception e) {
-            System.out.println("Échec - exception inattendue : " + e.getMessage());
-        }
+    @Test
+    public void testCoherenceDates_EncoreVivant() throws Exception {
+        Date naissance = new GregorianCalendar(2000, Calendar.MARCH, 1).getTime();
+        assertTrue(Personne.verifierCoherenceDates(naissance, null));
     }
 
+    @Test
+    public void testCoherenceDates_Erreur() {
+        Date naissance = new GregorianCalendar(2020, Calendar.JANUARY, 1).getTime();
+        Date deces = new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime();
 
+        Exception exception = assertThrows(Exception.class, () ->
+                Personne.verifierCoherenceDates(naissance, deces));
 
-
-
-
-
-
-
+        assertEquals("La date de naissance doit être avant la date de décès !", exception.getMessage());
+    }
 }
