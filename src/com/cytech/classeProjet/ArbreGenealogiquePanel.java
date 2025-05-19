@@ -20,7 +20,7 @@ public class ArbreGenealogiquePanel extends JPanel {
     private static final int ESPACE_HORIZONTAL = 40;
     private static final int ESPACE_VERTICAL = 60;
     private static final int DISTANCE_COUPLE = 20; // Distance entre les conjoints
-    private static final Color COULEUR_HOMME = new Color(173, 216, 230);  //  Bleu clair
+    private static final Color COULEUR_HOMME = new Color(173, 216, 230);  //   Bleu clair
     private static final Color COULEUR_FEMME = new Color(255, 182, 193);  // Rose clair
     private static final Color COULEUR_LIEN = new Color(100, 100, 100);   // Gris foncé
     private static final Color COULEUR_LIEN_COUPLE = new Color(255, 0, 0); // Rouge pour les liens de couple

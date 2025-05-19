@@ -9,7 +9,7 @@ import com.cytech.classeProjet.Personne;
 
 public class TestPersonne{
 
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         testConstructeurPersonne();
         testVerifierCoherenceDates();
     }

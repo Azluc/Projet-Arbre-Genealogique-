@@ -3,7 +3,7 @@ package com.cytech.classeProjet;
  
 //L'ensemble des relations possibles que peux prendre les autres personnes de l'arbre
 public enum Relation {
- PERE,MERE,
+  PERE,MERE,
  FRERE,SOEUR,
  ONCLE,TANTE,
  COUSIN,COUSINE, 

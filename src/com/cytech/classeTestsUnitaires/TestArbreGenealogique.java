@@ -1,7 +1,5 @@
 package com.cytech.classeTestsUnitaires;
 
- 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,20 +20,18 @@ public class TestArbreGenealogique {
     private static final Scanner scanner = new Scanner(System.in);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    
     public static void main(String[] args) throws ParseException {
         System.out.println("Création de la personne racine :");
         Personne racine = creerPersonne();
         ArbreGenealogique arbre = new ArbreGenealogique(racine, 1, new HashSet<>());
         arbre.getPersonnes().add(racine);
         
-         // Ici, création unique de l'objet LienParente associé à l'arbre
+        // Ici, création unique de l'objet LienParente associé à l'arbre
         /*LienParente liensParente = new LienParente(arbre);
         liensParente.setLiensParente(arbre);*/
         LienParente liensParente = new LienParente(arbre);
         arbre.setLiensParente(liensParente);
         while (true) {
-        	//Pour l'ihm
             ArbreGenealogique.afficherRelations(arbre);
             JFrame frame = new JFrame("Arbre généalogique");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

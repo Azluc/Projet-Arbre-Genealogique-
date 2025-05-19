@@ -3,7 +3,7 @@ package com.cytech.classeProjet;
  
 
 public class Lien {
-     private Personne personneSource;
+      private Personne personneSource;
     private Personne personneDestination;
     private TypeRelation type;
     private String nomRelation;
@@ -49,10 +49,5 @@ public class Lien {
 		this.nomRelation = nomRelation;
 	}
     
-     
-	 
-
-     
-
-    // getters, setters, equals, hashCode, toString...
+ 
 }

@@ -24,7 +24,7 @@ public class Personne {
     private List<Personne> freresEtSoeurs;
     private Personne conjoint;
     private Cote cote = Cote.NEUTRE;
-    private String nationalite;
+     private String nationalite;
 
      
 

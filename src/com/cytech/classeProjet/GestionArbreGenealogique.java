@@ -3,7 +3,7 @@ package com.cytech.classeProjet;
 import java.util.*;
 
 public class GestionArbreGenealogique {
-	//Pas sur qu'on conserve ca !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 //Pas sur qu'on conserve ca !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static void ajouterFils(Personne parent, Personne enfant, Map<Personne, Noeud> arbre) {
         Noeud noeudParent = arbre.get(parent);
         Noeud noeudEnfant = new Noeud();
