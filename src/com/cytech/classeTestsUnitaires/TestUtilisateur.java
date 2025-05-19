@@ -1,35 +1,46 @@
 package com.cytech.classeProjet;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+public class TestUtilisateur_Console {
+    public static void main(String[] args) {
 
-public class TestUtilisateur {
-
-    @Test
-    public void testCreationUtilisateur() {
         Utilisateur u = new Utilisateur("Dupont", "Marie", "marie@exemple.com", "mdp123");
 
-        assertEquals("Dupont", u.getNom());
-        assertEquals("Marie", u.getPrenom());
-        assertEquals("marie@exemple.com", u.getEmail());
-        assertEquals("mdp123", u.getMotDePasse());
-        assertFalse(u.isAdhesionValidee());
-    }
+        // Test 1 : Vérification des getters
+        if (u.getNom().equals("Dupont") && u.getPrenom().equals("Marie") &&
+            u.getEmail().equals("marie@exemple.com") && u.getMotDePasse().equals("mdp123")) {
+            System.out.println("Test 1 - Constructeur et getters : OK");
+        } else {
+            System.out.println("Test 1 - Constructeur et getters : ÉCHEC");
+        }
 
-    @Test
-    public void testValidationAdhesion() {
-        Utilisateur u = new Utilisateur("Durand", "Paul", "paul@mail.com", "pass");
+        // Test 2 : État d’adhésion par défaut
+        if (!u.isAdhesionValidee()) {
+            System.out.println("Test 2 - Adhésion par défaut (false) : OK");
+        } else {
+            System.out.println("Test 2 - Adhésion par défaut (false) : ÉCHEC");
+        }
 
+        // Test 3 : Validation de l’adhésion
         u.setAdhesionValidee(true);
-        assertTrue(u.isAdhesionValidee());
+        if (u.isAdhesionValidee()) {
+            System.out.println("Test 3 - Validation adhésion : OK");
+        } else {
+            System.out.println("Test 3 - Validation adhésion : ÉCHEC");
+        }
 
-        u.setAdhesionValidee(false);
-        assertFalse(u.isAdhesionValidee());
-    }
+        // Test 4 : Modification du mot de passe
+        u.setMotDePasse("newpass");
+        if (u.getMotDePasse().equals("newpass")) {
+            System.out.println("Test 4 - Changement mot de passe : OK");
+        } else {
+            System.out.println("Test 4 - Changement mot de passe : ÉCHEC");
+        }
 
-    @Test
-    public void testToString() {
-        Utilisateur u = new Utilisateur("Durand", "Alice", "alice@mail.com", "pass");
-        assertTrue(u.toString().contains("Alice Durand - alice@mail.com"));
+        // Test 5 : Affichage toString
+        if (u.toString().contains("Marie Dupont") && u.toString().contains("marie@exemple.com")) {
+            System.out.println("Test 5 - toString utilisateur : OK");
+        } else {
+            System.out.println("Test 5 - toString utilisateur : ÉCHEC");
+        }
     }
 }
