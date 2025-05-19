@@ -51,18 +51,19 @@ public class PageConnexionUtilisateurController {
         if ((motDePasseBDD.equals("-1")) ) {
             if ( codePriveFourni== codePriveBDD && prenomBDD.equals(motDePasseUtilisateurFourni) ) {
                 System.out.print("première connexion");
-                main.afficherPageChangementMDP()
+                main.afficherPageChangementMDP(codePriveBDD);
             }
             else {
             	System.out.print("erreur identifiant : Premiere Connexion");
             }
         } 
         else {
-            if (codePriveFourni== codePriveBDD && prenomBDD.equals(motDePasseUtilisateurFourni)) {
+            if (codePriveFourni== codePriveBDD && motDePasseBDD.equals(motDePasseUtilisateurFourni)) {
+            	main.afficherPagePrincipaleUtilisateurController(codePriveBDD);
                 System.out.print("seconde connexion");
             }
             else {
-            	System.out.print("erreur identifiant :  Connexion");
+            	System.out.print("erreur identifiant : Seconde Connexion");
             }
         }
 

@@ -38,21 +38,27 @@ public class GestionDemandeAdhesionBdd {
     	    }
 
     	    // Récupère les liens photoLien et carte_identiteLien pour un email donné
-    	    public static List<String> getLiensParEmail(String email) throws SQLException {
-    	        List<String> liens = new ArrayList<>();
-    	        String url = "jdbc:mysql://localhost:3306/arbre_genealogique";
+    	    public static List<byte[]> getImagesParEmail(String email) throws SQLException {
+    	        List<byte[]> images = new ArrayList<>();
+ 
+
     	        try (Connection connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
-    	             PreparedStatement stmt = connexion.prepareStatement("SELECT photoLien, carte_identiteLien FROM demande_adhesion WHERE email = ?")) {
+    	             PreparedStatement stmt = connexion.prepareStatement(
+    	                 "SELECT photo, carte_identite FROM demande_adhesion WHERE email = ?")) {
     	            
     	            stmt.setString(1, email);
     	            try (ResultSet rs = stmt.executeQuery()) {
     	                if (rs.next()) {
-    	                    liens.add(rs.getString("photoLien"));
-    	                    liens.add(rs.getString("carte_identiteLien"));
+    	                    byte[] photoBytes = rs.getBytes("photo");
+    	                    byte[] carteBytes = rs.getBytes("carte_identite");
+
+    	                    images.add(photoBytes);
+    	                    images.add(carteBytes);
     	                }
     	            }
     	        }
-    	        return liens; // vide si rien trouvé
+
+    	        return images; // vide si rien trouvé
     	    }
     
 	public static void insertionDemandeBaseDonnes(String nom, String prenom, String email, String adresse, String nationalite, Date dateNaissance, String telephone, String numeroSS, String pieceIdentite, String photoNumerique) {

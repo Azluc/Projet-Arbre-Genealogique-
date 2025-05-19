@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
@@ -8,21 +9,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="672.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cytech.view.InterfaceBarmanController">
+<AnchorPane prefHeight="672.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cytech.fenetres.PagePrincipaleUtilisateurController">
    <children>
       <SplitPane dividerPositions="0.3445855614973261" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button layoutX="26.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleCocktailsButton" prefHeight="26.0" prefWidth="150.0" text="Modifier votre profil" />
-                  <Button layoutY="1.0" mnemonicParsing="false" onAction="#handleCocktailsButton" prefHeight="26.0" prefWidth="150.0" text="se déconnecter" />
-                  <Button layoutX="26.0" layoutY="130.0" mnemonicParsing="false" onAction="#handleBoissonAButton" prefHeight="26.0" prefWidth="203.0" text="ajouter une personne" />
-                  <Button layoutX="26.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="partager des ressources" />
-                  <Button layoutX="26.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="générer arbre graphiquement" />
-                  <Button layoutX="26.0" layoutY="206.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="générer arbre textuel" />
-                  <Button layoutX="26.0" layoutY="242.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="faire des requêtes" />
-                  <Button layoutX="26.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleBoissonNAButton" text="consulter l'arbre d'un autre utilisateur" />
-                  <Button layoutX="26.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleCocktailsButton" prefHeight="26.0" prefWidth="150.0" text="Consulter annuaire" />
+                  <Button layoutX="26.0" layoutY="60.0" mnemonicParsing="false" onAction="#modifierProfilUtilisateur" prefHeight="26.0" prefWidth="150.0" text="afficher votre profil" />
+                  <Button layoutY="1.0" mnemonicParsing="false" onAction="#DeconnectionUtilisateur" prefHeight="26.0" prefWidth="150.0" text="se déconnecter" />
+                  <Button layoutX="26.0" layoutY="130.0" mnemonicParsing="false" onAction="#ajouterPersonneArbreUtilisateur" prefHeight="26.0" prefWidth="203.0" text="ajouter une personne" />
+                  <Button layoutX="26.0" layoutY="349.0" mnemonicParsing="false" onAction="#EnvoyerRessource" text="partager des ressources" />
+                  <Button layoutX="26.0" layoutY="169.0" mnemonicParsing="false" onAction="#genererArbreGraphiquement" text="générer arbre graphiquement" />
+                  <Button layoutX="26.0" layoutY="206.0" mnemonicParsing="false" onAction="#genererArbreConsole" text="générer arbre en console" />
+                  <Button layoutX="26.0" layoutY="242.0" mnemonicParsing="false" onAction="#faireDesRequetesArbresUtilisateur" text="faire des requêtes" />
+                  <Button layoutX="26.0" layoutY="94.0" mnemonicParsing="false" onAction="#consulterAnnuaireAdherents" prefHeight="26.0" prefWidth="285.0" text="consulter annuaire et arbres des adhérents">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding></Button>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

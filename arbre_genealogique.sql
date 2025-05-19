@@ -21,26 +21,21 @@ CREATE TABLE utilisateur (
 
 -- Table des arbres
 CREATE TABLE IF NOT EXISTS Arbre (
-    id_arbre INT AUTO_INCREMENT PRIMARY KEY
+    id_arbre INT UNIQUE,
+    codePublic INT UNIQUE,
+    prenom VARCHAR(50)
 );
 
 -- Table des personnes (noeuds) modifiée
 CREATE TABLE IF NOT EXISTS Personne (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_arbre INT NOT NULL,
+    id_arbre INT PRIMARY KEY,
     nom VARCHAR(100),
     prenom VARCHAR(100),
     profondeur INT,
     dateNaissance DATE,
     dateDeces DATE DEFAULT NULL,
-    est_temporaire BOOLEAN DEFAULT FALSE,
-    relation ENUM(
-        'MOI', 'PERE', 'MERE', 'FRERE', 'SOEUR',
-        'ONCLE', 'TANTE', 'COUSIN', 'COUSINE',
-        'GRAND_PERE', 'GRAND_MERE', 'ARRIERE_GRAND_PERE', 'ARRIERE_GRAND_MERE'
-    ),
-    origine_lien ENUM('PATERNEL', 'MATERNEL') DEFAULT NULL,
-    FOREIGN KEY (id_arbre) REFERENCES Arbre(id_arbre),
+    nomRelation VARCHAR(50),
+    coteLien VARCHAR(20),
     UNIQUE(id_arbre, nom, prenom, profondeur)
 );
 

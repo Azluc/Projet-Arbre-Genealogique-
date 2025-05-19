@@ -4,7 +4,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import com.cytech.Main;
+import com.cytech.classeProjet.Genre;
+import com.cytech.classeProjet.GestionArbreGenealogique;
+import com.cytech.classeProjet.Personne;
+import com.cytech.gestionBDD.GestionArbreGenealogiqueBDD;
 import com.cytech.gestionBDD.GestionDemandeAdhesionBdd;
+import com.cytech.gestionBDD.GestionPersonneBDD;
 import com.cytech.gestionBDD.GestionUtilisateurBDD;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -18,6 +23,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -90,7 +97,7 @@ public class PageInformationUtilisateurController {
             if (rs.next()) {
                 System.out.println(rs.getString("nom"));
                 // Récupérer les valeurs des champs
-                nomBDD.setText("ab");
+                nomBDD.setText(rs.getString("nom"));
                 prenomBDD.setText(rs.getString("prenom"));
                 dateNaissanceValue.setText(rs.getString("date_naissance"));
                 nationaliteBDD.setText(rs.getString("nationalite"));
@@ -137,7 +144,7 @@ public class PageInformationUtilisateurController {
     
     // Event Listener on Button[#boutonAccepter].onAction
     @FXML
-    public void boutonAccepterAdhesion(ActionEvent event) throws IOException, SQLException {
+    public void boutonAccepterAdhesion(ActionEvent event) throws IOException, SQLException, ParseException {
 
         //preparation des codes publics et prives
         int codePublic = genererNombreAleatoire();
@@ -193,39 +200,23 @@ public class PageInformationUtilisateurController {
 		String telephone = numeroTelephoneBDD.getText();
 		String numeroSS = NumeroSecuBDD.getText();
 		
-		List<String> listeLiens = GestionDemandeAdhesionBdd.getLiensParEmail(email);
-		String lienPhoto = listeLiens.get(0);
-		String lienIdentite = listeLiens.get(1);
-		
-		
-        // Lire le fichier image et le convertir en tableau de bytes
-        File fichierPhoto = new File(lienPhoto);
-        byte[] photoBytes = Files.readAllBytes(fichierPhoto.toPath());
-        
-        File fichierCarteIdentite = new File(lienIdentite);
-        byte[] carteIdentiteBytes = Files.readAllBytes(fichierCarteIdentite.toPath());
-		
-		
-		/*
-		Image imageIdentite = photoIdentite.getImage();
-		BufferedImage bufferedImageIdentite = SwingFXUtils.fromFXImage(imageIdentite, null);
-		ByteArrayOutputStream pieceIdentiteStream = new ByteArrayOutputStream();
-		ImageIO.write(bufferedImageIdentite, "png", pieceIdentiteStream);
-		byte[] pieceIdentiteBytes = pieceIdentiteStream.toByteArray();
+		List<byte[]> listeImages = GestionDemandeAdhesionBdd.getImagesParEmail(email);
 
-		// Conversion de la photo numérique
-		Image imageNumerique = photoNumerique.getImage();
-		BufferedImage bufferedImageNumerique = SwingFXUtils.fromFXImage(imageNumerique, null);
-		ByteArrayOutputStream photoNumeriqueStream = new ByteArrayOutputStream();
-		ImageIO.write(bufferedImageNumerique, "png", photoNumeriqueStream);
-		byte[] photoNumeriqueBytes = photoNumeriqueStream.toByteArray();
-		*/
-		// Appel de la méthode d'ajout
+		// Récupérer directement les byte[] sans passer par des fichiers
+		byte[] photoBytes = null;
+		byte[] carteIdentiteBytes = null;
+
+		if (!listeImages.isEmpty()) {
+		    photoBytes = listeImages.get(0);
+		    carteIdentiteBytes = listeImages.get(1);
+		}
+
+		// Appel de la méthode d'ajout avec les byte[] récupérés
 		GestionUtilisateurBDD.AjouterUtilisateur(
-				nom,
-				prenom,
-				dateNaissanceValue.getText(),
-				nationalite,
+		    nom,
+		    prenom,
+		    dateNaissanceValue.getText(),
+		    nationalite,
 		    numeroSS,
 		    email,
 		    "-1",
@@ -233,9 +224,16 @@ public class PageInformationUtilisateurController {
 		    codePrive,
 		    adresse,
 		    telephone,
-		    photoBytes,  // byte[] pour la pièce d'identité
-		    carteIdentiteBytes  // byte[] pour la photo numérique
+		    photoBytes,         // byte[] pour la photo numérique
+		    carteIdentiteBytes  // byte[] pour la pièce d'identité
 		);
+		GestionArbreGenealogiqueBDD.ajoutRacineArbre(codePrive,codePublic,nom);
+		// Imaginons que dateNaissanceValue.getText() te retourne une String
+		String dateText = dateNaissanceValue.getText(); // "2025-05-12"
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date utilDate = sdf.parse(dateText);
+		Personne racine = new Personne(nom,prenom,utilDate,null,Genre.HOMME,codePrive,0);
+		GestionPersonneBDD.ajouterPersonneRacine(racine, codePrive);
     }
 
 
@@ -271,8 +269,8 @@ public class PageInformationUtilisateurController {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.initOwner(main.getPrimaryStage());
             alert.setTitle("Information");
-            alert.setHeaderText("La demande d'adhésion a été validée");
-            alert.setContentText("L'utilisateur recevra par mail ses différents codes.");
+            alert.setHeaderText("La demande d'adhésion a été refusée");
+            alert.setContentText("L'utilisateur sera notifé du refus.");
             alert.showAndWait();
 
         } catch (MessagingException e) {

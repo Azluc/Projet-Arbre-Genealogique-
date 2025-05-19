@@ -1,18 +1,22 @@
 package com.cytech;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.cytech.fenetres.AfficherProfilUtilisateurController;
+import com.cytech.fenetres.ModifierProfilUtilisateurController;
 import com.cytech.fenetres.PageAccueilController;
 import com.cytech.fenetres.PageAdministrateurController;
+import com.cytech.fenetres.PageChangementMDPController;
 import com.cytech.fenetres.PageConnexionAdministrateurController;
 import com.cytech.fenetres.PageConnexionUtilisateurController;
 import com.cytech.fenetres.PageInformationUtilisateurController;
 import com.cytech.fenetres.PageInscriptionController;
- 
+import com.cytech.fenetres.PagePrincipaleUtilisateurController;
 
 import javafx.application.Application;
 
@@ -145,6 +149,88 @@ public class Main extends Application {
             controller.setMain(this, pageInfoController);
             rootLayout.setCenter(pageAdministrateur);
             this.primaryStage.setTitle("Page Administrateur"); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    public void afficherPageChangementMDP(int codePrive) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("fenetres/PageChangementMDP.fxml"));
+        try {
+            AnchorPane page = loader.load();
+
+            // Récupération du contrôleur FXML
+            PageChangementMDPController controller = loader.getController();
+
+            // Injection du code privé dans le contrôleur
+            controller.setCodePrive(codePrive);
+
+            // Affichage de la page
+            rootLayout.setCenter(page);
+            this.primaryStage.setTitle("Changer de mot de passe");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void afficherPagePrincipaleUtilisateurController(int codePrive) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("fenetres/PagePrincipaleUtilisateur.fxml"));
+            AnchorPane page = loader.load();
+
+            PagePrincipaleUtilisateurController controller = loader.getController();
+            controller.setMain(this);
+            controller.setCodePrive(codePrive);
+
+            rootLayout.setCenter(page);
+            primaryStage.setTitle("Page principale utilisateur");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void afficherProfilUtilisateurController(int codePrive) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("fenetres/AfficherProfilUtilisateur.fxml"));
+            AnchorPane page = loader.load();
+
+            AfficherProfilUtilisateurController controller = loader.getController();
+            // Appelle la méthode pour charger et afficher les infos avec le codePrive
+            controller.chargerProfil(codePrive);
+
+            controller.setMain(this); // si tu en as besoin
+
+            rootLayout.setCenter(page);
+            primaryStage.setTitle("Votre profil");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void afficherModifierProfilUtilisateurController(int codePrive) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("fenetres/ModifierProfilUtilisateur.fxml"));
+            AnchorPane page = loader.load();
+
+            ModifierProfilUtilisateurController controller = loader.getController();
+            // Appelle la méthode pour charger et afficher les infos avec le codePrive
+            controller.chargerProfil(codePrive);
+
+            controller.setMain(this); // si tu en as besoin
+
+            rootLayout.setCenter(page);
+            primaryStage.setTitle("Modifier Votre profil");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
