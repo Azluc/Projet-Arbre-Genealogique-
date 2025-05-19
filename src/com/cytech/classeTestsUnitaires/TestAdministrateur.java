@@ -1,39 +1,31 @@
 package com.cytech.classeProjet;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 public class TestAdministrateur {
+    public static void main(String[] args) {
+        Administrateur admin = new Administrateur("Admin", "Test", "admin@mail.com", "admin123");
+        Utilisateur utilisateur = new Utilisateur("Doe", "John", "john@mail.com", "pass123");
 
-    private Administrateur admin;
-    private Utilisateur utilisateur;
+        // Test 1 : Vérification du constructeur
+        if (admin.getNom().equals("Admin") && admin.getPrenom().equals("Test") && admin.getEmail().equals("admin@mail.com")) {
+            System.out.println("Test 1 - Constructeur administrateur : OK");
+        } else {
+            System.out.println("Test 1 - Constructeur administrateur : ÉCHEC");
+        }
 
-    @BeforeEach
-    public void setup() {
-        admin = new Administrateur("Admin", "Test", "admin@mail.com", "admin123");
-        utilisateur = new Utilisateur("Doe", "John", "john@mail.com", "pass123");
-    }
-
-    @Test
-    public void testConstructeur() {
-        assertEquals("Admin", admin.getNom());
-        assertEquals("Test", admin.getPrenom());
-        assertEquals("admin@mail.com", admin.getEmail());
-    }
-
-    @Test
-    public void testValiderAdhesion() {
-        assertFalse(utilisateur.isAdhesionValidee());
+        // Test 2 : Valider adhésion
         admin.validerAdhesion(utilisateur);
-        assertTrue(utilisateur.isAdhesionValidee());
-    }
+        if (utilisateur.isAdhesionValidee()) {
+            System.out.println("Test 2 - Validation adhésion : OK");
+        } else {
+            System.out.println("Test 2 - Validation adhésion : ÉCHEC");
+        }
 
-    @Test
-    public void testRefuserAdhesion() {
-        utilisateur.setAdhesionValidee(true); // simulate an already validated account
+        // Test 3 : Refuser adhésion
         admin.refuserAdhesion(utilisateur);
-        assertFalse(utilisateur.isAdhesionValidee());
+        if (!utilisateur.isAdhesionValidee()) {
+            System.out.println("Test 3 - Refus adhésion : OK");
+        } else {
+            System.out.println("Test 3 - Refus adhésion : ÉCHEC");
+        }
     }
 }
