@@ -38,6 +38,6 @@ public class StatistiqueConsultation {
     // toString amélioré
     @Override
     public String toString() {
-        return "Consultant : " + consultant.getNom() + ", Nombre de consultations : " + nombreConsultation;
+        return "Consultant : " + consultant.getNom() + ", Nombre de consultations : " + nombreConsultation; 
     }
 }

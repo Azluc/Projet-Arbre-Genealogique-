@@ -46,5 +46,5 @@ public class Ressource {
     @Override
     public String toString() {
         return "[" + typeDocument + "] " + contenu + " (partagé le " + datePartage + ")";
-    }
+    } 
 }
