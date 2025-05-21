@@ -7,10 +7,11 @@ Il s'agit d'une application permettant de modéliser et de gérer un arbre gén�
 
 ##  Équipe projet
 
-- Nom Prénom 1 — rôle principal
-- Nom Prénom 2 — rôle principal
-- Nom Prénom 3 — rôle secondaire
-- Nom Prénom 4 — etc.
+- Allouch Evan 
+- Belkacem Said
+- Chakroun Charf-Eddine
+- Hania Haitam
+- Mirzica--Vigé Lucas
 
 ##  Objectifs
 
@@ -53,7 +54,7 @@ src/
 ### 1. Clonage du dépôt
 
 ```bash
-git clone [URL_DU_DEPOT]
+git clone https://github.com/Azluc/Projet-Arbre-Genealogique-.git
 cd projet-arbre-genealogique
 ```
 
