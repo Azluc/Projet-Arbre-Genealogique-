@@ -2,14 +2,14 @@ package com.cytech.classeProjet;
 
 import java.time.LocalDateTime;
 
-public class Ressource {
+public class TypeDocument {
 
     private TypeDocument typeDocument;
     private String contenu; // peut être un lien vers une image, un texte, etc.
     private LocalDateTime datePartage; // facultatif mais utile
 
     // Constructeur
-    public Ressource(TypeDocument typeDocument, String contenu) {
+    public TypeDocument(TypeDocument typeDocument, String contenu) {
         this.typeDocument = typeDocument;
         this.contenu = contenu;
         this.datePartage = LocalDateTime.now(); // Date automatique à la création

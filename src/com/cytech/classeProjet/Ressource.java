@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class Ressource {
 
-    private TypeDocument typeDocument;
-    private String contenu; // peut être un lien vers une image, un texte, etc.
-    private LocalDateTime datePartage; // facultatif mais utile
+    private TypeDocument typeDocument;   // Enum : TEXTE, IMAGE, VIDEO, etc.
+    private String contenu;              // Peut être un lien, un texte, etc.
+    private LocalDateTime datePartage;   // Date automatique à la création
 
     // Constructeur
     public Ressource(TypeDocument typeDocument, String contenu) {
         this.typeDocument = typeDocument;
         this.contenu = contenu;
-        this.datePartage = LocalDateTime.now(); // Date automatique à la création
+        this.datePartage = LocalDateTime.now();
     }
 
     // Méthode pour simuler le partage
@@ -33,12 +33,16 @@ public class Ressource {
         return datePartage;
     }
 
-    // Setters (facultatifs)
+    // Setters
     public void setContenu(String contenu) {
         this.contenu = contenu;
     }
 
-    // Affichage simple
+    public void setTypeDocument(TypeDocument typeDocument) {
+        this.typeDocument = typeDocument;
+    }
+
+    // toString pour affichage
     @Override
     public String toString() {
         return "[" + typeDocument + "] " + contenu + " (partagé le " + datePartage + ")";

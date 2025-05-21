@@ -1,21 +1,24 @@
 package com.cytech.classeProjet;
 
-
 public class StatistiqueConsultation {
 
-    private double nombreConsultation;
+    private int nombreConsultation;
     private Utilisateur consultant;
 
-    public StatistiqueConsultation(double nombreConsultation, Utilisateur consultant) {
+    public StatistiqueConsultation(int nombreConsultation, Utilisateur consultant) {
         this.nombreConsultation = nombreConsultation;
         this.consultant = consultant;
     }
 
-    public void augmenterConsultation(double nombre) {
-        this.nombreConsultation += nombre;
+    // Incrémente le compteur de consultations
+    public void augmenterConsultation(int nombre) {
+        if (nombre > 0) {
+            this.nombreConsultation += nombre;
+        }
     }
 
-    public double getNombreConsultation() {
+    // Getters
+    public int getNombreConsultation() {
         return nombreConsultation;
     }
 
@@ -23,7 +26,8 @@ public class StatistiqueConsultation {
         return consultant;
     }
 
-    public void setNombreConsultation(double nombreConsultation) {
+    // Setters
+    public void setNombreConsultation(int nombreConsultation) {
         this.nombreConsultation = nombreConsultation;
     }
 
@@ -31,6 +35,9 @@ public class StatistiqueConsultation {
         this.consultant = consultant;
     }
 
+    // toString amélioré
     @Override
     public String toString() {
-        return "Consultations
+        return "Consultant : " + consultant.getNom() + ", Nombre de consultations : " + nombreConsultation;
+    }
+}
