@@ -1,6 +1,8 @@
 package com.cytech.classeTestsUnitaires;
 
 import java.text.ParseException;
+
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -77,6 +79,7 @@ public class TestArbreGenealogique {
                         reference.ajouterParent(nouvelle);
                         ajoutReussi = true;
                         typeRelation = TypeRelation.PARENT_ENFANT;
+                        
                     } else {
                         System.out.println("Erreur : Le parent doit être plus âgé que l’enfant.");
                     }
@@ -109,7 +112,7 @@ public class TestArbreGenealogique {
 
              // Obtenir le nom de la relation
                 String nomRelation = ArbreGenealogique.ObtenirRelationsDepuisRacine(arbre, nouvelle);
-
+                 
                 // Ajouter le lien via l'objet unique LienParente lié à l'arbre
                 if (typeRelation == TypeRelation.PARENT_ENFANT) {
                     // Assurer que la personne source est le parent et destination est l'enfant
@@ -139,12 +142,7 @@ public class TestArbreGenealogique {
         // Afficher lien parente de l'arbre
         
         System.out.println("\nListe des liens de parenté dans l'arbre :");
-        for (Lien lien : arbre.getLiensParente().getLiens()) {
-            System.out.println(
-                lien.getPersonneSource().getNomComplet() + " --(" + lien.getType() + ", " + lien.getNomRelation() + ")--> " +
-                lien.getPersonneDestination().getNomComplet()
-            );
-        }
+        ArbreGenealogique.afficherRelations(arbre);
         
         
         

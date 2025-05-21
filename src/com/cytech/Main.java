@@ -2,15 +2,21 @@ package com.cytech;
 
 import java.io.IOException;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.cytech.classeProjet.ArbreGenealogique;
+import com.cytech.classeProjet.Personne;
 import com.cytech.fenetres.AfficherProfilUtilisateurController;
+import com.cytech.fenetres.FormulaireAjoutPersonneController;
 import com.cytech.fenetres.ModifierProfilUtilisateurController;
 import com.cytech.fenetres.PageAccueilController;
 import com.cytech.fenetres.PageAdministrateurController;
+import com.cytech.fenetres.PageAjoutListeDeroulanteController;
+ 
 import com.cytech.fenetres.PageChangementMDPController;
 import com.cytech.fenetres.PageConnexionAdministrateurController;
 import com.cytech.fenetres.PageConnexionUtilisateurController;
@@ -164,6 +170,9 @@ public class Main extends Application {
             // Récupération du contrôleur FXML
             PageChangementMDPController controller = loader.getController();
 
+            // Injection du Main (important !)
+            controller.setMain(this);
+
             // Injection du code privé dans le contrôleur
             controller.setCodePrive(codePrive);
 
@@ -175,8 +184,9 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
     
-    public void afficherPagePrincipaleUtilisateurController(int codePrive) {
+    public void afficherPagePrincipaleUtilisateurController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("fenetres/PagePrincipaleUtilisateur.fxml"));
@@ -185,6 +195,7 @@ public class Main extends Application {
             PagePrincipaleUtilisateurController controller = loader.getController();
             controller.setMain(this);
             controller.setCodePrive(codePrive);
+            controller.setArbre(arbre); //  on transmet l’arbre
 
             rootLayout.setCenter(page);
             primaryStage.setTitle("Page principale utilisateur");
@@ -193,9 +204,10 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
     
     
-    public void afficherProfilUtilisateurController(int codePrive) {
+    public void afficherProfilUtilisateurController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("fenetres/AfficherProfilUtilisateur.fxml"));
@@ -203,9 +215,9 @@ public class Main extends Application {
 
             AfficherProfilUtilisateurController controller = loader.getController();
             // Appelle la méthode pour charger et afficher les infos avec le codePrive
-            controller.chargerProfil(codePrive);
-
-            controller.setMain(this); // si tu en as besoin
+            controller.chargerProfil(codePrive,arbre);
+            //controller.setArbre(arbre); //  
+            controller.setMain(this);
 
             rootLayout.setCenter(page);
             primaryStage.setTitle("Votre profil");
@@ -216,7 +228,7 @@ public class Main extends Application {
     }
     
     
-    public void afficherModifierProfilUtilisateurController(int codePrive) {
+    public void afficherModifierProfilUtilisateurController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("fenetres/ModifierProfilUtilisateur.fxml"));
@@ -224,13 +236,51 @@ public class Main extends Application {
 
             ModifierProfilUtilisateurController controller = loader.getController();
             // Appelle la méthode pour charger et afficher les infos avec le codePrive
-            controller.chargerProfil(codePrive);
-
-            controller.setMain(this); // si tu en as besoin
+            controller.chargerProfil(codePrive);     // charge le code privé
+            controller.chargerArbre(arbre);          // charge l'arbre
+            controller.setMain(this);                //
 
             rootLayout.setCenter(page);
             primaryStage.setTitle("Modifier Votre profil");
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void afficherPageAjoutListeDeroulanteController(int codePrive, ArbreGenealogique arbre) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("fenetres/PageAjoutListeDeroulante.fxml"));
+            AnchorPane page = loader.load();
+
+            PageAjoutListeDeroulanteController controller = loader.getController();
+            controller.setArbre(arbre); 
+            controller.chargerProfil(codePrive);
+            controller.setMain(this); // si tu en as besoin
+
+            rootLayout.setCenter(page);
+            primaryStage.setTitle("Ajouter personne");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void afficherFormulaireAjoutPersonneController(Personne personne, int codePrive, ArbreGenealogique arbre) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("fenetres/FormulaireAjoutPersonne.fxml"));
+            AnchorPane page = loader.load();
+
+            FormulaireAjoutPersonneController controller = loader.getController();
+            controller.setMain(this);
+            controller.setCodePrive(codePrive);
+            controller.setPersonneReference(personne);
+            controller.setArbre(arbre); 
+            rootLayout.setCenter(page);
+            primaryStage.setTitle("Ajouter une personne liée");
         } catch (IOException e) {
             e.printStackTrace();
         }

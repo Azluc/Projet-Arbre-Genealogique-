@@ -1,18 +1,18 @@
 package com.cytech.fenetres;
 
 import javafx.fxml.FXML;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import com.cytech.Main;
 import com.cytech.classeProjet.Genre;
-import com.cytech.classeProjet.GestionArbreGenealogique;
+ 
 import com.cytech.classeProjet.Personne;
 import com.cytech.gestionBDD.GestionArbreGenealogiqueBDD;
 import com.cytech.gestionBDD.GestionDemandeAdhesionBdd;
 import com.cytech.gestionBDD.GestionPersonneBDD;
 import com.cytech.gestionBDD.GestionUtilisateurBDD;
-
-import javafx.embed.swing.SwingFXUtils;
+ 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
@@ -25,28 +25,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.awt.image.BufferedImage;
+ 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+ 
 import java.io.IOException;
-import java.nio.file.Files;
+ 
 
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 
-import java.util.ArrayList;
+ 
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
+ 
 
 
 public class PageInformationUtilisateurController {
-    @SuppressWarnings("unused")
+     
     private Main main;
     @FXML
 	private Button BoutonRetourPageAdmin;
@@ -224,15 +221,15 @@ public class PageInformationUtilisateurController {
 		    codePrive,
 		    adresse,
 		    telephone,
-		    photoBytes,         // byte[] pour la photo numérique
-		    carteIdentiteBytes  // byte[] pour la pièce d'identité
+		    photoBytes,          
+		    carteIdentiteBytes   
 		);
-		GestionArbreGenealogiqueBDD.ajoutRacineArbre(codePrive,codePublic,nom);
-		// Imaginons que dateNaissanceValue.getText() te retourne une String
+		GestionArbreGenealogiqueBDD.ajoutRacineArbre(codePrive,codePublic,prenom); 
 		String dateText = dateNaissanceValue.getText(); // "2025-05-12"
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date utilDate = sdf.parse(dateText);
 		Personne racine = new Personne(nom,prenom,utilDate,null,Genre.HOMME,codePrive,0);
+		 
 		GestionPersonneBDD.ajouterPersonneRacine(racine, codePrive);
     }
 

@@ -66,7 +66,7 @@ public class ArbreGenealogique {
 	        }
 
 	        // Supprimer de l'arbre
-	        personnes.remove(p); // CORRECTION ICI
+	        personnes.remove(p);  
 	        System.out.println(p.getNomComplet() + " a été supprimé de l’arbre.");
 	    } else {
 	        System.out.println(p.getNomComplet() + " ne peut pas être supprimé : ce n’est pas une feuille.");
@@ -75,14 +75,13 @@ public class ArbreGenealogique {
 	
 	
 	public static String ObtenirRelationsDepuisRacine(ArbreGenealogique arbre,Personne p) {
-		 
         if (!p.equals(arbre.getRacine())) {
         	String relationAscendante = arbre.getRacine().getRelationAscendanteAvec(p);
         	String relationDescendante = arbre.getRacine().getRelationDescendanteAvec(p);
         	String relationFrereSoeur = arbre.getRacine().getRelationLateralAvecFrereSoeur(p);
         	String relationCousin = arbre.getRacine().getRelationCousinAvec(p);
         	String relationDescendanteNieceNeveux = arbre.getRacine().getRelationNeveuAvec(p);
-
+        	 
         	if (relationAscendante != null && relationDescendante == null && relationFrereSoeur == null && relationCousin == null && relationCousin == null) {
         		return relationAscendante;
         	}
@@ -107,8 +106,17 @@ public class ArbreGenealogique {
         else {
             return "racine";
         }     
-}
+	}
 
+	
+	public Personne trouverPersonneParNomPrenom(String nom, String prenom) {
+	    for (Personne p : personnes) {
+	        if (p.getNom().equalsIgnoreCase(nom) && p.getPrenom().equalsIgnoreCase(prenom)) {
+	            return p;
+	        }
+	    }
+	    return null;
+	}
 	
 	public static void afficherRelations(ArbreGenealogique arbre) {
         System.out.println("\nRelations dans l'arbre depuis la racine :");

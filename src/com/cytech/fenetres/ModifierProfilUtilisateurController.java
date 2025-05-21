@@ -1,13 +1,18 @@
 package com.cytech.fenetres;
 
 import javafx.fxml.FXML;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
+import java.sql.SQLException;
+
+
 import com.cytech.Main;
+import com.cytech.classeProjet.ArbreGenealogique;
 import com.cytech.gestionBDD.GestionUtilisateurBDD;
 
 import javafx.event.ActionEvent;
@@ -15,7 +20,7 @@ import javafx.event.ActionEvent;
  
 public class ModifierProfilUtilisateurController {
 
-
+	private ArbreGenealogique arbre;
     private int codePrive;
 
     private Main main;
@@ -33,7 +38,7 @@ public class ModifierProfilUtilisateurController {
 
 	// Event Listener on Button.onAction
 	@FXML
-	public void boutonValider(ActionEvent event) {
+	public void boutonValider(ActionEvent event) throws SQLException {
 		String email = champEmail.getText();
         String nationalite = champNationalite.getText();
         String adresse = champAdresse.getText();
@@ -47,7 +52,26 @@ public class ModifierProfilUtilisateurController {
             alert.setContentText("Un administrateur se charge de vérifier vos information. Vous pouvez maintenant retourner à la page d'accueil.");
             alert.showAndWait();
             effacerInformationChamp();
-            main.afficherPagePrincipaleUtilisateurController(codePrive);
+            
+            /*
+            GestionArbreGenealogiqueBDD.initConnexion();
+
+	        String prenomRacine = GestionArbreGenealogiqueBDD.getPrenomRacine(codePrive);
+	        if (prenomRacine == null) {
+	            System.out.println("Aucun arbre trouvé pour ce code privé");
+	            return;
+	        }
+
+	        Personne racine = GestionArbreGenealogiqueBDD.getPersonneRacine(codePrive, prenomRacine);
+	        if (racine == null) {
+	            System.out.println("Personne racine non trouvée dans la base");
+	            return;
+	        }
+
+	        ArbreGenealogique arbre = new ArbreGenealogique(racine, codePrive, new HashSet<>());
+            
+            */
+            main.afficherPagePrincipaleUtilisateurController(codePrive,arbre);
         }
         else if(resultat==0){
             Alert alerte = new Alert(AlertType.ERROR);
@@ -70,6 +94,14 @@ public class ModifierProfilUtilisateurController {
     
 	}
 	
+	public void chargerArbre(ArbreGenealogique arbre) {
+	    this.arbre = arbre;
+	}
+	
+	public void setArbre(ArbreGenealogique arbre) {
+	    this.arbre = arbre;
+	}
+	
     public void effacerInformationChamp() {
     	// efface les champs de texte saisie par l'utilisateur
  
@@ -83,7 +115,7 @@ public class ModifierProfilUtilisateurController {
 	// Event Listener on Button[#boutonRetour].onAction
 	@FXML
 	public void retourPagePrincipale(ActionEvent event) {
-		main.afficherPagePrincipaleUtilisateurController(codePrive);
+		main.afficherPagePrincipaleUtilisateurController(codePrive, arbre);
 	}
 	
 	public void chargerProfil(int codePrive) {

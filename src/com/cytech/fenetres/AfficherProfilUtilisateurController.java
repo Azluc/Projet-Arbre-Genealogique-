@@ -3,9 +3,8 @@ package com.cytech.fenetres;
 import javafx.fxml.FXML;
  
 import com.cytech.Main;
- 
+import com.cytech.classeProjet.ArbreGenealogique;
 
- 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
  
@@ -26,8 +25,8 @@ public class AfficherProfilUtilisateurController {
 	private int codePrive;
 
 	 
-	
-	@SuppressWarnings("unused")
+	private ArbreGenealogique arbre;
+	 
     private Main main;
 	
     @FXML
@@ -58,16 +57,18 @@ public class AfficherProfilUtilisateurController {
     private static final String url = "jdbc:mysql://localhost:3306/arbre_genealogique";
     
  
-    public void chargerProfil(int codePrive) {
+    public void chargerProfil(int codePrive,ArbreGenealogique arbre) {
         this.codePrive = codePrive;
-        afficherInformationsUtilisateur(codePrive);
+        this.arbre = arbre;
+        afficherInformationsUtilisateur(codePrive,arbre);
     }
+    
     
     public void initialize() {
 
     }
     // Méthode pour afficher les informations utilisateur selon l'email
-    public void afficherInformationsUtilisateur(int codePrive) {
+    public void afficherInformationsUtilisateur(int codePrive,ArbreGenealogique arbre) {
         initialize();
         System.out.println(codePrive);
         String sql = "SELECT nom, prenom, date_naissance, nationalite, numero_securite_sociale, email, adresse, telephone, photo, carte_identite " +
@@ -117,7 +118,9 @@ public class AfficherProfilUtilisateurController {
         }
     }
     
- 
+    public void setArbre(ArbreGenealogique arbre) {
+	    this.arbre = arbre;
+	}
 	
 	public void setMain(Main main) {
 	    this.main = main;
@@ -125,11 +128,11 @@ public class AfficherProfilUtilisateurController {
 	// Event Listener on Button.onAction
 	@FXML
 	public void BoutonRetourPagePrincipaleUtilisateur(ActionEvent event) {
-		main.afficherPagePrincipaleUtilisateurController(codePrive);
+		main.afficherPagePrincipaleUtilisateurController(codePrive, arbre);
 	}
 	// Event Listener on Button.onAction
 	@FXML
 	public void modifierProfil(ActionEvent event) {
-		main.afficherModifierProfilUtilisateurController(codePrive);
+		main.afficherModifierProfilUtilisateurController(codePrive,arbre);
 	}
 }

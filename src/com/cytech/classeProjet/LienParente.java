@@ -5,6 +5,9 @@ package com.cytech.classeProjet;
 import java.util.ArrayList;
 
 import java.util.List;
+
+import com.cytech.gestionBDD.GestionLienParenteBDD;
+import com.cytech.gestionBDD.GestionPersonneBDD;
  
 
 public class LienParente {
@@ -47,6 +50,11 @@ public class LienParente {
         System.out.println("Ajout du lien : " + p1.getNomComplet() + " --(" 
                           + typeRelation + ", " + nomRelation + ")--> " + p2.getNomComplet());
         liens.add(new Lien(p1, p2, typeRelation, nomRelation));
+        
+        GestionLienParenteBDD.enregistrerLienDansBDD(p1, p2, typeRelation, nomRelation);
+        
+        GestionPersonneBDD.ajouterPersonne(p1, p1.getId_arbre());
+        GestionPersonneBDD.ajouterPersonne(p2, p1.getId_arbre());
     }
     
     /**

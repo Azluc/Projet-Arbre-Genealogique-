@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS Arbre (
 );
 
 -- Table des personnes (noeuds) modifiée
+/*
 CREATE TABLE IF NOT EXISTS Personne (
     id_arbre INT PRIMARY KEY,
     nom VARCHAR(100),
@@ -35,8 +36,22 @@ CREATE TABLE IF NOT EXISTS Personne (
     dateNaissance DATE,
     dateDeces DATE DEFAULT NULL,
     nomRelation VARCHAR(50),
+    genre VARCHAR(10),
+    Nationalite VARCHAR(50),
     coteLien VARCHAR(20),
     UNIQUE(id_arbre, nom, prenom, profondeur)
+);
+*/
+-- Table des personnes (noeuds) modifiée
+CREATE TABLE IF NOT EXISTS Personne (
+    id_arbre INT NOT NULL,
+    nom VARCHAR(100),
+    prenom VARCHAR(100),
+    dateNaissance DATE,
+    dateDeces DATE DEFAULT NULL,
+    profondeur INT,
+    genre VARCHAR(10)
+     
 );
 
 -- Table des relations de type Parent_enfant
@@ -46,25 +61,28 @@ CREATE TABLE IF NOT EXISTS Parent_Enfant (
     prenom_parent VARCHAR(100) NOT NULL,
     nom_enfant VARCHAR(100) NOT NULL,
     prenom_enfant VARCHAR(100) NOT NULL,
-    UNIQUE(id_arbre, nom_parent, prenom_parent, nom_enfant, prenom_enfant)
+    nomRelation VARCHAR(100) NOT NULL
+     
 );
 
+-- Table des relations de type Union
 CREATE TABLE IF NOT EXISTS UnionConjugale (
     id_arbre INT NOT NULL,
-    nom_conjoint1 VARCHAR(100) NOT NULL,
-    prenom_conjoint1 VARCHAR(100) NOT NULL,
-    nom_conjoint2 VARCHAR(100) NOT NULL,
-    prenom_conjoint2 VARCHAR(100) NOT NULL,
-    UNIQUE(id_arbre, nom_conjoint1, prenom_conjoint1, nom_conjoint2, prenom_conjoint2)
+    nom_parent VARCHAR(100) NOT NULL,
+    prenom_parent VARCHAR(100) NOT NULL,
+    nom_enfant VARCHAR(100) NOT NULL,
+    prenom_enfant VARCHAR(100) NOT NULL 
+     
 );
-
+-- Table des relations de type Freres et soeurs
 CREATE TABLE IF NOT EXISTS Frere_Soeur (
     id_arbre INT NOT NULL,
     nom1 VARCHAR(100) NOT NULL,
     prenom1 VARCHAR(100) NOT NULL,
     nom2 VARCHAR(100) NOT NULL,
     prenom2 VARCHAR(100) NOT NULL,
-    UNIQUE(id_arbre, nom1, prenom1, nom2, prenom2)
+    nomRelation VARCHAR(100) NOT NULL
+     
 );
 
 -- Table des administrateur

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
 
 
 public class Personne {
@@ -55,6 +56,32 @@ public class Personne {
     	this.dateDeces=dateDeces;
     }
     
+    public static Personne choisirPersonne(Set<Personne> personnes, String nom, String prenom) {
+    	
+    	
+    	
+        if (personnes.isEmpty()) {
+            System.out.print("vide");
+        }
+   
+
+        for (Personne p : personnes) {
+            String nomListe = p.getNom().trim();
+            String prenomListe = p.getPrenom().trim();
+            String nomRecherche = nom.trim();
+            String prenomRecherche = prenom.trim();
+
+ 
+
+            if (nomListe.equalsIgnoreCase(nomRecherche) &&
+                prenomListe.equalsIgnoreCase(prenomRecherche)) {
+                return p;
+            }
+        }
+        System.out.println("Personne non trouvée dans l'arbre. MethodeChoisirPersonne()");
+        return null;
+    }
+     
     
     public void ajouterParent(Personne parent) {
     	if (!parent.getDateNaissance().before(this.getDateNaissance())) {
@@ -398,6 +425,7 @@ public class Personne {
             return null;
         }
 
+        //	System.out.println("On est dans le GetRElationLateral et this vaut" + this.getNom() + "P vaut " +autre.getNom());
         // Frère ou sœur
         if (this.getFreresEtSoeurs().contains(autre)) {
             return autre.getGenre() == Genre.HOMME ? "frère" : "sœur";
@@ -405,6 +433,7 @@ public class Personne {
         return null;
     }
     
+	    
  
 
     public boolean unionEstPossible(Personne personneSource, Personne personneDestination) {
@@ -489,10 +518,10 @@ public class Personne {
         return Objects.hash(nom.toLowerCase(), prenom.toLowerCase());
     }
     
-    public static boolean verifierCoherenceDates(Date dateNaissance, Date dateDeces) throws Exception {
+    public static boolean verifierCoherenceDates(Date dateNaissance, Date dateDeces) {
         if (dateNaissance == null && dateDeces == null) {
             // Cas ou l'utilisateur n'indique ni la date de naissance ni la date de deces d'une personne
-        	throw new Exception("Les dates ne doivent pas être nulles.");
+        	return false;
         }
         
         if (dateNaissance != null && dateDeces == null) {
@@ -505,7 +534,7 @@ public class Personne {
             return true;
         } else {
         	// si la date de deces est avant la date de naissance
-            throw new Exception("La date de naissance doit être avant la date de décès !");
+            return false;
         }
     }
    
@@ -601,7 +630,11 @@ public class Personne {
     	return this.nationalite;
     }
 
-   
+    @Override
+    public String toString() {
+        return this.getPrenom() + " " + this.getNom(); // ou "Nom Prénom" selon ta préférence
+    }
+    
     public void setNationalite(String nationalite) {
         // TODO implement here
     	this.nationalite=nationalite;

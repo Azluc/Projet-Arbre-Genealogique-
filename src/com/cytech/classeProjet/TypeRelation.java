@@ -1,7 +1,7 @@
 package com.cytech.classeProjet;
 
- 
- 
+
+
 
 public enum TypeRelation {
     FRERE_SOEUR("Frère/Sœur", Orientation.HORIZONTAL),
