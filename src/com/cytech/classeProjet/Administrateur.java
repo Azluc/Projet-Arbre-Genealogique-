@@ -1,75 +1,21 @@
 package com.cytech.classeProjet;
-import java.util.*;
 
-/**
- * S
- */
-public class Administrateur {
+public class Administrateur extends Utilisateur {
 
-    /**
-     * Default constructor x
-     */
-    public Administrateur() {
+
+    public Administrateur(String nom, String prenom, String email, String motDePasse) {
+        super(nom, prenom, email, motDePasse);
     }
 
-    /**
-     * 
-     */
-    private String identifiant;
 
-    /**
-     * 
-     */
-    private String motDePasse;
-
-    /**
-     * @param identifiant 
-     * @param motDePasse
-     */
-    public void Administrateur(String identifiant, String motDePasse) {
-        // TODO implement here
+    public void validerAdhesion(Utilisateur utilisateur) {
+        utilisateur.setAdhesionValidee(true);
+        System.out.println("Adhésion validée pour : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
     }
 
-    /**
-     * @param utilisateur
-     */
-    public void validerInscription(Utilisateur utilisateur) {
-        // TODO implement here
-    }
 
-    /**
-     * @param utilisateur
-     */
-    public void rejeterInscription(Utilisateur utilisateur) {
-        // TODO implement here
+    public void refuserAdhesion(Utilisateur utilisateur) {
+        utilisateur.setAdhesionValidee(false);
+        System.out.println("Adhésion refusée pour : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
     }
-
-    /**
-     * 
-     */
-    public void getIdentifiant() {
-        // TODO implement here
-    }
-
-    /**
-     * @param identifiant
-     */
-    public void setIdentifiant(String identifiant) {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void getMotDePasse() {
-        // TODO implement here
-    }
-
-    /**
-     * @param motDePasse
-     */
-    public void setMotDePasse(String motDePasse) {
-        // TODO implement here
-    }
-
 }
