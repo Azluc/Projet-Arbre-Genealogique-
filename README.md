@@ -7,10 +7,10 @@ Il s'agit d'une application permettant de modéliser et de gérer un arbre gén�
 
 ##  Équipe projet
 
-- Nom Prénom 1 — rôle principal
-- Nom Prénom 2 — rôle principal
-- Nom Prénom 3 — rôle secondaire
-- Nom Prénom 4 — etc.
+- Belkacem Saïd — 
+- Nom Prénom 2 — 
+- Nom Prénom 3 — 
+- Nom Prénom 4 — 
 
 ##  Objectifs
 
