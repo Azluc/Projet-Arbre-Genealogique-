@@ -5,5 +5,5 @@ public enum TypeDocument {
     IMAGE,
     VIDEO,
     LIEN,
-    PDF
+    PDF 
 }

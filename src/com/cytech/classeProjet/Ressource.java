@@ -12,7 +12,7 @@ public class Ressource {
     public Ressource(TypeDocument typeDocument, String contenu) {
         this.typeDocument = typeDocument;
         this.contenu = contenu;
-        this.datePartage = LocalDateTime.now();
+        this.datePartage = LocalDateTime.now(); 
     }
 
     // Méthode pour simuler le partage
