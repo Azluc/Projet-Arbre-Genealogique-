@@ -23,6 +23,7 @@ import com.cytech.fenetres.PageConnexionUtilisateurController;
 import com.cytech.fenetres.PageInformationUtilisateurController;
 import com.cytech.fenetres.PageInscriptionController;
 import com.cytech.fenetres.PagePrincipaleUtilisateurController;
+import com.cytech.fenetres.PageRequetesController;
 
 import javafx.application.Application;
 
@@ -237,6 +238,7 @@ public class Main extends Application {
             ModifierProfilUtilisateurController controller = loader.getController();
             // Appelle la méthode pour charger et afficher les infos avec le codePrive
             controller.chargerProfil(codePrive);     // charge le code privé
+            
             controller.chargerArbre(arbre);          // charge l'arbre
             controller.setMain(this);                //
 
@@ -258,10 +260,28 @@ public class Main extends Application {
             PageAjoutListeDeroulanteController controller = loader.getController();
             controller.setArbre(arbre); 
             controller.chargerProfil(codePrive);
-            controller.setMain(this); // si tu en as besoin
+            controller.setMain(this);  
 
             rootLayout.setCenter(page);
             primaryStage.setTitle("Ajouter personne");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void afficherPageRequetesController(int codePrive, ArbreGenealogique arbre) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("fenetres/PageRequetes.fxml"));
+            AnchorPane page = loader.load();
+
+            PageRequetesController controller = loader.getController();
+            controller.chargerProfil(codePrive,arbre);  
+            controller.setMain(this);
+            rootLayout.setCenter(page);
+            primaryStage.setTitle("Page Requetes");
 
         } catch (IOException e) {
             e.printStackTrace();

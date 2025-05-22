@@ -174,7 +174,7 @@ public class PageInscriptionController {
     @FXML
     public void retourBoutonPageInscription(ActionEvent event) throws IOException  {
         if (main != null) {
-            main.afficherAccueil(); // Utilise ta méthode centralisée
+            main.afficherAccueil();  
         } else {
             System.err.println("ERREUR : main vaut null !");
         }

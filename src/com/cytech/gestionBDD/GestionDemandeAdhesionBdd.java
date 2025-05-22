@@ -106,15 +106,15 @@ public class GestionDemandeAdhesionBdd {
     }
 	
 	public static boolean verifierMailUnique(String mail) {
-	    String url = "jdbc:mysql://localhost:3306/arbre_genealogique"; // URL de la BDD
-	    String sql = "SELECT * FROM demande_adhesion WHERE email = ?"; // Requête pour vérifier le mail
+	    String url = "jdbc:mysql://localhost:3306/arbre_genealogique";  
+	    String sql = "SELECT * FROM demande_adhesion WHERE email = ?";  
 	    
 	    try (Connection connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
 	         PreparedStatement requete = connexion.prepareStatement(sql)) {
 
-	        requete.setString(1, mail); // Remplace ? par le mail
+	        requete.setString(1, mail); //  
 
-	        // Exécuter la requête et vérifier si une ligne est retournée
+	         
 	        var resultat = requete.executeQuery();
 
 	        // Si le résultat existe, cela veut dire que le mail est déjà dans la base
@@ -126,7 +126,7 @@ public class GestionDemandeAdhesionBdd {
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	        return false; // En cas d'erreur, retourner false (on ne sait pas si le mail est unique)
+	        return false; 
 	    }
 	}
 	

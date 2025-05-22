@@ -39,16 +39,13 @@ public class LienParente {
                 // Si un lien similaire existe mais le nom de relation est différent, mettre à jour
                 if (!lien.getNomRelation().equals(nomRelation)) {
                     lien.setNomRelation(nomRelation);
-                    System.out.println("Mise à jour du lien existant : " + p1.getNomComplet() + " --(" 
-                                      + typeRelation + ", " + nomRelation + ")--> " + p2.getNomComplet());
                 }
                 return; // Sortir car un lien similaire a été trouvé et traité
             }
         }
         
         // Si on arrive ici, aucun lien similaire n'existe, donc on l'ajoute
-        System.out.println("Ajout du lien : " + p1.getNomComplet() + " --(" 
-                          + typeRelation + ", " + nomRelation + ")--> " + p2.getNomComplet());
+ 
         liens.add(new Lien(p1, p2, typeRelation, nomRelation));
         
         GestionLienParenteBDD.enregistrerLienDansBDD(p1, p2, typeRelation, nomRelation);
@@ -92,7 +89,7 @@ public class LienParente {
         
         // Remplacer l'ancienne liste par la liste sans doublons
         this.liens = liensUniques;
-        System.out.println("Nettoyage des liens terminé. " + liens.size() + " liens uniques conservés.");
+        
     }
 
     public List<Lien> getLiens() {

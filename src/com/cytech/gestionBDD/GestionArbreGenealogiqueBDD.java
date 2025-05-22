@@ -49,7 +49,7 @@ public class GestionArbreGenealogiqueBDD {
         // Vider complètement la map pour éviter les références orphelines
         personnes.clear();
 
-        System.out.println("Chargement de l'arbre " + idArbre + " depuis la BDD...");
+         
 
         // Charger les personnes
         String sqlPersonnes = "SELECT * FROM Personne WHERE id_arbre = ?";
@@ -144,8 +144,7 @@ public class GestionArbreGenealogiqueBDD {
                     if (conjoint1 != null && conjoint2 != null) {
                         conjoint1.setConjoint(conjoint2);
                         conjoint2.setConjoint(conjoint1);
-                        System.out.println("Union conjugale: " + prenom1 + " " + nom1 + 
-                                           " <=> " + prenom2 + " " + nom2);
+                         
                     } else {
                         System.out.println("ERREUR: Union conjugale non établie - conjoints introuvables");
                     }
@@ -153,7 +152,7 @@ public class GestionArbreGenealogiqueBDD {
             }
         }
         
-        //System.out.println("Arbre chargé : " + personnes.size() + " personnes");
+     
     }
 
     /**
@@ -283,7 +282,7 @@ public class GestionArbreGenealogiqueBDD {
             if (result > 0) {
                 String cle = clePersonne(personne.getNom(), personne.getPrenom());
                 personnes.put(cle, personne);
-                System.out.println("Personne ajoutée avec succès: " + personne.getPrenom() + " " + personne.getNom());
+               // System.out.println("Personne ajoutée avec succès: " + personne.getPrenom() + " " + personne.getNom());
                 return true;
             }
             

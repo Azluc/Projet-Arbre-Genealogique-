@@ -15,11 +15,11 @@ public class GestionUtilisateurBDD {
 	 public static Connection connecterDB() {
 	    	try {
 	    		Class.forName("com.mysql.cj.jdbc.Driver");
-	    		System.out.println("ok");
+	    		//System.out.println("ok");
 	    		String url="jdbc:mysql://localhost:3306/arbre_genealogique";
 	    		 
 	    		Connection cnx=DriverManager.getConnection(url, user, password);
-	    		System.out.println("Connexion etablie");
+	    	//	System.out.println("Connexion etablie");
 	    		return cnx;
 	    	}catch(Exception e) {
 	    		e.printStackTrace();
@@ -62,7 +62,7 @@ public class GestionUtilisateurBDD {
 		        }
 
 		        ps.executeUpdate();
-		        System.out.println("Utilisateur ajouté");
+		      //  System.out.println("Utilisateur ajouté");
 
 		    } catch (Exception e) {
 		        System.out.println("Erreur lors de l'insertion : " + e.getMessage());
@@ -153,7 +153,7 @@ public class GestionUtilisateurBDD {
 
 		        if (champsAChanger.isEmpty()) {
 		        	// pas de champs a changer
-		            System.out.println("Aucun champ à modifier.");
+		           // System.out.println("Aucun champ à modifier.");
 		            return 0;
 		        }
 
@@ -169,11 +169,11 @@ public class GestionUtilisateurBDD {
 		            int lignesModifiees = statement.executeUpdate();
 		            if (lignesModifiees > 0) {
 		            	//Maj des utilisateurs avec succes 
-		                System.out.println("Utilisateur mis à jour avec succès.");
+		              //  System.out.println("Utilisateur mis à jour avec succès.");
 		                return 1;
 		            } else {
-		            	//Echec de la maj, on a pas trouvé l'user
-		                System.out.println("Aucun utilisateur trouvé avec ce code privé.");
+		            	//Echec de la maj, on a pas trouvé 'utilitateur
+		                //System.out.println("Aucun utilisateur trouvé avec ce code privé.");
 		                return -1;
 		            }
 		        }
@@ -227,7 +227,7 @@ public class GestionUtilisateurBDD {
 	 			cnx=connecterDB();
 	 			st=cnx.createStatement();
 	 			st.executeUpdate(query);
-	 			System.out.println("Utilisateur modifié");
+	 			//System.out.println("Utilisateur modifié");
 
 	 			
 	 			

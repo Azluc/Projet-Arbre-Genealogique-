@@ -63,9 +63,10 @@ public class ArbreGenealogiquePanel extends JPanel {
             personnesParProfondeur.get(profondeur).add(p);
         }
         
-        // Trier les profondeurs (du plus haut - grands-parents au plus bas - petits-enfants)
+        // Trier les profondeurs ET LES INVERSER pour avoir l'ordre traditionnel
+        // (profondeur la plus haute = ancêtres en haut, profondeur la plus basse = descendants en bas)
         List<Integer> profondeurs = new ArrayList<>(personnesParProfondeur.keySet());
-        Collections.sort(profondeurs);
+        Collections.sort(profondeurs, Collections.reverseOrder()); // INVERSION ICI
         
         // Calculer la hauteur totale
         hauteurTotale = (profondeurs.size() * HAUTEUR_NOEUD) + ((profondeurs.size() + 1) * ESPACE_VERTICAL);
@@ -90,6 +91,9 @@ public class ArbreGenealogiquePanel extends JPanel {
     private int positionnerPersonnesParNiveau(Map<Integer, List<Personne>> personnesParProfondeur, List<Integer> profondeurs) {
         int maxLargeurNiveau = 0;
         
+        // Utiliser un index de niveau pour calculer les positions Y
+        int indexNiveau = 0;
+        
         for (Integer profondeur : profondeurs) {
             List<Personne> personnesNiveau = personnesParProfondeur.get(profondeur);
             
@@ -100,14 +104,17 @@ public class ArbreGenealogiquePanel extends JPanel {
             maxLargeurNiveau = Math.max(maxLargeurNiveau, largeurNiveau);
             
             // Positionner chaque personne du niveau
+            // Utiliser indexNiveau au lieu de profondeur pour le calcul Y
             int startX = ESPACE_HORIZONTAL;
-            int y = ESPACE_VERTICAL + (profondeur * (HAUTEUR_NOEUD + ESPACE_VERTICAL));
+            int y = ESPACE_VERTICAL + (indexNiveau * (HAUTEUR_NOEUD + ESPACE_VERTICAL));
             
             for (Personne p : personnesNiveau) {
                 positions.put(p, new Point(startX, y));
                 dimensions.put(p, new Dimension(LARGEUR_NOEUD, HAUTEUR_NOEUD));
                 startX += LARGEUR_NOEUD + ESPACE_HORIZONTAL;
             }
+            
+            indexNiveau++; // Incrémenter l'index pour le niveau suivant
         }
         
         return maxLargeurNiveau;
@@ -272,113 +279,156 @@ public class ArbreGenealogiquePanel extends JPanel {
     }
     
     private void dessinerLiens(Graphics2D g2d) {
+        // Configuration initiale pour les liens normaux
         g2d.setColor(COULEUR_LIEN);
-        g2d.setStroke(new BasicStroke(1.5f));
+        g2d.setStroke(new BasicStroke(2.0f)); // Ligne plus épaisse pour être visible
         
-        // Dessiner les liens parent-enfant
-        Set<String> liensParenteTraces = new HashSet<>();
+        // Dessiner d'abord tous les liens parent-enfant avec des lignes droites
+        dessinerLiensParentEnfant(g2d);
+        
+        // Ensuite dessiner les liens de fratrie avec des lignes pointillées
+        dessinerLiensFratrie(g2d);
+        
+        // Enfin dessiner les liens de couple
+        dessinerLiensCouples(g2d);
+    }
+    
+    private void dessinerLiensParentEnfant(Graphics2D g2d) {
+        g2d.setColor(COULEUR_LIEN);
+        g2d.setStroke(new BasicStroke(2.0f)); // Ligne solide épaisse
+        
+        Set<String> liensTraces = new HashSet<>();
         
         for (Lien lien : arbre.getLiensParente().getLiens()) {
-            Personne source = lien.getPersonneSource();
-            Personne destination = lien.getPersonneDestination();
-            
-            // Clé unique pour éviter de dessiner deux fois le même lien
-            String cleUnique = source.hashCode() + "-" + destination.hashCode();
-            
-            if (positions.containsKey(source) && positions.containsKey(destination) && !liensParenteTraces.contains(cleUnique)) {
-                liensParenteTraces.add(cleUnique);
+            if (lien.getType() == TypeRelation.PARENT_ENFANT) {
+                Personne parent = lien.getPersonneSource();
+                Personne enfant = lien.getPersonneDestination();
                 
-                Point posSource = positions.get(source);
-                Point posDest = positions.get(destination);
+                String cleUnique = parent.hashCode() + "-" + enfant.hashCode();
                 
-                if (lien.getType() == TypeRelation.PARENT_ENFANT) {
-                    // Ligne verticale pour parent-enfant
-                    int x1 = posSource.x + LARGEUR_NOEUD / 2;
-                    int y1 = posSource.y + HAUTEUR_NOEUD;
-                    int x2 = posDest.x + LARGEUR_NOEUD / 2;
-                    int y2 = posDest.y;
+                if (positions.containsKey(parent) && positions.containsKey(enfant) && !liensTraces.contains(cleUnique)) {
+                    liensTraces.add(cleUnique);
+                    
+                    Point posParent = positions.get(parent);
+                    Point posEnfant = positions.get(enfant);
+                    
+                    // Ligne droite du parent vers l'enfant
+                    int x1 = posParent.x + LARGEUR_NOEUD / 2;  // Centre du parent
+                    int y1 = posParent.y + HAUTEUR_NOEUD;      // Bas du parent
+                    int x2 = posEnfant.x + LARGEUR_NOEUD / 2;  // Centre de l'enfant
+                    int y2 = posEnfant.y;                      // Haut de l'enfant
                     
                     g2d.drawLine(x1, y1, x2, y2);
                     
-                    // Flèche descendante
+                    // Flèche vers l'enfant
                     dessinerFleche(g2d, x1, y1, x2, y2);
                 }
             }
         }
+    }
+    
+    private void dessinerLiensFratrie(Graphics2D g2d) {
+        g2d.setColor(COULEUR_LIEN);
+        // Ligne pointillée pour les fratries
+        float[] dashPattern = {8.0f, 4.0f}; // 8 pixels de trait, 4 pixels d'espace
+        g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0.0f));
         
-        // Dessiner les liens de fratrie
-        Set<String> liensFratrieTraces = new HashSet<>();
+        Set<String> liensTraces = new HashSet<>();
         
         for (Lien lien : arbre.getLiensParente().getLiens()) {
-            Personne source = lien.getPersonneSource();
-            Personne destination = lien.getPersonneDestination();
-            
-            // Clé unique pour les fratries (minId-maxId pour ne pas les dessiner deux fois)
-            String cleUnique = Math.min(source.hashCode(), destination.hashCode()) + "-" + 
-                              Math.max(source.hashCode(), destination.hashCode());
-            
-            if (positions.containsKey(source) && positions.containsKey(destination) && 
-                !liensFratrieTraces.contains(cleUnique) && lien.getType() == TypeRelation.FRERE_SOEUR) {
-                liensFratrieTraces.add(cleUnique);
+            if (lien.getType() == TypeRelation.FRERE_SOEUR) {
+                Personne source = lien.getPersonneSource();
+                Personne destination = lien.getPersonneDestination();
                 
-                Point posSource = positions.get(source);
-                Point posDest = positions.get(destination);
+                // Clé unique bidirectionnelle
+                String cleUnique = Math.min(source.hashCode(), destination.hashCode()) + "-" + 
+                                  Math.max(source.hashCode(), destination.hashCode());
                 
-                // Déterminer qui est à gauche et qui est à droite
-                Personne gauche = (posSource.x < posDest.x) ? source : destination;
-                Personne droite = (gauche == source) ? destination : source;
-                Point posGauche = positions.get(gauche);
-                Point posDroite = positions.get(droite);
-                
-                // Ligne horizontale pour frères/sœurs
-                int x1 = posGauche.x + LARGEUR_NOEUD;
-                int y1 = posGauche.y + HAUTEUR_NOEUD / 2;
-                int x2 = posDroite.x;
-                int y2 = posDroite.y + HAUTEUR_NOEUD / 2;
-                
-                // Ligne pointillée pour les fratries
-                g2d.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, new float[]{5}, 0));
-                g2d.drawLine(x1, y1, x2, y2);
-                g2d.setStroke(new BasicStroke(1.5f));
+                if (positions.containsKey(source) && positions.containsKey(destination) && !liensTraces.contains(cleUnique)) {
+                    liensTraces.add(cleUnique);
+                    
+                    Point posSource = positions.get(source);
+                    Point posDest = positions.get(destination);
+                    
+                    // Déterminer qui est à gauche et qui est à droite
+                    boolean sourceAGauche = posSource.x < posDest.x;
+                    Point posGauche = sourceAGauche ? posSource : posDest;
+                    Point posDroite = sourceAGauche ? posDest : posSource;
+                    
+                    // Ligne horizontale pointillée
+                    int x1 = posGauche.x + LARGEUR_NOEUD;      // Bord droit de la personne de gauche
+                    int y1 = posGauche.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
+                    int x2 = posDroite.x;                      // Bord gauche de la personne de droite
+                    int y2 = posDroite.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
+                    
+                    g2d.drawLine(x1, y1, x2, y2);
+                }
             }
         }
         
-        // Dessiner les liens d'union (couples)
+        // Remettre le stroke normal après les pointillés
+        g2d.setStroke(new BasicStroke(2.0f));
+    }
+    
+    private void dessinerLiensCouples(Graphics2D g2d) {
         Set<String> couplesTraites = new HashSet<>();
         
         for (Personne p : arbre.getPersonnes()) {
             Personne conjoint = p.getConjoint();
             
             if (conjoint != null && arbre.getPersonnes().contains(conjoint)) {
-                String idCouple = Math.min(p.hashCode(), conjoint.hashCode()) + "-" + Math.max(p.hashCode(), conjoint.hashCode());
+                String idCouple = Math.min(p.hashCode(), conjoint.hashCode()) + "-" + 
+                                 Math.max(p.hashCode(), conjoint.hashCode());
                 
                 if (!couplesTraites.contains(idCouple)) {
                     couplesTraites.add(idCouple);
                     
+                    Point posP = positions.get(p);
+                    Point posConjoint = positions.get(conjoint);
+                    
                     // Déterminer qui est à gauche et qui est à droite
-                    Personne gauche = (positions.get(p).x < positions.get(conjoint).x) ? p : conjoint;
-                    Personne droite = (gauche == p) ? conjoint : p;
+                    boolean pAGauche = posP.x < posConjoint.x;
+                    Point posGauche = pAGauche ? posP : posConjoint;
+                    Point posDroite = pAGauche ? posConjoint : posP;
                     
-                    Point posGauche = positions.get(gauche);
-                    Point posDroite = positions.get(droite);
+                    // Ligne rouge épaisse pour le couple
+                    int x1 = posGauche.x + LARGEUR_NOEUD;      // Bord droit de la personne de gauche
+                    int y1 = posGauche.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
+                    int x2 = posDroite.x;                      // Bord gauche de la personne de droite
+                    int y2 = posDroite.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
                     
-                    // Ligne rouge pour le couple (remplace le cœur)
-                    int x1 = posGauche.x + LARGEUR_NOEUD;
-                    int y1 = posGauche.y + HAUTEUR_NOEUD / 2;
-                    int x2 = posDroite.x;
-                    int y2 = posDroite.y + HAUTEUR_NOEUD / 2;
-                    
-                    // Utiliser une ligne rouge solide pour les couples
                     g2d.setColor(COULEUR_LIEN_COUPLE);
-                    g2d.setStroke(new BasicStroke(2.0f));  // Ligne plus épaisse
+                    g2d.setStroke(new BasicStroke(3.0f));  // Ligne encore plus épaisse pour les couples
                     g2d.drawLine(x1, y1, x2, y2);
                     
-                    // Revenir aux paramètres précédents
-                    g2d.setColor(COULEUR_LIEN);
-                    g2d.setStroke(new BasicStroke(1.5f));
+                    // Dessiner un petit cœur au milieu du lien
+                    int xMilieu = (x1 + x2) / 2;
+                    int yMilieu = (y1 + y2) / 2;
+                    dessinerCoeur(g2d, xMilieu, yMilieu);
                 }
             }
         }
+        
+        // Remettre les paramètres par défaut
+        g2d.setColor(COULEUR_LIEN);
+        g2d.setStroke(new BasicStroke(2.0f));
+    }
+    
+    private void dessinerCoeur(Graphics2D g2d, int x, int y) {
+        // Dessiner un petit cœur simple
+        g2d.setColor(COULEUR_LIEN_COUPLE);
+        
+        // Cœur simple avec deux cercles et un triangle
+        int taille = 6;
+        
+        // Deux cercles du haut
+        g2d.fillOval(x - taille, y - taille/2, taille, taille);
+        g2d.fillOval(x, y - taille/2, taille, taille);
+        
+        // Triangle du bas
+        int[] xPoints = {x - taille, x + taille, x + taille/2};
+        int[] yPoints = {y, y, y + taille};
+        g2d.fillPolygon(xPoints, yPoints, 3);
     }
     
     private void dessinerFleche(Graphics2D g2d, int x1, int y1, int x2, int y2) {

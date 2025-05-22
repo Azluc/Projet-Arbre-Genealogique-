@@ -81,7 +81,7 @@ public class PageInformationUtilisateurController {
     // Méthode pour afficher les informations utilisateur selon l'email
     public void afficherInformationsUtilisateur(String email) {
         initialize();
-        System.out.println(email);
+        //System.out.println(email);
         String sql = "SELECT nom, prenom, date_naissance, nationalite, numero_securite_sociale, email, adresse, telephone, photo, carte_identite " +
                 "FROM demande_adhesion WHERE email = ?";
 
@@ -92,7 +92,7 @@ public class PageInformationUtilisateurController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println(rs.getString("nom"));
+               // System.out.println(rs.getString("nom"));
                 // Récupérer les valeurs des champs
                 nomBDD.setText(rs.getString("nom"));
                 prenomBDD.setText(rs.getString("prenom"));
@@ -150,8 +150,8 @@ public class PageInformationUtilisateurController {
         String codePublicToString = Integer.toString(codePublic);
         String codePriveToString = Integer.toString(codePrive);
         
-        String expediteur = "administrateur@gmail.com";  // Ton adresse email
-        String destinataire = emailBDD.getText();  // L'adresse de test
+        String expediteur = "administrateur@gmail.com";   
+        String destinataire = emailBDD.getText();   
 
         // Configuration SMTP pour FakeSMTP avec le nouveau port
         Properties props = new Properties();
@@ -167,12 +167,12 @@ public class PageInformationUtilisateurController {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(expediteur));  // L'expéditeur
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinataire));  // Le destinataire
-            message.setSubject("Envoie des codes public et privées");  // Sujet de l'email
+            message.setSubject("Envoie des codes public et privees");  // Sujet de l'email
             message.setText("Bonjour,"
-                    + "Vous trouverez ci-joint votre code public et votre code privée"
-                    + "CodePublic : " +codePublicToString
-                    + "CodePrivé : " +codePriveToString
-                    +"Cordialement.");  // Corps du message
+                    + "Vous trouverez ci-joint votre code public et votre code privee"
+                    + " Code Public : " +codePublicToString
+                    + " Code Prive : " +codePriveToString
+                    +" Cordialement.");  // Corps du message
 
             // Envoi du message
             Transport.send(message);
@@ -256,9 +256,9 @@ public class PageInformationUtilisateurController {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(expediteur));  // L'expéditeur
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinataire));  // Le destinataire
-            message.setSubject("Envoie des codes public et privées");  // Sujet de l'email
+            message.setSubject("Information demande d'adhesion");  // Sujet de l'email
             message.setText("Bonjour,"
-                    + "Vous demande à été refusé."
+                    + "Vous demande a ete refuse."
                     + "Cordialement");  // Corps du message
 
             // Envoi du message

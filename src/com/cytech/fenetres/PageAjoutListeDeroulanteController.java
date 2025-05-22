@@ -192,6 +192,13 @@ public class PageAjoutListeDeroulanteController {
             adherentTable.setItems(listePersonnes);
             
             System.out.println("Données actualisées - " + personnesSet.size() + " personnes");
+        	Alert info = new Alert(AlertType.CONFIRMATION);
+        	info.initOwner(main.getPrimaryStage());
+        	info.setTitle("Actualisation réussie ");
+        	info.setHeaderText("Données chargées");
+        	info.setContentText("Les données concernant votre arbre généalogique ont bien été chargées !");
+        	info.showAndWait();
+    	
         } catch (SQLException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erreur d'actualisation");

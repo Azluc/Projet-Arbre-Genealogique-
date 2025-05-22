@@ -70,7 +70,7 @@ public class AfficherProfilUtilisateurController {
     // Méthode pour afficher les informations utilisateur selon l'email
     public void afficherInformationsUtilisateur(int codePrive,ArbreGenealogique arbre) {
         initialize();
-        System.out.println(codePrive);
+       // System.out.println(codePrive);
         String sql = "SELECT nom, prenom, date_naissance, nationalite, numero_securite_sociale, email, adresse, telephone, photo, carte_identite " +
                 "FROM utilisateur WHERE code_prive = ?";
 
@@ -81,7 +81,7 @@ public class AfficherProfilUtilisateurController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println(rs.getString("nom"));
+               // System.out.println(rs.getString("nom"));
                 // Récupérer les valeurs des champs
                 nomBDD.setText(rs.getString("nom"));
                 prenomBDD.setText(rs.getString("prenom"));

@@ -56,7 +56,6 @@ public class PageAdministrateurController {
                 ObservableList<String> ligne = adherentTable.getSelectionModel().getSelectedItem();
                 if (ligne != null && ligne.size() >= 3) {
                     String email = ligne.get(2);
-                    //pageInformationController.afficherInformationsUtilisateur(email);  // Utiliser l'instance
                     main.afficherPageInformationUtilisateur(email);
                 }
             }

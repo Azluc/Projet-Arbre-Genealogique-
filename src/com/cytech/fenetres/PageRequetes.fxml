@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="672.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cytech.fenetres.PageRequetesController">
+   <children>
+      <SplitPane dividerPositions="0.5745164960182025" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <AnchorPane prefHeight="400.0" prefWidth="527.0">
+               <children>
+                  <Label layoutX="1.0" layoutY="44.0" prefHeight="141.0" prefWidth="474.0" text="Faire des requetes.">
+                     <font>
+                        <Font size="38.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="26.0" layoutY="223.0" prefHeight="18.0" prefWidth="464.0" text="Dans cette page, vous pourrez faire des requetes pour avoir des" />
+                  <Label layoutX="26.0" layoutY="243.0" prefHeight="22.0" prefWidth="424.0" text="informations sur votre famille. Par exemple, vous pourrez " />
+                  <Label layoutX="26.0" layoutY="264.0" prefHeight="22.0" prefWidth="424.0" text="savoir, qui sont les personnes encore en vie" />
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="80.0" layoutY="50.0" prefHeight="46.0" prefWidth="227.0" text="Découvrir :">
+                     <font>
+                        <Font size="38.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="61.0" layoutY="161.0" mnemonicParsing="false" onAction="#boutonEnVie" prefHeight="26.0" prefWidth="205.0" text="personne en vie" />
+                  <Button layoutX="61.0" layoutY="250.0" mnemonicParsing="false" onAction="#boutonDecede" prefHeight="26.0" prefWidth="205.0" text="personne décédé" />
+                  <Button layoutX="61.0" layoutY="441.0" mnemonicParsing="false" onAction="#boutonFemme" prefHeight="26.0" prefWidth="205.0" text="personne de sexe féminin" />
+                  <Button layoutX="61.0" layoutY="341.0" mnemonicParsing="false" onAction="#boutonHomme" prefHeight="26.0" prefWidth="205.0" text="personne de sexe masculin" />
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+      <Button mnemonicParsing="false" onAction="#boutonRetour" prefHeight="24.0" prefWidth="160.0" text="Retour" />
+   </children>
+</AnchorPane>

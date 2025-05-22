@@ -54,8 +54,6 @@ public class PageConnexionAdministrateurController {
 
                     // Comparer le mot de passe saisi avec celui stocké
                     if (motDePasseStocke.equals(motDePasse)) {
-                    	System.out.println(motDePasse);
-                    	System.out.println(motDePasseStocke);
                     	// Cas le mot de passe est valide
                     	return true; 
                     } else {

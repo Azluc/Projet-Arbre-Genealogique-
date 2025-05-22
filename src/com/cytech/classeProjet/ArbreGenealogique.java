@@ -9,7 +9,7 @@ public class ArbreGenealogique {
     private Personne racine;
     private int id_arbre;
     private Set<Personne> personnes;
-      //private List<LienParente> liens = new ArrayList<>();
+       
     private LienParente liensParente;
     
     
@@ -139,20 +139,20 @@ public class ArbreGenealogique {
             	}
 
             	if (relationAscendante != null) {
-            	    System.out.println(p.getNomComplet() + " est " + relationAscendante + " de la racine." + " Il se situe du coté : "+p.getCote());
+            	    System.out.println(p.getNomComplet() + " est " + relationAscendante + " de la racine.");
             	    
             	} else if (relationDescendante != null) {
-            	    System.out.println(p.getNomComplet() + " est " + relationDescendante + " de la racine." + " Il se situe du coté : "+p.getCote());
+            	    System.out.println(p.getNomComplet() + " est " + relationDescendante + " de la racine.");
             	    
             	} else if (relationFrereSoeur != null) {
-            	    System.out.println(p.getNomComplet() + " est " + relationFrereSoeur + " de la racine." + " Il se situe du coté : "+p.getCote());
+            	    System.out.println(p.getNomComplet() + " est " + relationFrereSoeur + " de la racine.");
             	}else if (relationCousin != null) {
-            	    System.out.println(p.getNomComplet() + " est " + relationCousin + " de la racine." + " Il se situe du coté : "+p.getCote());
+            	    System.out.println(p.getNomComplet() + " est " + relationCousin + " de la racine.");
             	}
             	else if (relationAscendante == null && relationDescendante == null && relationFrereSoeur == null && relationCousin == null && relationDescendanteNieceNeveux == null && !p.getEnfants().isEmpty()) {
             			personnesASupprimer.add(p); 
             		    System.out.println(p.getNomComplet() + " n'a pas de lien direct avec la racine.");
-            		    arbre.supprimerSiFeuille(p);
+            		    //arbre.supprimerSiFeuille(p);
             	}   
             }
             else {

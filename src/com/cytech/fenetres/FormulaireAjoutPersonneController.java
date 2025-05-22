@@ -214,24 +214,15 @@ public class FormulaireAjoutPersonneController {
             if (reference.getDateNaissance().after(nouvelle.getDateNaissance())) {
                 // reference est plus jeune que nouvelle, donc on inverse
                 arbre.getLiensParente().ajouterLien(nouvelle, reference, typeRelation, nomRelation);
-                /*
-                 *
-                 * Rajoute une methode qui va ajouter dans la table Parent_Enfant
-                 * */
+  
             } else {
                 arbre.getLiensParente().ajouterLien(reference, nouvelle, typeRelation, nomRelation);
-                /*
-                 *
-                 * Pareil ici
-                 * */
+
             }
         } else {
             // Autres types (FRERE_SOEUR, UNION) : on garde l’ordre normal
             arbre.getLiensParente().ajouterLien(reference, nouvelle, typeRelation, nomRelation);
-            /*
-             * Pareil ici, mais avec la table Frere_Soeur
-             *
-             * */
+
         }
         for (Personne p : arbre.getPersonnes()) {
             p.detecterFreresEtSoeurs(arbre.getPersonnes(), arbre);

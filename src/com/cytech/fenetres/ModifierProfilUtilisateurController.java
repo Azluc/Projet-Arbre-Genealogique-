@@ -52,25 +52,7 @@ public class ModifierProfilUtilisateurController {
             alert.setContentText("Un administrateur se charge de vérifier vos information. Vous pouvez maintenant retourner à la page d'accueil.");
             alert.showAndWait();
             effacerInformationChamp();
-            
-            /*
-            GestionArbreGenealogiqueBDD.initConnexion();
 
-	        String prenomRacine = GestionArbreGenealogiqueBDD.getPrenomRacine(codePrive);
-	        if (prenomRacine == null) {
-	            System.out.println("Aucun arbre trouvé pour ce code privé");
-	            return;
-	        }
-
-	        Personne racine = GestionArbreGenealogiqueBDD.getPersonneRacine(codePrive, prenomRacine);
-	        if (racine == null) {
-	            System.out.println("Personne racine non trouvée dans la base");
-	            return;
-	        }
-
-	        ArbreGenealogique arbre = new ArbreGenealogique(racine, codePrive, new HashSet<>());
-            
-            */
             main.afficherPagePrincipaleUtilisateurController(codePrive,arbre);
         }
         else if(resultat==0){

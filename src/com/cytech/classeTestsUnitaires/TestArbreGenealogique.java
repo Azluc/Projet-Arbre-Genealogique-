@@ -12,7 +12,7 @@ import com.cytech.classeProjet.ArbreGenealogique;
 import com.cytech.classeProjet.ArbreGenealogiquePanel;
 import com.cytech.classeProjet.Cote;
 import com.cytech.classeProjet.Genre;
-import com.cytech.classeProjet.Lien;
+ 
 import com.cytech.classeProjet.LienParente;
 import com.cytech.classeProjet.Personne;
 import com.cytech.classeProjet.TypeRelation;

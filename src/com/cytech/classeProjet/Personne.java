@@ -29,11 +29,6 @@ public class Personne {
 
      
 
-   
-     
-    
- 
-
     public Personne(String nom, String prenom, Date dateNaissance, Date dateDeces, Genre genre, int id_arbre, int profondeur) {
         this.nom = nom;
         this.prenom = prenom;
@@ -78,14 +73,14 @@ public class Personne {
                 return p;
             }
         }
-        System.out.println("Personne non trouvée dans l'arbre. MethodeChoisirPersonne()");
+        //System.out.println("Personne non trouvée dans l'arbre. MethodeChoisirPersonne()");
         return null;
     }
      
     
     public void ajouterParent(Personne parent) {
     	if (!parent.getDateNaissance().before(this.getDateNaissance())) {
-    	    System.out.println("Erreur : Le parent (" + parent.getNomComplet() + ") doit être né avant l'enfant (" + this.getNomComplet() + ").");
+    	   // System.out.println("Erreur : Le parent (" + parent.getNomComplet() + ") doit être né avant l'enfant (" + this.getNomComplet() + ").");
     	    return;
     	}
     	
@@ -401,10 +396,10 @@ public class Personne {
     	//POur vérifier que la différence d'âge entre 2 un parent et un enfant est au moins de 18 ans
         Calendar calVieux = Calendar.getInstance();
         calVieux.setTime(plusVieux);
-        System.out.println("le plus vieux" + calVieux.getTime());
+        
         Calendar calJeune = Calendar.getInstance();
         calJeune.setTime(plusJeune);
-        System.out.println("le plus jeune" + calJeune.getTime());
+      
         calVieux.add(Calendar.YEAR, 18); // Ajoute 18 ans au plus vieux
         //On retourne vrai si le plus vieux a au moins 18 ans de plus 
         return !calVieux.after(calJeune);  
@@ -632,7 +627,7 @@ public class Personne {
 
     @Override
     public String toString() {
-        return this.getPrenom() + " " + this.getNom(); // ou "Nom Prénom" selon ta préférence
+        return this.getPrenom() + " " + this.getNom();  
     }
     
     public void setNationalite(String nationalite) {
