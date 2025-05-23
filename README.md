@@ -3,7 +3,7 @@
 ##  Présentation
 
 Ce projet a été réalisé dans le cadre du module de développement en Java.  
-Il s'agit d'une application permettant de modéliser et de gérer un arbre généalogique dynamique à l’aide de structures orientées objet, avec ajout de relations, visualisation, et gestion des droits d’accès.
+L'objectif est de réaliser une application permettant de modéliser et de gérer un arbre généalogique dynamique à l’aide de structures orientées objet, avec ajout de relations, visualisation, et gestion des droits d’accès.
 
 ##  Équipe projet
 
@@ -15,7 +15,7 @@ Il s'agit d'une application permettant de modéliser et de gérer un arbre gén�
 
 ##  Objectifs
 
-- Représenter un arbre généalogique sous forme d’un graphe orienté
+- Représenter un arbre généalogique 
 - Associer des liens familiaux (parents, frères, cousins...)
 - Gérer différents niveaux de visibilité (public, protégé, privé)
 - Permettre la création, modification et consultation d’un arbre
@@ -140,34 +140,30 @@ java -cp bin com.cytech.classeProjet.Main
 
 ##  Diagrammes UML
 
--  Diagramme de classes : fourni dans le dossier `/docs`
--  Diagramme de cas d’utilisation : fourni dans le dossier `/docs`
+-  Diagramme de classes : fourni dans le fichier "UML.pdf"
+
 
 ##  Tests
 
 Tous les tests sont réalisés en **ligne de commande** à l’aide de classes `TestXYZ_Console.java`  
-Chaque test affiche "OK" ou "ÉCHEC" selon les résultats.
+Chaque test affiche "OK" ou "ÉCHEC" ou les erreurs associées selon les résultats.
 
 ##  Documentation
 
-La documentation Javadoc est générable via :
+La documentation Javadoc est générable via eclipse:
 
-```bash
-javadoc -d doc/ src/com/cytech/classeProjet/*.java
-```
-
-Résultat accessible dans le dossier `/doc/index.html`
+Résultat accessible dans le dossier `/doc/' dont la page racine est index.html`
 
 ##  Problèmes rencontrés
 
-- Gestion des relations complexes (oncles, cousins...) : modélisation améliorée avec la classe `Noeud`
+- Gestion des relations complexes (oncles, cousins...) : modélisation améliorée avec la classe LienParente
 - Suppression de JUnit pour respecter les consignes : refonte des tests en console
 - Adaptation finale aux consignes de soutenance
+- Interface graphique interactive avec échange de ressources difficile à modéliser: résultat de modélisation qu'en console
 
 ##  Fonctionnalités non implémentées (ou partiellement)
 
-- Interface graphique complète (si absente)
-- Persistance en base de données (système uniquement en mémoire)
+- Interface graphique complète 
 - Parcours graphique de l’arbre (non interactif pour l’instant)
 
 ## Pour la soutenance
