@@ -9,7 +9,7 @@ public enum Cote {
 	MATERNEL,
 	
 	/** Paternal side of the family */
-	PATERNE,
+	PATERNEL,
 	
 	/** Neutral side (used for the root person of the tree) */
 	NEUTRE

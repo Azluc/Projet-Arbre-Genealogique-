@@ -25,5 +25,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ActivationJakarta"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JakartaMail"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MailCommun"/>
+	<classpathentry kind="lib" path="H:/Downloads/jakarta.mail-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

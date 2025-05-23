@@ -1,70 +1,27 @@
 package com.cytech.classeProjet;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
-/**
- * Class representing a person in a genealogical tree.
- * This class manages personal information and family relationships of a person.
- */
-public class Personne {
-    /** The person's last name */
-    private String nom;
-    
-    /** The person's first name */
-    private String prenom;
-    
-    /** The person's birth date */
-    private Date dateNaissance;
-    
-    /** The person's death date (can be null) */
-    private Date dateDeces;
-    
-    /** The person's gender */
-    private Genre genre;
-    
-    /** The ID of the genealogical tree to which the person belongs */
-    private int id_arbre;
-    
-    /** The person's depth in the genealogical tree */
-    private int profondeur;
-    
-    /** The list of the person's parents */
-    private List<Personne> parents;
-    
-    /** The list of the person's children */
-    private List<Personne> enfants;
-    
-    /** The list of the person's siblings */
-    private List<Personne> freresEtSoeurs;
-    
-    /** The person's spouse */
-    private Personne conjoint;
-    
-    /** The person's family side (paternal, maternal, or neutral) */
-    private Cote cote = Cote.NEUTRE;
-    
-    /** The person's nationality */
-    private String nationalite;
 
-    /**
-     * Complete constructor for a person.
-     * 
-     * @param nom The last name
-     * @param prenom The first name
-     * @param dateNaissance The birth date
-     * @param dateDeces The death date
-     * @param genre The gender
-     * @param id_arbre The tree ID
-     * @param profondeur The depth in the tree
-     */
+public class Personne {
+    private String nom;
+    private String prenom;
+    private Date dateNaissance;
+    private Date dateDeces;
+    private Genre genre;
+    private int id_arbre;
+    private int profondeur;
+    private List<Personne> parents;
+    private List<Personne> enfants;
+    private List<Personne> freresEtSoeurs;
+    private Personne conjoint;
+    private Cote cote = Cote.NEUTRE;
+     private String nationalite;
+
+     
+
     public Personne(String nom, String prenom, Date dateNaissance, Date dateDeces, Genre genre, int id_arbre, int profondeur) {
         this.nom = nom;
         this.prenom = prenom;
@@ -77,108 +34,416 @@ public class Personne {
         this.enfants = new ArrayList<>();
         this.freresEtSoeurs = new ArrayList<>();
     }
-    
-    /**
-     * Simplified constructor for a person.
-     * 
-     * @param nom The last name
-     * @param prenom The first name
-     * @param nationalite The nationality
-     * @param dateNaissance The birth date
-     * @param dateDeces The death date
-     */
+   
     public Personne(String nom, String prenom, String nationalite, Date dateNaissance, Date dateDeces) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.nationalite = nationalite;
-        this.dateNaissance = dateNaissance;
-        this.dateDeces = dateDeces;
+        // TODO implement here
+    this.nom=nom;
+    this.prenom=prenom;
+    this.nationalite=nationalite;
+    this.dateNaissance=dateNaissance;
+    this.dateDeces=dateDeces;
     }
-    
-    /**
-     * Searches for a person in a set by their last name and first name.
-     * 
-     * @param personnes The set of people to search in
-     * @param nom The last name to search for
-     * @param prenom The first name to search for
-     * @return The found person, or null if no person matches
-     */
+   
     public static Personne choisirPersonne(Set<Personne> personnes, String nom, String prenom) {
+   
+   
+   
         if (personnes.isEmpty()) {
-            System.out.print("empty");
+            System.out.print("vide");
         }
    
+
         for (Personne p : personnes) {
             String nomListe = p.getNom().trim();
             String prenomListe = p.getPrenom().trim();
             String nomRecherche = nom.trim();
             String prenomRecherche = prenom.trim();
 
+ 
+
             if (nomListe.equalsIgnoreCase(nomRecherche) &&
                 prenomListe.equalsIgnoreCase(prenomRecherche)) {
                 return p;
             }
         }
+        //System.out.println("Personne non trouvée dans l'arbre. MethodeChoisirPersonne()");
         return null;
     }
      
-    /**
-     * Adds a parent to the person.
-     * Checks date consistency and updates family relationships.
-     * 
-     * @param parent The parent to add
-     */
+   
     public void ajouterParent(Personne parent) {
-        if (!parents.contains(parent)) {
+    if (!parent.getDateNaissance().before(this.getDateNaissance())) {
+      // System.out.println("Erreur : Le parent (" + parent.getNomComplet() + ") doit être né avant l'enfant (" + this.getNomComplet() + ").");
+       return;
+    }
+   
+        if (parents.contains(parent)) return;
+
+        if (parents.size() < 2) {
             parents.add(parent);
-            if (!parent.getEnfants().contains(this)) {
-                parent.getEnfants().add(this);
+            if (parent.getGenre() == Genre.HOMME) {
+            parent.setCote(Cote.PATERNEL);
             }
+            else {
+            parent.setCote(Cote.MATERNEL);
+            }
+
+            // Mise à jour des parents des frères et sœurs
+            for (Personne frereSoeur : this.getFreresEtSoeurs()) {
+                if (!frereSoeur.getParents().contains(parent) && frereSoeur.getParents().size() < 2) {
+                    frereSoeur.ajouterParent(parent);
+                }
+            }
+
+            // Vérification automatique de l’union
+            if (parents.size() == 2) {
+                Personne autreParent = (parents.get(0).equals(parent)) ? parents.get(1) : parents.get(0);
+
+                if (parent.getConjoint() == null && autreParent.getConjoint() == null) {
+                    parent.setConjoint(autreParent);
+                    autreParent.setConjoint(parent);
+                    System.out.println("Union détectée entre " + parent.getNomComplet() + " et " + autreParent.getNomComplet());
+                }
+            }
+        } else {
+            System.out.println("Erreur : Impossible d’ajouter plus de deux parents à " + this.getNomComplet());
         }
     }
-    
-    /**
-     * Adds a child to the person.
-     * Checks date consistency and updates family relationships.
-     * 
-     * @param enfant The child to add
-     */
-    public void ajouterEnfant(Personne enfant) {
+   
+    public void ajouterEnfant(Personne enfant, ArbreGenealogique arbre) {
+    if (!this.getDateNaissance().before(enfant.getDateNaissance())) {
+       System.out.println("Erreur : L'enfant (" + enfant.getNomComplet() + ") doit être né après le parent (" + this.getNomComplet() + ").");
+       return;
+    }
         if (!enfants.contains(enfant)) {
             enfants.add(enfant);
-            if (!enfant.getParents().contains(this)) {
-                enfant.getParents().add(this);
-            }
+            enfant.ajouterParent(this);
+         // Ici on ajoute le lien parent-enfant dans l'arbre
+            String nomRelation = ArbreGenealogique.ObtenirRelationsDepuisRacine(arbre, enfant);
+            arbre.getLiensParente().ajouterLien(this, enfant, TypeRelation.PARENT_ENFANT, nomRelation);
         }
     }
-    
-    /**
-     * Adds a sibling to the person.
-     * Updates family relationships.
-     * 
-     * @param frereOuSoeur The sibling to add
-     * @param arbre The genealogical tree
-     */
-    public void ajouterFrereOuSoeur(Personne frereOuSoeur, ArbreGenealogique arbre) {
-        if (!freresEtSoeurs.contains(frereOuSoeur)) {
-            frereOuSoeur.getFreresEtSoeurs().add(this);
-            freresEtSoeurs.add(frereOuSoeur);
-            
-            // Add common parents
-            for (Personne parent : parents) {
-                if (!frereOuSoeur.getParents().contains(parent)) {
-                    frereOuSoeur.ajouterParent(parent);
+ 
+    public void ajouterFrereOuSoeur(Personne autre, ArbreGenealogique arbre) {
+        if (!freresEtSoeurs.contains(autre)) {
+            freresEtSoeurs.add(autre);
+            autre.ajouterFrereOuSoeur(this, arbre); // lien réciproque
+
+            autre.setProfondeur(this.getProfondeur());
+
+            for (Personne parent : this.getParents()) {
+                if (!autre.getParents().contains(parent)) {
+                    autre.ajouterParent(parent);
+                    parent.ajouterEnfant(autre, arbre);
+
+                    // Ajout du lien dans l'arbre
+                    String nomRelation = ArbreGenealogique.ObtenirRelationsDepuisRacine(arbre, autre);
+                    arbre.getLiensParente().ajouterLien(parent, autre, TypeRelation.PARENT_ENFANT, nomRelation);
+                }
+            }
+
+             
+            for (Personne frereOuSoeur : this.freresEtSoeurs) {
+                if (!frereOuSoeur.equals(autre) && !frereOuSoeur.getFreresEtSoeurs().contains(autre)) {
+                    frereOuSoeur.ajouterFrereOuSoeur(autre, arbre);
                 }
             }
         }
     }
-    
-    /**
-     * Detects siblings among a collection of people.
-     * 
-     * @param personnes The collection of people to check
-     * @param arbre The genealogical tree
-     */
+
+     
+
+    public String getRelationAscendanteAvec(Personne cible) {
+        int diff = cible.getProfondeur() - this.getProfondeur();
+
+        if (diff <= 0) return null;
+
+        // Cas direct : parent
+        if (diff == 1 && this.getParents().contains(cible)) {
+            return cible.getGenre() == Genre.HOMME ? "père" : "mère";
+        }
+
+        // Cas direct : oncle/tante
+        if (diff == 1) {
+            for (Personne parent : this.getParents()) {
+                if (parent.getFreresEtSoeurs().contains(cible)) {
+                    return cible.getGenre() == Genre.HOMME ? "oncle" : "tante";
+                }
+            }
+        }
+
+        // Cas : grand-parent
+        if (diff == 2 && this.getParents().stream().anyMatch(p -> p.getParents().contains(cible))) {
+            return cible.getGenre() == Genre.HOMME ? "grand-père" : "grand-mère";
+        }
+
+        // Cas : frère/soeur d'un grand-parent (oncle ou tante éloigné·e)
+        if (diff == 2) {
+            for (Personne parent : this.getParents()) {
+                for (Personne grandParent : parent.getParents()) {
+                    if (grandParent.getFreresEtSoeurs().contains(cible)) {
+                        return cible.getGenre() == Genre.HOMME ? "grand-oncle" : "grand-tante";
+                    }
+                }
+            }
+        }
+       
+       
+       
+        // Cas général : arrière-grand-[x]
+        if (diff > 2) {
+            int nbArriere = diff - 2;
+            String prefixe = "arrière-".repeat(nbArriere);
+            boolean estParent = this.estAscendant(cible);
+            boolean estFrereOuSoeurDUnAscendant = this.estFrereOuSoeurDUnAscendant(cible);
+
+            if (estParent) {
+                return cible.getGenre() == Genre.HOMME ? prefixe + "grand-père" : prefixe + "grand-mère";
+            }
+
+            if (estFrereOuSoeurDUnAscendant) {
+                return cible.getGenre() == Genre.HOMME ? prefixe + "grand-oncle" : prefixe + "grand-tante";
+            }
+        }
+
+        return null;
+    }
+   
+    public String getRelationDescendanteAvec(Personne cible) {
+        int diff = cible.getProfondeur() - this.getProfondeur();
+
+        if (diff >= 0) return null; // Ce n’est pas un descendant
+
+        // Cas direct : enfant
+        if (diff == -1 && this.getEnfants().contains(cible)) {
+            return cible.getGenre() == Genre.HOMME ? "fils" : "fille";
+        }
+
+        // Cas direct : petit-enfant
+        if (diff == -2) {
+            for (Personne enfant : this.getEnfants()) {
+                if (enfant.getEnfants().contains(cible)) {
+                    return cible.getGenre() == Genre.HOMME ? "petit-fils" : "petite-fille";
+                }
+            }
+        }
+
+        // Cas général : arrière-petit-[x]
+        if (diff < -2) {
+            int nbArriere = Math.abs(diff + 2);
+            String prefixe = "arrière-".repeat(nbArriere);
+
+            if (this.estDescendant(cible)) {
+                return cible.getGenre() == Genre.HOMME ? prefixe + "petit-fils" : prefixe + "petite-fille";
+            }
+        }
+
+        return null;
+    }
+   
+   
+   
+   
+   
+    public boolean estDescendant(Personne cible) {
+        for (Personne enfant : this.getEnfants()) {
+            if (enfant.equals(cible) || enfant.estDescendant(cible)) {
+                return true;
+            }
+        }
+        return false;
+    }
+   
+    private boolean estAscendant(Personne cible) {
+        for (Personne parent : this.getParents()) {
+            if (parent.equals(cible)) return true;
+            if (parent.estAscendant(cible)) return true;
+        }
+        return false;
+    }
+   
+    public String getRelationCousinAvec(Personne cible) {
+        int diff = cible.getProfondeur() - this.getProfondeur();
+
+        // Cas classique : cousin/cousine (même profondeur)
+        if (diff == 0) {
+            for (Personne parent : this.getParents()) {
+                for (Personne frereOuSoeur : parent.getFreresEtSoeurs()) {
+                    if (frereOuSoeur.getEnfants().contains(cible)) {
+                        return cible.getGenre() == Genre.HOMME ? "cousin" : "cousine";
+                    }
+                }
+            }
+        }
+
+        // Cas : petit-cousin/petite-cousine (profondeur -1)
+        if (diff == -1) {
+            for (Personne parent : cible.getParents()) {
+                String relationAvecParent = this.getRelationCousinAvec(parent);
+                if (relationAvecParent != null &&
+                    (relationAvecParent.equals("cousin") || relationAvecParent.equals("cousine"))) {
+                    return cible.getGenre() == Genre.HOMME ? "petit-cousin" : "petite-cousine";
+                }
+            }
+        }
+
+        // Cas général : arrière-petit-[x]-cousin
+        if (diff < -1) {
+            for (Personne parent : cible.getParents()) {
+                String relationAvecParent = this.getRelationCousinAvec(parent);
+                if (relationAvecParent != null &&
+                    (relationAvecParent.contains("petit-cousin") || relationAvecParent.contains("petite-cousine"))) {
+
+                    int nbArriere = Math.abs(diff + 1);
+                    String prefixe = "arrière-".repeat(nbArriere);
+                    return cible.getGenre() == Genre.HOMME
+                            ? prefixe + "petit-cousin"
+                            : prefixe + "petite-cousine";
+                }
+            }
+        }
+
+        return null;
+    }
+
+   
+    public String getRelationNeveuAvec(Personne cible) {
+        int diff = cible.getProfondeur() - this.getProfondeur();
+
+        // Cas classique : neveux ou niece de la même profondeur
+        if (diff == -1) {
+            for (Personne frereOuSoeur : this.getFreresEtSoeurs()) {
+               
+                    if (frereOuSoeur.getEnfants().contains(cible)) {
+                        return cible.getGenre() == Genre.HOMME ? "neveu" : "nièce";
+                     
+                }
+            }
+        }
+
+        // Cas : petit-cousin/petite-cousine (profondeur -1)
+        if (diff == -2) {
+            for (Personne frereOuSoeur : this.getFreresEtSoeurs()) {
+                for (Personne enfant : frereOuSoeur.getEnfants()) {
+                    if (enfant.getEnfants().contains(cible)) {
+                        return cible.getGenre() == Genre.HOMME ? "petit-neveu" : "petite-nièce";
+                    }
+                }
+            }
+        }
+
+        // Cas général : arrière-petit-[x]-neveux/niece
+        if (diff <= -3) {
+            Queue<Personne> file = new LinkedList<>();
+            for (Personne frereOuSoeur : this.getFreresEtSoeurs()) {
+                file.addAll(frereOuSoeur.getEnfants());
+            }
+
+            int niveau = 2; // petit-neveu/nièce = 2, arrière-petit-neveu/nièce = 3, etc.
+
+            while (!file.isEmpty()) {
+                int tailleNiveau = file.size();
+                for (int i = 0; i < tailleNiveau; i++) {
+                    Personne actuel = file.poll();
+                    if (actuel.equals(cible)) {
+                        StringBuilder prefixe = new StringBuilder();
+                        for (int j = 3; j <= niveau; j++) {
+                            prefixe.append("arrière-");
+                        }
+                        return prefixe + (cible.getGenre() == Genre.HOMME ? "petit-neveu" : "petite-nièce");
+                    }
+                    file.addAll(actuel.getEnfants());
+                }
+                niveau++;
+            }
+        }
+
+        return null;
+    }
+
+    public void setNom(String nom) {
+this.nom = nom;
+}
+
+
+
+public void setPrenom(String prenom) {
+this.prenom = prenom;
+}
+
+
+
+public void setId_arbre(int id_arbre) {
+this.id_arbre = id_arbre;
+}
+
+
+
+public void setFreresEtSoeurs(List<Personne> freresEtSoeurs) {
+this.freresEtSoeurs = freresEtSoeurs;
+}
+
+
+
+public static boolean aAuMoins18AnsDePlus(Date plusVieux, Date plusJeune) {
+    //POur vérifier que la différence d'âge entre 2 un parent et un enfant est au moins de 18 ans
+        Calendar calVieux = Calendar.getInstance();
+        calVieux.setTime(plusVieux);
+       
+        Calendar calJeune = Calendar.getInstance();
+        calJeune.setTime(plusJeune);
+     
+        calVieux.add(Calendar.YEAR, 18); // Ajoute 18 ans au plus vieux
+        //On retourne vrai si le plus vieux a au moins 18 ans de plus
+        return !calVieux.after(calJeune);  
+    }
+   
+    private boolean estFrereOuSoeurDUnAscendant(Personne cible) {
+        for (Personne parent : this.getParents()) {
+            if (parent.getFreresEtSoeurs().contains(cible)) return true;
+            if (parent.estFrereOuSoeurDUnAscendant(cible)) return true;
+        }
+        return false;
+    }
+   
+     
+   
+    public String getRelationLateralAvecFrereSoeur(Personne autre) {
+        if (this.equals(autre) || this.estParentDe(autre) || autre.estParentDe(this)) {
+            return null;
+        }
+
+        // System.out.println("On est dans le GetRElationLateral et this vaut" + this.getNom() + "P vaut " +autre.getNom());
+        // Frère ou sœur
+        if (this.getFreresEtSoeurs().contains(autre)) {
+            return autre.getGenre() == Genre.HOMME ? "frère" : "sœur";
+        }
+        return null;
+    }
+   
+   
+ 
+
+    public boolean unionEstPossible(Personne personneSource, Personne personneDestination) {
+        if (personneSource == null || personneDestination == null) return false;
+        for (Personne enfant : personneSource.getEnfants()) {
+            if (personneDestination.getEnfants().contains(enfant)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean unionEstPossible(Personne enfant) {
+        if (enfant == null) return false;
+        List<Personne> parents = enfant.getParents();
+        if (parents.size() != 2) return false;
+
+        boolean possedePere = parents.stream().anyMatch(p -> p.getGenre() == Genre.HOMME);
+        boolean possedeMere = parents.stream().anyMatch(p -> p.getGenre() == Genre.FEMME);
+        return possedePere && possedeMere;
+    }
+
     public void detecterFreresEtSoeurs(Collection<Personne> personnes, ArbreGenealogique arbre) {
         for (Personne p1 : personnes) {
             for (Personne p2 : personnes) {
@@ -192,22 +457,13 @@ public class Personne {
             }
         }
     }
-    
-    /**
-     * Checks if two people are identical.
-     * 
-     * @param autre The other person to compare with
-     * @return true if the people are identical, false otherwise
-     */
+   
     public boolean estIdentique(Personne autre) {
         return this.nom.equalsIgnoreCase(autre.nom) && this.prenom.equalsIgnoreCase(autre.prenom);
     }
-    
-    /**
-     * Returns the person's father.
-     * 
-     * @return The father, or null if not found
-     */
+   
+   
+
     public Personne getPere() {
         for (Personne parent : parents) {
             if (parent.getGenre() == Genre.HOMME) return parent;
@@ -215,11 +471,6 @@ public class Personne {
         return null;
     }
 
-    /**
-     * Returns the person's mother.
-     * 
-     * @return The mother, or null if not found
-     */
     public Personne getMere() {
         for (Personne parent : parents) {
             if (parent.getGenre() == Genre.FEMME) return parent;
@@ -227,11 +478,6 @@ public class Personne {
         return null;
     }
 
-    /**
-     * Returns the list of the person's uncles and aunts.
-     * 
-     * @return The list of uncles and aunts
-     */
     public List<Personne> getOnclesEtTantes() {
         List<Personne> resultats = new ArrayList<>();
         for (Personne parent : parents) {
@@ -240,22 +486,13 @@ public class Personne {
         return resultats;
     }
  
-    /**
-     * Checks if the person is a parent of another person.
-     * 
-     * @param enfant The person to check
-     * @return true if the person is a parent, false otherwise
-     */
+   
     public boolean estParentDe(Personne enfant) {
         return enfant.getParents().contains(this);
     }
-    
-    /**
-     * Checks equality between this person and another object.
-     * 
-     * @param o The object to compare with
-     * @return true if the objects are equal, false otherwise
-     */
+   
+   
+   
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -264,259 +501,131 @@ public class Personne {
         return nom.equalsIgnoreCase(personne.nom) && prenom.equalsIgnoreCase(personne.prenom);
     }
 
-    /**
-     * Returns the person's hash code.
-     * 
-     * @return The hash code
-     */
     @Override
     public int hashCode() {
         return Objects.hash(nom.toLowerCase(), prenom.toLowerCase());
     }
-    
-    /**
-     * Checks consistency between birth date and death date.
-     * 
-     * @param dateNaissance The birth date
-     * @param dateDeces The death date
-     * @return true if the dates are consistent, false otherwise
-     */
+   
     public static boolean verifierCoherenceDates(Date dateNaissance, Date dateDeces) {
         if (dateNaissance == null && dateDeces == null) {
-            // Case where the user indicates neither birth date nor death date
-            return false;
+            // Cas ou l'utilisateur n'indique ni la date de naissance ni la date de deces d'une personne
+        return false;
         }
-        
+       
         if (dateNaissance != null && dateDeces == null) {
-            // Case where the user is still alive
+        // Cas ou l'utilisateur est toujours en vie
             return true;
         }
-        
+       
         if (dateNaissance.before(dateDeces)) {
-            // Case where the user indicates that birth date is before death date
+        // Cas ou l'utilisateur indique que la date de naissance est avant la date de deces
             return true;
         } else {
-            // If death date is before birth date
+        // si la date de deces est avant la date de naissance
             return false;
         }
     }
    
-    /**
-     * Returns the person's full name.
-     * 
-     * @return The full name (first name + last name)
-     */
+   
+
+    // Getters / Setters
     public String getNomComplet() {
         return nom + " " + prenom;
     }
 
-    // Getters and setters with JavaDoc documentation
-    
-    /**
-     * Returns the person's last name.
-     * 
-     * @return The last name
-     */
     public String getNom() {
         return nom;
     }
 
-    /**
-     * Returns the person's first name.
-     * 
-     * @return The first name
-     */
     public String getPrenom() {
         return prenom;
     }
 
-    /**
-     * Returns the person's birth date.
-     * 
-     * @return The birth date
-     */
     public Date getDateNaissance() {
         return dateNaissance;
     }
 
-    /**
-     * Sets the person's birth date.
-     * 
-     * @param dateNaissance The new birth date
-     */
     public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
-    /**
-     * Returns the person's death date.
-     * 
-     * @return The death date, or null if the person is alive
-     */
     public Date getDateDeces() {
         return dateDeces;
     }
 
-    /**
-     * Sets the person's death date.
-     * 
-     * @param dateDeces The new death date
-     */
     public void setDateDeces(Date dateDeces) {
         this.dateDeces = dateDeces;
     }
 
-    /**
-     * Returns the person's gender.
-     * 
-     * @return The gender
-     */
     public Genre getGenre() {
         return genre;
     }
 
-    /**
-     * Sets the person's gender.
-     * 
-     * @param genre The new gender
-     */
     public void setGenre(Genre genre) {
         this.genre = genre;
     }
 
-    /**
-     * Returns the person's tree ID.
-     * 
-     * @return The tree ID
-     */
     public int getId_arbre() {
         return id_arbre;
     }
 
-    /**
-     * Returns the person's depth in the tree.
-     * 
-     * @return The depth
-     */
     public int getProfondeur() {
         return profondeur;
     }
 
-    /**
-     * Sets the person's depth in the tree.
-     * 
-     * @param profondeur The new depth
-     */
     public void setProfondeur(int profondeur) {
         this.profondeur = profondeur;
     }
 
-    /**
-     * Returns the list of the person's parents.
-     * 
-     * @return The list of parents
-     */
     public List<Personne> getParents() {
         return parents;
     }
 
-    /**
-     * Sets the list of the person's parents.
-     * 
-     * @param parents The new list of parents
-     */
     public void setParents(List<Personne> parents) {
         this.parents = parents;
     }
 
-    /**
-     * Returns the list of the person's children.
-     * 
-     * @return The list of children
-     */
     public List<Personne> getEnfants() {
         return enfants;
     }
 
-    /**
-     * Sets the list of the person's children.
-     * 
-     * @param enfants The new list of children
-     */
     public void setEnfants(List<Personne> enfants) {
         this.enfants = enfants;
     }
 
-    /**
-     * Returns the list of the person's siblings.
-     * 
-     * @return The list of siblings
-     */
     public List<Personne> getFreresEtSoeurs() {
         return freresEtSoeurs;
     }
-
-    /**
-     * Returns the person's family side.
-     * 
-     * @return The family side
-     */
+   
     public Cote getCote() {
         return cote;
     }
 
-    /**
-     * Sets the person's family side.
-     * 
-     * @param cote The new family side
-     */
     public void setCote(Cote cote) {
         this.cote = cote;
     }
-
-    /**
-     * Returns the person's spouse.
-     * 
-     * @return The spouse, or null if the person is not married
-     */
+     
     public Personne getConjoint() {
         return conjoint;
     }
 
-    /**
-     * Sets the person's spouse.
-     * 
-     * @param conjoint The new spouse
-     */
     public void setConjoint(Personne conjoint) {
         this.conjoint = conjoint;
     }
-
-    /**
-     * Returns the person's nationality.
-     * 
-     * @return The nationality
-     */
+   
     public String getNationalite() {
-        return nationalite;
+        // TODO implement here
+    return this.nationalite;
     }
 
-    /**
-     * Returns a text representation of the person.
-     * 
-     * @return A string describing the person
-     */
     @Override
     public String toString() {
         return this.getPrenom() + " " + this.getNom();  
     }
-    
-    /**
-     * Sets the person's nationality.
-     * 
-     * @param nationalite The new nationality
-     */
+   
     public void setNationalite(String nationalite) {
-        this.nationalite = nationalite;
+        // TODO implement here
+    this.nationalite=nationalite;
     }
-}
+   
+} 
