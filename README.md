@@ -34,19 +34,96 @@ Il s'agit d'une application permettant de modéliser et de gérer un arbre gén�
 ##  Structure du projet
 
 ```
-src/
-├── com/cytech/classeProjet/
-│   ├── ArbreGenealogique.java
-│   ├── Personne.java
-│   ├── LienParente.java
-│   ├── NiveauVisibilite.java
-│   ├── Noeud.java
-│   ├── Ressource.java
-│   ├── ...
-├── classeTestsUnitaires/
-│   ├── TestPersonne_Console.java
-│   ├── TestAdministrateur_Console.java
-│   └── ...
+Projet-Arbre-Genealogique/
+├── .settings/
+│   └── org.eclipse.core.resources.prefs             # Fichier de config Eclipse
+├── bin/
+│   └── .gitignore                                   # Empêche de versionner les fichiers compilés
+├── src/
+│   └── com/
+│       └── cytech/
+│           ├── classeProjet/
+│           │   ├── Administrateur.java
+│           │   ├── ArbreGenealogique.java
+│           │   ├── ArbreGenealogiquePanel.java
+│           │   ├── Cote.java
+│           │   ├── Genre.java
+│           │   ├── GestionArbreGenealogique.java
+│           │   ├── Lien.java
+│           │   ├── LienParente.java
+│           │   ├── NiveauVisibilite.java
+│           │   ├── Noeud.java
+│           │   ├── Personne.java
+│           │   ├── Relation.java
+│           │   ├── Ressource.java
+│           │   ├── StatistiqueConsultation.java
+│           │   ├── TypeDocument.java
+│           │   ├── TypeRelation.java
+│           │   └── Utilisateur.java
+│           │
+│           ├── classeTestsUnitaires/
+│           │   ├── TestAdministrateur.java
+│           │   ├── TestArbreGenealogique.java
+│           │   ├── TestCote.java
+│           │   ├── TestGenre.java
+│           │   ├── TestGestionArbreGenealogique.java
+│           │   ├── TestGestionUtilisateurBDD.java
+│           │   ├── TestLien.java
+│           │   ├── TestLienParente.java
+│           │   ├── TestNiveauVisibilite.java
+│           │   ├── TestNoeud.java
+│           │   ├── TestPersonne.java
+│           │   ├── TestRelation.java
+│           │   ├── TestRessource.java
+│           │   ├── TestStatistiqueConsultation.java
+│           │   ├── TestTypeDocument.java
+│           │   ├── TestTypeRelation.java
+│           │   └── TestUtilisateur.java
+│           │
+│           ├── fenetres/
+│           │   ├── AfficherProfilUtilisateur.fxml
+│           │   ├── AfficherProfilUtilisateurController.java
+│           │   ├── FormulaireAjoutPersonne.fxml
+│           │   ├── FormulaireAjoutPersonneController.java
+│           │   ├── ModifierProfilUtilisateur.fxml
+│           │   ├── ModifierProfilUtilisateurController.java
+│           │   ├── PageAccueil.fxml
+│           │   ├── PageAccueilController.java
+│           │   ├── PageAdministrateur.fxml
+│           │   ├── PageAdministrateurController.java
+│           │   ├── PageAjoutListeDeroulante.fxml
+│           │   ├── PageAjoutListeDeroulanteController.java
+│           │   ├── PageChangementMDP.fxml
+│           │   ├── PageChangementMDPController.java
+│           │   ├── PageConnexionAdministrateur.fxml
+│           │   ├── PageConnexionAdministrateurController.java
+│           │   ├── PageConnexionUtilisateur.fxml
+│           │   ├── PageConnexionUtilisateurController.java
+│           │   ├── PageInformationUtilisateur.fxml
+│           │   ├── PageInformationUtilisateurController.java
+│           │   ├── PageInscription.fxml
+│           │   ├── PageInscriptionController.java
+│           │   ├── PagePrincipaleUtilisateur.fxml
+│           │   ├── PagePrincipaleUtilisateurController.java
+│           │   ├── PageRequetes.fxml
+│           │   ├── PageRequetesController.java
+│           │   └── RacinePrincipale.fxml
+│           │
+│           ├── gestionBDD/
+│           │   ├── GestionArbreGenealogiqueBDD.java
+│           │   ├── GestionDemandeAdhesionBdd.java
+│           │   ├── GestionLienParenteBDD.java
+│           │   ├── GestionPersonneBDD.java
+│           │   └── GestionUtilisateurBDD.java
+│           │
+│           └── Main.java
+│
+├── .classpath                                      # Fichier Eclipse
+├── .project                                        # Fichier Eclipse
+├── README.md                                       # Présentation du projet
+├── arbre_genealogique.sql                          # Structure de la base de données
+└── diagrammeArbreV2.mdj                            # Modèle UML (StarUML / Modelio)
+
 ```
 
 ##  Instructions de lancement
