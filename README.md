@@ -48,16 +48,10 @@ Projet-Arbre-Genealogique/
 │           │   ├── ArbreGenealogiquePanel.java
 │           │   ├── Cote.java
 │           │   ├── Genre.java
-│           │   ├── GestionArbreGenealogique.java
 │           │   ├── Lien.java
 │           │   ├── LienParente.java
-│           │   ├── NiveauVisibilite.java
-│           │   ├── Noeud.java
 │           │   ├── Personne.java
 │           │   ├── Relation.java
-│           │   ├── Ressource.java
-│           │   ├── StatistiqueConsultation.java
-│           │   ├── TypeDocument.java
 │           │   ├── TypeRelation.java
 │           │   └── Utilisateur.java
 │           │
@@ -66,18 +60,9 @@ Projet-Arbre-Genealogique/
 │           │   ├── TestArbreGenealogique.java
 │           │   ├── TestCote.java
 │           │   ├── TestGenre.java
-│           │   ├── TestGestionArbreGenealogique.java
 │           │   ├── TestGestionUtilisateurBDD.java
 │           │   ├── TestLien.java
-│           │   ├── TestLienParente.java
-│           │   ├── TestNiveauVisibilite.java
-│           │   ├── TestNoeud.java
 │           │   ├── TestPersonne.java
-│           │   ├── TestRelation.java
-│           │   ├── TestRessource.java
-│           │   ├── TestStatistiqueConsultation.java
-│           │   ├── TestTypeDocument.java
-│           │   ├── TestTypeRelation.java
 │           │   └── TestUtilisateur.java
 │           │
 │           ├── fenetres/
