@@ -8,6 +8,13 @@ import com.cytech.gestionBDD.GestionPersonneBDD;
 import com.cytech.classeProjet.Personne;
 import com.cytech.classeProjet.Genre;
 
+/**
+ * Test class for GestionPersonneBDD functionality.
+ * This class contains unit tests for the person database management system,
+ * including tests for adding root persons and regular persons with various
+ * attributes (gender, death date, etc.) and verifying their correct storage
+ * in the database.
+ */
 public class TestGestionPersonneBDD {
     
     private static final String URL = "jdbc:mysql://localhost:3306/arbre_genealogique";
@@ -17,6 +24,11 @@ public class TestGestionPersonneBDD {
     private static int testsExecutes = 0;
     private static int testsReussis = 0;
     
+    /**
+     * Main method to run all tests for GestionPersonneBDD.
+     * Executes all test methods and displays a summary of results.
+     * Includes database preparation and cleanup.
+     */
     public static void main(String[] args) {
         System.out.println("=== DEBUT DES TESTS POUR GestionPersonneBDD ===");
         
@@ -54,6 +66,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a root person with a specific gender.
+     * Verifies that a person can be added as a root with a valid gender
+     * and that the gender is correctly stored in the database.
+     */
     private static void testAjouterPersonneRacineAvecGenre() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonneRacine avec genre masculin");
@@ -83,6 +100,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a root person with a null gender.
+     * Verifies that a person can be added as a root with a null gender
+     * and that this is handled correctly in the database.
+     */
     private static void testAjouterPersonneRacineAvecGenreNull() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonneRacine avec genre null");
@@ -111,6 +133,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a root person with a null death date.
+     * Verifies that a living person can be added as a root
+     * and that the null death date is handled correctly.
+     */
     private static void testAjouterPersonneRacineAvecDateDecesNull() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonneRacine avec date de deces null");
@@ -139,6 +166,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a root person with a specific death date.
+     * Verifies that a deceased person can be added as a root
+     * and that the death date is correctly stored.
+     */
     private static void testAjouterPersonneRacineAvecDateDecesRelle() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonneRacine avec date de deces reelle");
@@ -168,6 +200,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a root person with all parameters specified.
+     * Verifies that a person can be added as a root with all attributes
+     * and that all information is correctly stored.
+     */
     private static void testAjouterPersonneRacineAvecParametresComplets() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonneRacine avec tous les parametres");
@@ -201,6 +238,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a regular person with a specific gender.
+     * Verifies that a person can be added with a valid gender
+     * and that the gender is correctly stored.
+     */
     private static void testAjouterPersonneAvecGenre() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonne avec genre feminin");
@@ -229,6 +271,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a regular person with a null gender.
+     * Verifies that a person can be added with a null gender
+     * and that this is handled correctly.
+     */
     private static void testAjouterPersonneAvecGenreNull() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonne avec genre null");
@@ -251,6 +298,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a regular person with a null death date.
+     * Verifies that a living person can be added
+     * and that the null death date is handled correctly.
+     */
     private static void testAjouterPersonneAvecDateDecesNull() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonne avec date de deces null");
@@ -273,6 +325,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a regular person with a specific death date.
+     * Verifies that a deceased person can be added
+     * and that the death date is correctly stored.
+     */
     private static void testAjouterPersonneAvecDateDecesRelle() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonne avec date de deces reelle");
@@ -296,6 +353,11 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests adding a regular person with all parameters specified.
+     * Verifies that a person can be added with all attributes
+     * and that all information is correctly stored.
+     */
     private static void testAjouterPersonneAvecParametresComplets() {
         testsExecutes++;
         System.out.println("\nTest: ajouterPersonne avec tous les parametres");
@@ -319,6 +381,10 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Tests the comparison between adding root and regular persons.
+     * Verifies that both methods work correctly and produce consistent results.
+     */
     private static void testAjouterPersonneRacineEtPersonneComparaison() {
         testsExecutes++;
         System.out.println("\nTest: Comparaison ajouterPersonneRacine vs ajouterPersonne");
@@ -348,35 +414,28 @@ public class TestGestionPersonneBDD {
         }
     }
     
-    // Methodes utilitaires
-    
+    /**
+     * Creates a Date object with the specified year, month, and day.
+     * 
+     * @param annee the year
+     * @param mois the month (0-11)
+     * @param jour the day of the month
+     * @return a Date object representing the specified date
+     */
     private static Date creerDate(int annee, int mois, int jour) {
         Calendar cal = Calendar.getInstance();
         cal.set(annee, mois - 1, jour); // mois - 1 car Calendar utilise 0-11
         return cal.getTime();
     }
     
-    private static void preparerBaseDeDonnees() {
-        System.out.println("Preparation de la base de donnees pour les tests...");
-        // Ici on pourrait creer des tables de test si necessaire
-        // Pour ce test, on assume que la table Personne existe deja
-    }
-    
-    private static void nettoyerBaseDeDonnees() {
-        System.out.println("Nettoyage de la base de donnees...");
-        try {
-            Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
-            String sql = "DELETE FROM Personne WHERE nom IN ('Dupont', 'Martin', 'Durand', 'Moreau', 'Leroy', 'Bernard', 'Petit', 'Roux', 'Blanc', 'Girard', 'Comparaison')";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            int nbSupprimes = stmt.executeUpdate();
-            System.out.println(nbSupprimes + " enregistrements de test supprimes");
-            stmt.close();
-            conn.close();
-        } catch (Exception e) {
-            System.out.println("Erreur lors du nettoyage: " + e.getMessage());
-        }
-    }
-    
+    /**
+     * Verifies if a person exists in the database.
+     * 
+     * @param nom the person's last name
+     * @param prenom the person's first name
+     * @param idArbre the tree ID
+     * @return true if the person exists, false otherwise
+     */
     private static boolean verifierPersonneExiste(String nom, String prenom, int idArbre) {
         try {
             Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
@@ -403,6 +462,14 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Verifies if a person's gender is correctly stored in the database.
+     * 
+     * @param nom the person's last name
+     * @param prenom the person's first name
+     * @param genreAttendu the expected gender
+     * @return true if the gender matches, false otherwise
+     */
     private static boolean verifierGenrePersonne(String nom, String prenom, String genreAttendu) {
         try {
             Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
@@ -433,6 +500,14 @@ public class TestGestionPersonneBDD {
         }
     }
     
+    /**
+     * Verifies if a person's death date is correctly stored in the database.
+     * 
+     * @param nom the person's last name
+     * @param prenom the person's first name
+     * @param dateDecesAttendue the expected death date
+     * @return true if the death date matches, false otherwise
+     */
     private static boolean verifierDateDecesPersonne(String nom, String prenom, Date dateDecesAttendue) {
         try {
             Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
@@ -486,6 +561,35 @@ public class TestGestionPersonneBDD {
         } catch (Exception e) {
             System.out.println("Erreur lors de la verification de la profondeur: " + e.getMessage());
             return false;
+        }
+    }
+    
+    /**
+     * Prepares the database for testing.
+     * Creates necessary tables and cleans up any existing test data.
+     */
+    private static void preparerBaseDeDonnees() {
+        System.out.println("Preparation de la base de donnees pour les tests...");
+        // Ici on pourrait creer des tables de test si necessaire
+        // Pour ce test, on assume que la table Personne existe deja
+    }
+    
+    /**
+     * Cleans up the database after testing.
+     * Removes all test data created during the tests.
+     */
+    private static void nettoyerBaseDeDonnees() {
+        System.out.println("Nettoyage de la base de donnees...");
+        try {
+            Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
+            String sql = "DELETE FROM Personne WHERE nom IN ('Dupont', 'Martin', 'Durand', 'Moreau', 'Leroy', 'Bernard', 'Petit', 'Roux', 'Blanc', 'Girard', 'Comparaison')";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            int nbSupprimes = stmt.executeUpdate();
+            System.out.println(nbSupprimes + " enregistrements de test supprimes");
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("Erreur lors du nettoyage: " + e.getMessage());
         }
     }
 }

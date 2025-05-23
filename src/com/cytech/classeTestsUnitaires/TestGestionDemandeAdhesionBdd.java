@@ -8,11 +8,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Test class for GestionDemandeAdhesionBdd functionality.
+ * This class contains unit tests for the membership request database management,
+ * including tests for database connection, email uniqueness verification,
+ * request insertion, and image retrieval.
+ */
 public class TestGestionDemandeAdhesionBdd {
     
     private static int testsReussis = 0;
     private static int testsEchoues = 0;
     
+    /**
+     * Main method to run all tests for GestionDemandeAdhesionBdd.
+     * Executes all test methods and displays a summary of results.
+     * Includes preparation and cleanup of test files.
+     */
     public static void main(String[] args) {
     	System.out.println("---- Test Gestion demande adhesion base de donnée ----");
         System.out.println();
@@ -41,6 +52,10 @@ public class TestGestionDemandeAdhesionBdd {
         }
     }
     
+    /**
+     * Tests the constructor and database connection functionality.
+     * Verifies that an instance can be created and the connection can be closed properly.
+     */
     public static void testConstructeurEtConnexion() {
         System.out.println("Test 1: Constructeur et connexion a la base de donnees");
         try {
@@ -64,6 +79,11 @@ public class TestGestionDemandeAdhesionBdd {
         System.out.println();
     }
     
+    /**
+     * Tests the email uniqueness verification functionality.
+     * Verifies that the system correctly identifies unique and non-unique email addresses,
+     * including edge cases like empty and null emails.
+     */
     public static void testVerifierMailUnique() {
         System.out.println("Test 2: Verification de l'unicite de l'email");
         try {
@@ -105,6 +125,11 @@ public class TestGestionDemandeAdhesionBdd {
         System.out.println();
     }
     
+    /**
+     * Tests the membership request insertion functionality.
+     * Verifies that a new membership request can be inserted into the database
+     * with all required information, including identity documents and photos.
+     */
     public static void testInsertionDemandeBaseDonnes() {
         System.out.println("Test 3: Insertion d'une demande d'adhesion");
         try {
@@ -156,6 +181,11 @@ public class TestGestionDemandeAdhesionBdd {
         System.out.println();
     }
     
+    /**
+     * Tests the image retrieval functionality.
+     * Verifies that images associated with a specific email can be retrieved
+     * from the database, including verification of image data integrity.
+     */
     public static void testGetImagesParEmail() {
         System.out.println("Test 4: Recuperation des images par email");
         try {
@@ -234,7 +264,10 @@ public class TestGestionDemandeAdhesionBdd {
         System.out.println();
     }
     
-    // Methodes utilitaires pour les fichiers de test
+    /**
+     * Prepares test files for the database tests.
+     * Creates temporary files for identity card and photo tests.
+     */
     public static void preparerFichiersTest() {
         System.out.println("Preparation des fichiers de test...");
         try {
@@ -266,6 +299,10 @@ public class TestGestionDemandeAdhesionBdd {
         System.out.println();
     }
     
+    /**
+     * Cleans up test files after the tests are complete.
+     * Removes temporary files created for testing.
+     */
     public static void nettoyerFichiersTest() {
         System.out.println("Nettoyage des fichiers de test...");
         try {
@@ -288,7 +325,10 @@ public class TestGestionDemandeAdhesionBdd {
         }
     }
     
-    // Methode pour nettoyer les donnees de test dans la base
+    /**
+     * Cleans up test data from the database.
+     * Removes test records created during the tests.
+     */
     public static void nettoyerDonneesTestBDD() {
         System.out.println("Nettoyage des donnees de test dans la base...");
         try {

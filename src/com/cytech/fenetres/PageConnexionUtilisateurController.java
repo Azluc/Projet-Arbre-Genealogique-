@@ -1,8 +1,6 @@
 package com.cytech.fenetres;
 
 import javafx.fxml.FXML;
-
-
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
@@ -21,106 +19,135 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
- 
-
+/**
+ * Controller for the user login page.
+ * Handles user authentication and navigation to the main user interface or password change page for first-time users.
+ */
 public class PageConnexionUtilisateurController {
-	
-     
+    
+    /** Reference to the main application */
     private Main main;
-	@FXML
-	private TextField codePrive;
-	@FXML
-	private TextField motDePasseUtilisateur;
-	@FXML
-	private Button boutonRetour;
+    
+    /** Text field for entering private code */
+    @FXML
+    private TextField codePrive;
+    
+    /** Text field for entering password */
+    @FXML
+    private TextField motDePasseUtilisateur;
+    
+    /** Button to return to previous page */
+    @FXML
+    private Button boutonRetour;
 
-	public void messageErreur() {
-    	Alert alerte = new Alert(AlertType.ERROR);
-		alerte.initOwner(main.getPrimaryStage());
-		alerte.setTitle("Connexion impossible");
-		alerte.setHeaderText("La connexion n'a pu aboutir");
-		alerte.setContentText("Les identifiants saisis sont incorrect !");
-		alerte.showAndWait();
-	}
-    // Event Listener on Button.onAction
-	@FXML
-	public void ConnexionBoutonUtilisateur(ActionEvent event) throws SQLException {
-	    //int codePriveFourni = Integer.parseInt(codePrive.getText());
-	    
-	    
-	    try {
-	    	int codePriveFourni = Integer.parseInt(codePrive.getText());
-	    	String motDePasseUtilisateurFourni = motDePasseUtilisateur.getText();
-		    List<Object> listeLiens = GestionUtilisateurBDD.getPrenomEtMotDePasseParCodePrive(codePriveFourni);
+    /**
+     * Displays an error message when login fails.
+     */
+    public void messageErreur() {
+        Alert alerte = new Alert(AlertType.ERROR);
+        alerte.initOwner(main.getPrimaryStage());
+        alerte.setTitle("Connection Failed");
+        alerte.setHeaderText("Connection could not be established");
+        alerte.setContentText("The provided credentials are incorrect!");
+        alerte.showAndWait();
+    }
 
-		    if (listeLiens.isEmpty()) {
-		    	messageErreur();
-		        return;
-		    }
+    /**
+     * Handles the user login button click event.
+     * Verifies user credentials and either:
+     * - Redirects to password change page for first-time users
+     * - Loads the user's genealogical tree and shows the main user interface
+     * 
+     * @param event The action event that triggered this method
+     * @throws SQLException If a database error occurs
+     */
+    @FXML
+    public void ConnexionBoutonUtilisateur(ActionEvent event) throws SQLException {
+        try {
+            int codePriveFourni = Integer.parseInt(codePrive.getText());
+            String motDePasseUtilisateurFourni = motDePasseUtilisateur.getText();
+            List<Object> listeLiens = GestionUtilisateurBDD.getPrenomEtMotDePasseParCodePrive(codePriveFourni);
 
-		    String prenomBDD = (String) listeLiens.get(0);
-		    String motDePasseBDD = (String) listeLiens.get(1);
-		    int codePriveBDD = Integer.parseInt(listeLiens.get(2).toString());
+            if (listeLiens.isEmpty()) {
+                messageErreur();
+                return;
+            }
 
-		    if (motDePasseBDD.equals("-1")) {
-		        if (codePriveFourni == codePriveBDD && prenomBDD.equals(motDePasseUtilisateurFourni)) {
-		            //System.out.print("première connexion");
-		            main.afficherPageChangementMDP(codePriveBDD);
-		        } else {
-		        	messageErreur();
-		        }
-		    } else {
-		        if (codePriveFourni == codePriveBDD && motDePasseBDD.equals(motDePasseUtilisateurFourni)) {
-		        	
-		        	
-			        GestionArbreGenealogiqueBDD.initConnexion();
+            String prenomBDD = (String) listeLiens.get(0);
+            String motDePasseBDD = (String) listeLiens.get(1);
+            int codePriveBDD = Integer.parseInt(listeLiens.get(2).toString());
 
-			        String prenomRacine = GestionArbreGenealogiqueBDD.getPrenomRacine(codePriveBDD);
-			        
-			        if (prenomRacine == null) {
-			            System.out.println("Aucun arbre trouvé pour ce code privé");
-			            return;
-			        }
+            if (motDePasseBDD.equals("-1")) {
+                if (codePriveFourni == codePriveBDD && prenomBDD.equals(motDePasseUtilisateurFourni)) {
+                    main.afficherPageChangementMDP(codePriveBDD);
+                } else {
+                    messageErreur();
+                }
+            } else {
+                if (codePriveFourni == codePriveBDD && motDePasseBDD.equals(motDePasseUtilisateurFourni)) {
+                    GestionArbreGenealogiqueBDD.initConnexion();
 
-			        Personne racine = GestionArbreGenealogiqueBDD.getPersonneRacine(codePriveBDD, prenomRacine);
-			        if (racine == null) {
-			            System.out.println("Personne racine non trouvée dans la base ");
-			            return;
-			        }
+                    String prenomRacine = GestionArbreGenealogiqueBDD.getPrenomRacine(codePriveBDD);
+                    
+                    if (prenomRacine == null) {
+                        System.out.println("No tree found for this private code");
+                        return;
+                    }
 
-			        ArbreGenealogique arbre = new ArbreGenealogique(racine, codePriveBDD, new HashSet<>());  
-			        arbre.getPersonnes().add(racine);
-			        arbre.setLiensParente(new LienParente(arbre));
-	 
-		            main.afficherPagePrincipaleUtilisateurController(codePriveBDD, arbre); //  
-		            //System.out.print("seconde connexion");
-		        } else {
-		        	messageErreur();
-		        }
-		    }
-	    } catch (NumberFormatException e) {
-	        System.out.println("Le code doit être un nombre entier valide.");
-	        messageErreur();
-	        return;
-	    }
-	     
-	}
-    // Event Listener on Button.onAction
+                    Personne racine = GestionArbreGenealogiqueBDD.getPersonneRacine(codePriveBDD, prenomRacine);
+                    if (racine == null) {
+                        System.out.println("Root person not found in database");
+                        return;
+                    }
+
+                    ArbreGenealogique arbre = new ArbreGenealogique(racine, codePriveBDD, new HashSet<>());  
+                    arbre.getPersonnes().add(racine);
+                    arbre.setLiensParente(new LienParente(arbre));
+     
+                    main.afficherPagePrincipaleUtilisateurController(codePriveBDD, arbre);
+                } else {
+                    messageErreur();
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("The code must be a valid integer.");
+            messageErreur();
+            return;
+        }
+    }
+
+    /**
+     * Handles the registration button click event.
+     * Navigates to the registration page.
+     * 
+     * @param event The action event that triggered this method
+     */
     @FXML
     public void boutonInscription(ActionEvent event) {
         main.afficherPageInscription();
     }
+
+    /**
+     * Sets the reference to the main application.
+     * 
+     * @param main The main application instance
+     */
     public void setMain(Main main) {
         this.main = main;
-
     }
-	// Event Listener on Button[#boutonRetour].onAction
-	@FXML
-	public void retourBoutonPageConnexionUtilisateur(ActionEvent event) {
-		if (main != null) {
-            main.afficherAccueil(); // Utilise ta méthode centralisée
+
+    /**
+     * Handles the return button click event.
+     * Returns to the home page.
+     * 
+     * @param event The action event that triggered this method
+     */
+    @FXML
+    public void retourBoutonPageConnexionUtilisateur(ActionEvent event) {
+        if (main != null) {
+            main.afficherAccueil();
         } else {
-            System.err.println("ERREUR : main vaut null !");
+            System.err.println("ERROR: main is null!");
         }
-	}
+    }
 }

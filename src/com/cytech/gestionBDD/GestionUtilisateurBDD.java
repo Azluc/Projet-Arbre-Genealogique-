@@ -5,6 +5,10 @@ import java.sql.*;
 import java.util.ArrayList;
  
 import java.util.List;
+
+/**
+ * Class managing database operations for users.
+ */
 public class GestionUtilisateurBDD {
 	static Connection cnx;
 	static Statement st;
@@ -12,6 +16,11 @@ public class GestionUtilisateurBDD {
 	private static final String user="user";
 	private static final String password="Password123!";
 	 
+	/**
+	 * Establishes a connection to the database.
+	 * 
+	 * @return The database connection, or null if connection fails
+	 */
 	 public static Connection connecterDB() {
 	    	try {
 	    		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -26,6 +35,24 @@ public class GestionUtilisateurBDD {
 	    		return null;
 	    	}
 	 }
+
+	/**
+	 * Adds a new user to the database.
+	 * 
+	 * @param nom Last name
+	 * @param prenom First name
+	 * @param dateNaissance Birth date
+	 * @param nationalite Nationality
+	 * @param numeroSecuriteSociale Social security number
+	 * @param email Email address
+	 * @param motDePasse Password
+	 * @param codePublic Public code
+	 * @param codePrive Private code
+	 * @param adresse Address
+	 * @param telephone Phone number
+	 * @param photo Profile photo
+	 * @param carte_identite ID card
+	 */
 	 public static void AjouterUtilisateur(String nom, String prenom, String dateNaissance,
 		        String nationalite, String numeroSecuriteSociale, String email,
 		        String motDePasse, int codePublic, int codePrive,
@@ -70,8 +97,12 @@ public class GestionUtilisateurBDD {
 		    }
 		}
 
-	 
-	 
+	/**
+	 * Retrieves a user's first name and password using their private code.
+	 * 
+	 * @param codePrive The private code
+	 * @return A list containing the first name, password, and private code
+	 */
 	 public static List<Object> getPrenomEtMotDePasseParCodePrive(int codePrive) {
 		    List<Object> infos = new ArrayList<>();
 		    Connection connexion = null;
@@ -82,7 +113,7 @@ public class GestionUtilisateurBDD {
 		        connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/arbre_genealogique", "user", "Password123!");
 		        String sql = "SELECT prenom, mot_de_passe, code_prive FROM utilisateur WHERE code_prive = ?";
 		        statement = connexion.prepareStatement(sql);
-		        statement.setInt(1, codePrive); // ici c’est bien setString
+		        statement.setInt(1, codePrive); // ici c'est bien setString
 
 		        resultat = statement.executeQuery();
 
@@ -106,6 +137,13 @@ public class GestionUtilisateurBDD {
 		    return infos;
 		}
 	 
+	/**
+	 * Updates a user's password using their private code.
+	 * 
+	 * @param codePrive The private code
+	 * @param nouveauMotDePasse The new password
+	 * @return true if the update was successful, false otherwise
+	 */
 	 public static boolean modifierMotDePasseParCodePrive(int codePrive, String nouveauMotDePasse) {
 		    String url = "jdbc:mysql://localhost:3306/arbre_genealogique";
 		    String sql = "UPDATE utilisateur SET mot_de_passe = ? WHERE code_prive = ?";
@@ -125,6 +163,16 @@ public class GestionUtilisateurBDD {
 		    }
 		}
 	 
+	/**
+	 * Updates user information using their private code.
+	 * 
+	 * @param codePrive The private code
+	 * @param champEmail New email address
+	 * @param champNationalite New nationality
+	 * @param champAdresse New address
+	 * @param champTelephone New phone number
+	 * @return 1 if update successful, -1 if user not found or error occurs, 0 if no fields to update
+	 */
 	 public static int mettreAJourUtilisateurParCodePrive(int codePrive, String champEmail, String champNationalite, String champAdresse, String champTelephone) {
 		 String url="jdbc:mysql://localhost:3306/arbre_genealogique";   
 		 try (Connection connexion = DriverManager.getConnection(url, user, password)) {
@@ -184,19 +232,12 @@ public class GestionUtilisateurBDD {
 		    return -1;
 		}
 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
+	/**
+	 * Searches for a user by their name and first name.
+	 * 
+	 * @param nom Last name
+	 * @param prenom First name
+	 */
 	 	public static void rechercheparNP(String nom,String prenom) {
 	 		try{
 	 		
@@ -217,6 +258,15 @@ public class GestionUtilisateurBDD {
 	 		}
 	 	}
 	 	
+	/**
+	 * Updates a user's information.
+	 * 
+	 * @param id User ID
+	 * @param n_mdp New password
+	 * @param n_email New email
+	 * @param n_telephone New phone number
+	 * @param n_adresse New address
+	 */
 	 	public static void MofifierU(int id, String n_mdp, String n_email,String n_telephone,String n_adresse) {
 	 		try {
 	 			String query = "UPDATE utilisateur SET mot_de_passe='" + n_mdp

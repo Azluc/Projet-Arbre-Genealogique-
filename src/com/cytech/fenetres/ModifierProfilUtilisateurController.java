@@ -10,21 +10,76 @@ import javafx.scene.control.Alert.AlertType;
 
 import java.sql.SQLException;
 
-
 import com.cytech.Main;
 import com.cytech.classeProjet.ArbreGenealogique;
 import com.cytech.gestionBDD.GestionUtilisateurBDD;
 
 import javafx.event.ActionEvent;
 
- 
+/**
+ * Controller for the user profile modification form.
+ * Handles the modification of user information including email, nationality, address, and phone number.
+ */
 public class ModifierProfilUtilisateurController {
-
+	/** The genealogical tree associated with the user */
 	private ArbreGenealogique arbre;
-    private int codePrive;
+	
+	/** The private code associated with the user */
+	private int codePrive;
 
-    private Main main;
+	/** Reference to the main application */
+	private Main main;
 
+	/** Text field for entering the user's email address */
+	@FXML
+	private TextField champEmail;
+	
+	/** Text field for entering the user's nationality */
+	@FXML
+	private TextField champNationalite;
+	
+	/** Text field for entering the user's address */
+	@FXML
+	private TextField champAdresse;
+	
+	/** Text field for entering the user's phone number */
+	@FXML
+	private TextField champTelephone;
+	
+	/** Button to return to the previous page */
+	@FXML
+	private Button boutonRetour;
+
+	/**
+	 * Handles the validation button click event.
+	 * Updates the user's information in the database and shows appropriate feedback messages.
+	 * 
+	 * @param event The action event that triggered this method
+	 * @throws SQLException If a database error occurs during the update
+	 */
+	@FXML
+	public void boutonValider(ActionEvent event) throws SQLException {
+		String email = champEmail.getText();
+		String nationalite = champNationalite.getText();
+		String adresse = champAdresse.getText();
+		String telephone = champTelephone.getText();
+		int resultat = GestionUtilisateurBDD.mettreAJourUtilisateurParCodePrive(codePrive, email, nationalite, adresse, telephone);
+		if (resultat == 1) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.initOwner(main.getPrimaryStage());
+			alert.setTitle("Update successful");
+			alert.setHeaderText("Update completed successfully");
+			alert.setContentText("Your information has been updated. You can now return to the main page.");
+			alert.showAndWait();
+			effacerInformationChamp();
+
+			main.afficherPagePrincipaleUtilisateurController(codePrive, arbre);
+		}
+		else if(resultat == 0) {
+			Alert alerte = new Alert(AlertType.ERROR);
+			alerte.initOwner(main.getPrimaryStage());
+			alerte.setTitle("Update error");
+			alerte.setHeaderText("No changes made");
     @FXML
     private TextField champEmail;
     @FXML

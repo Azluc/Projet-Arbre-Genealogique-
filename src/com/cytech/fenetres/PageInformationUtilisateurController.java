@@ -41,44 +41,91 @@ import java.util.Properties;
 import java.util.Random;
  
 
-
+/**
+ * Controller for the user information display page.
+ * Handles the display and management of user registration requests,
+ * including viewing user details, verifying documents, and accepting/rejecting requests.
+ */
 public class PageInformationUtilisateurController {
      
+    /** Reference to the main application */
     private Main main;
+
+    /** Button to return to the administrator page */
     @FXML
-	private Button BoutonRetourPageAdmin;
+    private Button BoutonRetourPageAdmin;
+
+    /** Label displaying the user's last name */
     @FXML
     private Label nomBDD;
+
+    /** Label displaying the user's first name */
     @FXML
     private Label prenomBDD;
+
+    /** Label displaying the user's birth date */
     @FXML
     private Label dateNaissanceValue;
+
+    /** Label displaying the user's nationality */
     @FXML
     private Label nationaliteBDD;
+
+    /** Label displaying the user's social security number */
     @FXML
     private Label NumeroSecuBDD;
+
+    /** Label displaying the user's email address */
     @FXML
     private Label emailBDD;
+
+    /** Label displaying the user's address */
     @FXML
     private Label adresseBDD;
+
+    /** Label displaying the user's phone number */
     @FXML
     private Label numeroTelephoneBDD;
+
+    /** ImageView for displaying the user's digital photo */
     @FXML
     private ImageView photoNumerique;
+
+    /** ImageView for displaying the user's ID card */
     @FXML
     private ImageView photoIdentite;
+
+    /** Button to accept the registration request */
     @FXML
     private Button boutonAccepter;
+
+    /** Button to reject the registration request */
     @FXML
     private Button boutonRefuser;
 
+    /** Database username */
     private static final String utilisateur = "user";
+
+    /** Database password */
     private static final String motDePasse = "Password123!";
+
+    /** Database connection URL */
     private static final String url = "jdbc:mysql://localhost:3306/arbre_genealogique";
+
+    /**
+     * Initializes the controller.
+     */
     public void initialize() {
 
     }
-    // Méthode pour afficher les informations utilisateur selon l'email
+
+    /**
+     * Displays user information based on the provided email address.
+     * Retrieves and displays user details from the database, including personal information
+     * and identification documents.
+     * 
+     * @param email The email address of the user whose information is to be displayed
+     */
     public void afficherInformationsUtilisateur(String email) {
         initialize();
         //System.out.println(email);
@@ -116,7 +163,12 @@ public class PageInformationUtilisateurController {
         }
     }
 
-    // Méthode pour afficher l'image dans le ImageView
+    /**
+     * Displays an image in the specified ImageView.
+     * 
+     * @param imageData The byte array containing the image data
+     * @param imageView The ImageView where the image should be displayed
+     */
     private static void afficherImage(byte[] imageData, ImageView imageView) {
         if (imageData != null && imageData.length > 0) {
             ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
@@ -125,11 +177,22 @@ public class PageInformationUtilisateurController {
         }
     }
 
+    /**
+     * Sets the reference to the main application.
+     * 
+     * @param main The main application instance
+     */
     public void setMain(Main main) {
         this.main = main;
 
     }
 
+    /**
+     * Generates a random number between 1 and 1,000,000.
+     * Used for generating public and private codes.
+     * 
+     * @return A random integer between 1 and 1,000,000
+     */
     public static int genererNombreAleatoire() {
         Random random = new Random();
 
@@ -139,7 +202,16 @@ public class PageInformationUtilisateurController {
     
      
     
-    // Event Listener on Button[#boutonAccepter].onAction
+    /**
+     * Handles the acceptance of a registration request.
+     * Generates public and private codes, sends them via email,
+     * and adds the user to the database.
+     * 
+     * @param event The action event that triggered this method
+     * @throws IOException If an I/O error occurs
+     * @throws SQLException If a database error occurs
+     * @throws ParseException If a date parsing error occurs
+     */
     @FXML
     public void boutonAccepterAdhesion(ActionEvent event) throws IOException, SQLException, ParseException {
 
@@ -234,7 +306,12 @@ public class PageInformationUtilisateurController {
     }
 
 
-    // Event Listener on Button[#boutonRefuser].onAction
+    /**
+     * Handles the rejection of a registration request.
+     * Sends a rejection email to the user.
+     * 
+     * @param event The action event that triggered this method
+     */
     @FXML
     public void boutonRefuserAdhesion(ActionEvent event) {
 
@@ -276,10 +353,14 @@ public class PageInformationUtilisateurController {
     }
 	
 	
-	 
-	// Event Listener on Button[#BoutonRetourPageAdmin].onAction
-		@FXML
-		public void BoutonRetourPageAdmin(ActionEvent event) {
-			main.afficherPageAdministrateur();
-		}
+    /**
+     * Handles the return button click event.
+     * Returns to the administrator page.
+     * 
+     * @param event The action event that triggered this method
+     */
+    @FXML
+    public void BoutonRetourPageAdmin(ActionEvent event) {
+        main.afficherPageAdministrateur();
+    }
 }

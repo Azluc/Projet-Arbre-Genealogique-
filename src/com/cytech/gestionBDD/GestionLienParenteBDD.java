@@ -12,13 +12,21 @@ import java.util.Set;
 import com.cytech.classeProjet.Personne;
 import com.cytech.classeProjet.TypeRelation;
 
+/**
+ * Class managing database operations for family relationships.
+ */
 public class GestionLienParenteBDD {
 	
 	public static  String utilisateur = "user";
     public static String motDePasse ="Password123!";
     public static final String url = "jdbc:mysql://localhost:3306/arbre_genealogique";
 	
-    
+    /**
+     * Retrieves the set of deceased people in a given tree.
+     * 
+     * @param idArbre The ID of the tree to search in
+     * @return A set of first names of deceased people
+     */
     public static Set<String> recupererPersonnesDecedees(int idArbre) {
         Set<String> decedes = new HashSet<>();
 
@@ -46,6 +54,12 @@ public class GestionLienParenteBDD {
         return decedes;
     }
 
+    /**
+     * Retrieves the set of living people in a given tree.
+     * 
+     * @param idArbre The ID of the tree to search in
+     * @return A set of first names of living people
+     */
     public static Set<String> recupererPersonnesVivantes(int idArbre) {
         Set<String> vivants = new HashSet<>();
 
@@ -73,6 +87,12 @@ public class GestionLienParenteBDD {
         return vivants;
     }
 
+    /**
+     * Retrieves the set of women in a given tree.
+     * 
+     * @param idArbre The ID of the tree to search in
+     * @return A set of first names of women
+     */
     public static Set<String> recupererFemmes(int idArbre) {
         Set<String> femmes = new HashSet<>();
 
@@ -100,6 +120,12 @@ public class GestionLienParenteBDD {
         return femmes;
     }
 
+    /**
+     * Retrieves the set of men in a given tree.
+     * 
+     * @param idArbre The ID of the tree to search in
+     * @return A set of first names of men
+     */
     public static Set<String> recupererHommes(int idArbre) {
         Set<String> hommes = new HashSet<>();
 
@@ -127,6 +153,14 @@ public class GestionLienParenteBDD {
         return hommes;
     }
     
+    /**
+     * Saves a family relationship between two people in the database.
+     * 
+     * @param p1 The first person
+     * @param p2 The second person
+     * @param typeRelation The type of relationship (parent-child or sibling)
+     * @param nomRelation The specific name of the relationship
+     */
 	public static void enregistrerLienDansBDD(Personne p1, Personne p2, TypeRelation typeRelation, String nomRelation) {
 		 
 	    String sql = "";
@@ -159,7 +193,7 @@ public class GestionLienParenteBDD {
 	                break;
 
 	            default:
-	                // On ignore les autres types comme UNION
+	                // Ignore other types like UNION
 	                break;
 	        }
 	    } catch (SQLException e) {

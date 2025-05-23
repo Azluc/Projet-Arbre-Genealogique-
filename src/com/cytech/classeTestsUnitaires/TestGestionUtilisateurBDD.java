@@ -3,11 +3,21 @@ package com.cytech.classeTestsUnitaires;
 import com.cytech.gestionBDD.GestionUtilisateurBDD;
 import java.util.List;
 
+/**
+ * Test class for GestionUtilisateurBDD functionality.
+ * This class contains unit tests for the user database management system,
+ * including tests for database connection, user addition, password management,
+ * and user information updates.
+ */
 public class TestGestionUtilisateurBDD {
     
     private static int testsReussis = 0;
     private static int testsEchoues = 0;
     
+    /**
+     * Main method to run all tests for GestionUtilisateurBDD.
+     * Executes all test methods and displays a summary of results.
+     */
     public static void main(String[] args) {
         System.out.println("=== DEBUT DES TESTS POUR GestionUtilisateurBDD ===");
         System.out.println();
@@ -33,6 +43,10 @@ public class TestGestionUtilisateurBDD {
         }
     }
     
+    /**
+     * Tests the database connection functionality.
+     * Verifies that a connection can be established and closed properly.
+     */
     public static void testConnexionDB() {
         System.out.println("Test 1: Connexion a la base de donnees");
         try {
@@ -52,6 +66,10 @@ public class TestGestionUtilisateurBDD {
         System.out.println();
     }
     
+    /**
+     * Tests the user addition functionality.
+     * Verifies that a new user can be added to the database with all required information.
+     */
     public static void testAjouterUtilisateur() {
         System.out.println("Test 2: Ajout d'un utilisateur");
         try {
@@ -83,6 +101,10 @@ public class TestGestionUtilisateurBDD {
         System.out.println();
     }
     
+    /**
+     * Tests the retrieval of user information by private code.
+     * Verifies that user's first name and password can be retrieved using their private code.
+     */
     public static void testGetPrenomEtMotDePasseParCodePrive() {
         System.out.println("Test 3: Recuperation des informations par code prive");
         try {
@@ -120,6 +142,10 @@ public class TestGestionUtilisateurBDD {
         System.out.println();
     }
     
+    /**
+     * Tests the password modification functionality.
+     * Verifies that a user's password can be updated using their private code.
+     */
     public static void testModifierMotDePasseParCodePrive() {
         System.out.println("Test 4: Modification du mot de passe par code prive");
         try {
@@ -151,6 +177,10 @@ public class TestGestionUtilisateurBDD {
         System.out.println();
     }
     
+    /**
+     * Tests the user information update functionality.
+     * Verifies that user details can be updated using their private code.
+     */
     public static void testMettreAJourUtilisateurParCodePrive() {
         System.out.println("Test 5: Mise a jour des informations utilisateur");
         try {
@@ -194,6 +224,10 @@ public class TestGestionUtilisateurBDD {
         System.out.println();
     }
     
+    /**
+     * Tests the user search functionality by name and first name.
+     * Verifies that users can be found using their name and first name.
+     */
     public static void testRechercheparNP() {
         System.out.println("Test 6: Recherche par nom et prenom");
         try {
@@ -213,6 +247,10 @@ public class TestGestionUtilisateurBDD {
         System.out.println();
     }
     
+    /**
+     * Tests the user modification functionality.
+     * Verifies that user information can be modified in the database.
+     */
     public static void testMofifierU() {
         System.out.println("Test 7: Modification utilisateur (methode MofifierU)");
         try {

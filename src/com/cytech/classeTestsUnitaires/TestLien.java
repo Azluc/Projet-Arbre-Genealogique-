@@ -7,7 +7,24 @@ import com.cytech.classeProjet.TypeRelation;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * Test class for Lien functionality.
+ * This class contains unit tests for the Lien class,
+ * verifying the creation and manipulation of family relationships
+ * between persons, including relationship type and name modifications.
+ */
 public class TestLien {
+    /**
+     * Main method to run all tests for Lien class.
+     * Tests the following aspects:
+     * - Creation of a relationship between two persons
+     * - Access to relationship properties (source, destination, type, name)
+     * - Modification of relationship name
+     * - String representation of the relationship
+     *
+     * @param args command line arguments (not used)
+     * @throws Exception if date parsing fails
+     */
     public static void main(String[] args) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 

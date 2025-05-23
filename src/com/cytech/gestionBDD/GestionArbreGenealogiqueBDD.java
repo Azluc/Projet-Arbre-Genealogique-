@@ -22,8 +22,8 @@ public class GestionArbreGenealogiqueBDD {
     private static Connection connexion;
 
     /**
-     * Initialise la connexion statique à la base de données.
-     * Doit être appelée une fois au démarrage avant d'utiliser d'autres méthodes.
+     * Initializes the static database connection.
+     * Must be called once at startup before using other methods.
      */
     public static void initConnexion() throws SQLException {
         if (connexion == null || connexion.isClosed()) {
@@ -32,26 +32,27 @@ public class GestionArbreGenealogiqueBDD {
     }
 
     /**
-     * Vérifie que la connexion est initialisée avant usage.
+     * Verifies that the connection is initialized before use.
      */
     private static void verifierConnexion() {
         if (connexion == null) {
-            throw new IllegalStateException("Connexion non initialisée. Appelez initConnexion() avant.");
+            throw new IllegalStateException("Connection not initialized. Call initConnexion() first.");
         }
     }
     
     /**
-     * Charge l'arbre généalogique depuis la BDD et garde une référence unique pour chaque personne
+     * Loads the genealogical tree from the database and maintains a unique reference for each person.
+     * 
+     * @param idArbre The ID of the tree to load
+     * @throws SQLException If a database error occurs
      */
     public static void chargerArbreDepuisBDD(int idArbre) throws SQLException {
         verifierConnexion();
 
-        // Vider complètement la map pour éviter les références orphelines
+        // Clear the map completely to avoid orphaned references
         personnes.clear();
 
-         
-
-        // Charger les personnes
+        // Load people
         String sqlPersonnes = "SELECT * FROM Personne WHERE id_arbre = ?";
         try (PreparedStatement ps = connexion.prepareStatement(sqlPersonnes)) {
             ps.setInt(1, idArbre);
@@ -67,13 +68,11 @@ public class GestionArbreGenealogiqueBDD {
                     String cle = clePersonne(nom, prenom);
                     Personne personne = new Personne(nom, prenom, dateNaissance, dateDeces, genre, idArbre, profondeur);
                     personnes.put(cle, personne);
-                    
-                     
                 }
             }
         }
 
-        // Charger les relations parent-enfant
+        // Load parent-child relationships
         String sqlParents = "SELECT * FROM Parent_Enfant WHERE id_arbre = ?";
         try (PreparedStatement ps = connexion.prepareStatement(sqlParents)) {
             ps.setInt(1, idArbre);
@@ -90,15 +89,14 @@ public class GestionArbreGenealogiqueBDD {
                     if (parent != null && enfant != null) {
                         parent.getEnfants().add(enfant);
                         enfant.getParents().add(parent);
- 
                     } else {
-                        System.out.println("ERREUR: Relation parent-enfant non établie - parent ou enfant introuvable");
+                        System.out.println("ERROR: Parent-child relationship not established - parent or child not found");
                     }
                 }
             }
         }
 
-        // Charger les relations frères/soeurs
+        // Load sibling relationships
         String sqlFreres = "SELECT * FROM Frere_Soeur WHERE id_arbre = ?";
         try (PreparedStatement ps = connexion.prepareStatement(sqlFreres)) {
             ps.setInt(1, idArbre);
@@ -119,15 +117,14 @@ public class GestionArbreGenealogiqueBDD {
                         if (!p2.getFreresEtSoeurs().contains(p1)) {
                             p2.getFreresEtSoeurs().add(p1);
                         }
-                         
                     } else {
-                        System.out.println("ERREUR: Relation frère/soeur non établie - personnes introuvables");
+                        System.out.println("ERROR: Sibling relationship not established - people not found");
                     }
                 }
             }
         }
 
-        // Charger les unions conjugales
+        // Load marital unions
         String sqlUnions = "SELECT * FROM UnionConjugale WHERE id_arbre = ?";
         try (PreparedStatement ps = connexion.prepareStatement(sqlUnions)) {
             ps.setInt(1, idArbre);
@@ -144,36 +141,45 @@ public class GestionArbreGenealogiqueBDD {
                     if (conjoint1 != null && conjoint2 != null) {
                         conjoint1.setConjoint(conjoint2);
                         conjoint2.setConjoint(conjoint1);
-                         
                     } else {
-                        System.out.println("ERREUR: Union conjugale non établie - conjoints introuvables");
+                        System.out.println("ERROR: Marital union not established - spouses not found");
                     }
                 }
             }
         }
-        
-     
     }
 
     /**
-     * Génère une clé unique pour identifier une personne dans la map
+     * Generates a unique key to identify a person in the map.
+     * 
+     * @param nom The person's last name
+     * @param prenom The person's first name
+     * @return A unique key string
      */
     private static String clePersonne(String nom, String prenom) {
         return nom.trim().toLowerCase() + ";" + prenom.trim().toLowerCase();
     }
 
     /**
-     * Retourne la collection de toutes les personnes chargées
+     * Returns the collection of all loaded people.
+     * 
+     * @return The collection of people
      */
     public static Collection<Personne> getPersonnes() {
         return personnes.values();
     }
 
     /**
-     * Ajoute une nouvelle racine d'arbre dans la base de données
+     * Adds a new tree root to the database.
+     * 
+     * @param idArbre The tree ID
+     * @param codePublic The public code
+     * @param prenom The first name of the root person
+     * @return The number of rows affected
+     * @throws SQLException If a database error occurs
      */
     public static int ajoutRacineArbre(int idArbre, int codePublic, String prenom) throws SQLException {
-        // Ici on crée une nouvelle connexion indépendante pour l'insertion.
+        // Here we create a new independent connection for the insertion
         try (Connection conn = DriverManager.getConnection(URL_BDD, UTILISATEUR, MOT_DE_PASSE);
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO Arbre (id_arbre, codePublic, prenom) VALUES (?, ?, ?)")) {
 
@@ -186,7 +192,11 @@ public class GestionArbreGenealogiqueBDD {
     }
     
     /**
-     * Récupère le prénom racine de l'arbre pour un codePrivé donné
+     * Retrieves the root person's first name for a given private code.
+     * 
+     * @param codePrive The private code
+     * @return The root person's first name, or null if not found
+     * @throws SQLException If a database error occurs
      */
     public static String getPrenomRacine(int codePrive) throws SQLException {
         verifierConnexion();
@@ -197,13 +207,10 @@ public class GestionArbreGenealogiqueBDD {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     prenom = rs.getString("prenom");
-                    //System.out.println("Prénom racine trouvé: " + prenom);
-                    return prenom;
                 }
             }
         }
-        System.out.println("ERREUR: Prénom racine non trouvé pour codePrive " + codePrive);
-        return null;
+        return prenom;
     }
 
     /**

@@ -2,7 +2,19 @@ package com.cytech.classeTestsUnitaires;
 
 import com.cytech.classeProjet.Cote;
 
+/**
+ * Test class for Cote enum functionality.
+ * This class contains unit tests for the Cote enum,
+ * verifying the correct behavior of different family side values
+ * (MATERNEL, NEUTRE) and their string representations.
+ */
 public class TestCote {
+    /**
+     * Main method to run all tests for Cote enum.
+     * Tests the following aspects:
+     * - MATERNEL value comparison
+     * - NEUTRE value string representation
+     */
     public static void main(String[] args) {
         Cote c = Cote.MATERNEL;
 

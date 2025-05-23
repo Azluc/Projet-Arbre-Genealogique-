@@ -1,7 +1,31 @@
 package com.cytech.classeTestsUnitaires;
 
+/**
+ * Main test runner class for the genealogical tree application.
+ * This class orchestrates the execution of all test classes in the application,
+ * running them in sequence and providing clear separation between different test suites.
+ * It includes tests for:
+ * - Administrator functionality
+ * - Family side (Cote) functionality
+ * - Gender (Genre) functionality
+ * - Relationship (Lien) functionality
+ * - Person (Personne) functionality
+ * - User (Utilisateur) functionality
+ * - Database management for membership requests
+ * - Database management for family relationships
+ * - Database management for persons
+ * - Database management for users
+ */
 public class Main {
 
+	/**
+	 * Main method to run all test suites.
+	 * Executes each test class in sequence and provides clear output
+	 * indicating the start and completion of each test suite.
+	 * 
+	 * @param args command line arguments (not used)
+	 * @throws Exception if any test throws an exception
+	 */
 	public static void main(String[] args) throws Exception {
 		System.out.println("---- Test Administrateur----");
 		TestAdministrateur.main(null);

@@ -1,42 +1,88 @@
 package com.cytech.classeProjet;
 
- 
-
 import javax.swing.*;
-
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.*;
 import java.util.List;
- 
 
+/**
+ * Panel class for displaying a genealogical tree.
+ * This class handles the visual representation of the tree, including the positioning
+ * and drawing of individuals and their relationships.
+ */
 @SuppressWarnings("serial")
 public class ArbreGenealogiquePanel extends JPanel {
+    /** The genealogical tree to display */
     private ArbreGenealogique arbre;
+    
+    /** Map storing the position of each person in the panel */
     private Map<Personne, Point> positions = new HashMap<>();
+    
+    /** Map storing the dimensions of each person's display box */
     private Map<Personne, Dimension> dimensions = new HashMap<>();
+    
+    /** Map storing the children of each parent */
     private Map<Personne, List<Personne>> enfantsParParent = new HashMap<>();
+    
+    /** Width of each person's display box */
     private static final int LARGEUR_NOEUD = 120;
+    
+    /** Height of each person's display box */
     private static final int HAUTEUR_NOEUD = 80;
+    
+    /** Horizontal spacing between elements */
     private static final int ESPACE_HORIZONTAL = 40;
+    
+    /** Vertical spacing between elements */
     private static final int ESPACE_VERTICAL = 60;
-    private static final int DISTANCE_COUPLE = 20; // Distance entre les conjoints
-    private static final Color COULEUR_HOMME = new Color(173, 216, 230);  //   Bleu clair
-    private static final Color COULEUR_FEMME = new Color(255, 182, 193);  // Rose clair
-    private static final Color COULEUR_LIEN = new Color(100, 100, 100);   // Gris foncé
-    private static final Color COULEUR_LIEN_COUPLE = new Color(255, 0, 0); // Rouge pour les liens de couple
-    private static final Color COULEUR_TEXTE = new Color(50, 50, 50);     // Presque noir
+    
+    /** Distance between spouses */
+    private static final int DISTANCE_COUPLE = 20;
+    
+    /** Color for male individuals */
+    private static final Color COULEUR_HOMME = new Color(173, 216, 230);  // Light blue
+    
+    /** Color for female individuals */
+    private static final Color COULEUR_FEMME = new Color(255, 182, 193);  // Light pink
+    
+    /** Color for relationship lines */
+    private static final Color COULEUR_LIEN = new Color(100, 100, 100);   // Dark gray
+    
+    /** Color for spouse relationship lines */
+    private static final Color COULEUR_LIEN_COUPLE = new Color(255, 0, 0); // Red
+    
+    /** Color for text */
+    private static final Color COULEUR_TEXTE = new Color(50, 50, 50);     // Almost black
+    
+    /** Font for person names */
     private static final Font FONT_PERSONNE = new Font("Arial", Font.BOLD, 12);
+    
+    /** Font for additional information */
     private static final Font FONT_INFO = new Font("Arial", Font.PLAIN, 10);
     
+    /** Total width of the panel */
     private int largeurTotale;
+    
+    /** Total height of the panel */
     private int hauteurTotale;
 
+    /**
+     * Constructor for the genealogical tree panel.
+     * 
+     * @param arbre The genealogical tree to display
+     */
     public ArbreGenealogiquePanel(ArbreGenealogique arbre) {
         this.arbre = arbre;
         setBackground(Color.WHITE);
         calculerPositions();
     }
 
+    /**
+     * Calculates the positions of all individuals in the tree.
+     * This method organizes the layout of the tree, handling parent-child relationships,
+     * sibling relationships, and spouse relationships.
+     */
     private void calculerPositions() {
         if (arbre == null || arbre.getRacine() == null) return;
         
@@ -44,7 +90,7 @@ public class ArbreGenealogiquePanel extends JPanel {
         dimensions.clear();
         enfantsParParent.clear();
         
-        // Construire la structure enfants par parent
+        // Build parent-child structure
         for (Personne p : arbre.getPersonnes()) {
             for (Personne parent : p.getParents()) {
                 if (arbre.getPersonnes().contains(parent)) {
@@ -54,7 +100,7 @@ public class ArbreGenealogiquePanel extends JPanel {
             }
         }
         
-        // Grouper les personnes par profondeur
+        // Group people by depth
         Map<Integer, List<Personne>> personnesParProfondeur = new HashMap<>();
         
         for (Personne p : arbre.getPersonnes()) {
@@ -63,48 +109,48 @@ public class ArbreGenealogiquePanel extends JPanel {
             personnesParProfondeur.get(profondeur).add(p);
         }
         
-        // Trier les profondeurs ET LES INVERSER pour avoir l'ordre traditionnel
-        // (profondeur la plus haute = ancêtres en haut, profondeur la plus basse = descendants en bas)
+        // Sort depths in reverse order (ancestors at top, descendants at bottom)
         List<Integer> profondeurs = new ArrayList<>(personnesParProfondeur.keySet());
-        Collections.sort(profondeurs, Collections.reverseOrder()); // INVERSION ICI
+        Collections.sort(profondeurs, Collections.reverseOrder());
         
-        // Calculer la hauteur totale
+        // Calculate total height
         hauteurTotale = (profondeurs.size() * HAUTEUR_NOEUD) + ((profondeurs.size() + 1) * ESPACE_VERTICAL);
         
-        // Première passe: positionner les personnes par niveau sans tenir compte des relations
+        // First pass: position people by level without considering relationships
         int maxLargeurNiveau = positionnerPersonnesParNiveau(personnesParProfondeur, profondeurs);
         largeurTotale = maxLargeurNiveau + (2 * ESPACE_HORIZONTAL);
         
-        // Deuxième passe: positionner les couples côte à côte
+        // Second pass: position spouses side by side
         positionnerCouples();
         
-        // Troisième passe: ajuster les positions pour éviter les chevauchements
+        // Third pass: adjust positions to avoid overlaps
         eviterChevauchements();
         
-        // Quatrième passe: positionner les parents au-dessus de leurs enfants
+        // Fourth pass: position parents above their children
         positionnerParentsAuDessusEnfants();
         
-        // Recalculer la largeur totale après ajustements
+        // Recalculate total dimensions after adjustments
         recalculerDimensionsTotales();
     }
-    
+
+    /**
+     * Positions people by level in the tree.
+     * 
+     * @param personnesParProfondeur Map of people grouped by depth
+     * @param profondeurs List of depths in reverse order
+     * @return The maximum width needed for any level
+     */
     private int positionnerPersonnesParNiveau(Map<Integer, List<Personne>> personnesParProfondeur, List<Integer> profondeurs) {
         int maxLargeurNiveau = 0;
-        
-        // Utiliser un index de niveau pour calculer les positions Y
         int indexNiveau = 0;
         
         for (Integer profondeur : profondeurs) {
             List<Personne> personnesNiveau = personnesParProfondeur.get(profondeur);
-            
-            // Trier les personnes (par exemple, par nom puis prénom)
             personnesNiveau.sort(Comparator.comparing(Personne::getNom).thenComparing(Personne::getPrenom));
             
             int largeurNiveau = calculerLargeurNiveau(personnesNiveau);
             maxLargeurNiveau = Math.max(maxLargeurNiveau, largeurNiveau);
             
-            // Positionner chaque personne du niveau
-            // Utiliser indexNiveau au lieu de profondeur pour le calcul Y
             int startX = ESPACE_HORIZONTAL;
             int y = ESPACE_VERTICAL + (indexNiveau * (HAUTEUR_NOEUD + ESPACE_VERTICAL));
             
@@ -114,19 +160,27 @@ public class ArbreGenealogiquePanel extends JPanel {
                 startX += LARGEUR_NOEUD + ESPACE_HORIZONTAL;
             }
             
-            indexNiveau++; // Incrémenter l'index pour le niveau suivant
+            indexNiveau++;
         }
         
         return maxLargeurNiveau;
     }
-    
+
+    /**
+     * Calculates the width needed for a level of the tree.
+     * 
+     * @param personnes List of people at this level
+     * @return The required width for this level
+     */
     private int calculerLargeurNiveau(List<Personne> personnes) {
-        // Calculer la largeur nécessaire pour ce niveau
         return (personnes.size() * LARGEUR_NOEUD) + ((personnes.size() - 1) * ESPACE_HORIZONTAL) + (2 * ESPACE_HORIZONTAL);
     }
-    
+
+    /**
+     * Positions spouses side by side in the tree.
+     * This method identifies couples and adjusts their positions to be adjacent.
+     */
     private void positionnerCouples() {
-        // Identifier tous les couples et les positionner côte à côte
         Set<Personne> personnesTraitees = new HashSet<>();
         
         for (Personne p : arbre.getPersonnes()) {
@@ -137,23 +191,24 @@ public class ArbreGenealogiquePanel extends JPanel {
                 personnesTraitees.add(p);
                 personnesTraitees.add(conjoint);
                 
-                // Calculer la position moyenne des deux conjoints
                 Point posP = positions.get(p);
                 Point posConj = positions.get(conjoint);
                 
                 if (posP != null && posConj != null) {
                     int xMoyen = (posP.x + posConj.x) / 2;
                     
-                    // Repositionner les conjoints côte à côte
                     positions.put(p, new Point(xMoyen - LARGEUR_NOEUD - DISTANCE_COUPLE/2, posP.y));
                     positions.put(conjoint, new Point(xMoyen + DISTANCE_COUPLE/2, posConj.y));
                 }
             }
         }
     }
-    
+
+    /**
+     * Adjusts positions to avoid overlapping elements.
+     * This method ensures that no two elements overlap horizontally at the same level.
+     */
     private void eviterChevauchements() {
-        // Regrouper les personnes par niveau
         Map<Integer, List<Personne>> personnesParY = new HashMap<>();
         
         for (Personne p : arbre.getPersonnes()) {
@@ -165,14 +220,10 @@ public class ArbreGenealogiquePanel extends JPanel {
             }
         }
         
-        // Pour chaque niveau, trier les personnes par X et vérifier/ajuster les chevauchements
         for (int y : personnesParY.keySet()) {
             List<Personne> personnesNiveau = personnesParY.get(y);
-            
-            // Trier par position X
             personnesNiveau.sort(Comparator.comparing(p -> positions.get(p).x));
             
-            // Vérifier et ajuster les positions pour éviter les chevauchements
             for (int i = 1; i < personnesNiveau.size(); i++) {
                 Personne p1 = personnesNiveau.get(i-1);
                 Personne p2 = personnesNiveau.get(i);
@@ -183,11 +234,9 @@ public class ArbreGenealogiquePanel extends JPanel {
                 int finP1 = pos1.x + LARGEUR_NOEUD;
                 int debutP2 = pos2.x;
                 
-                // Si chevauchement, décaler p2 et tous les suivants
                 if (finP1 + ESPACE_HORIZONTAL > debutP2) {
                     int decalage = finP1 + ESPACE_HORIZONTAL - debutP2;
                     
-                    // Décaler p2 et tous les éléments suivants
                     for (int j = i; j < personnesNiveau.size(); j++) {
                         Personne pj = personnesNiveau.get(j);
                         Point posj = positions.get(pj);
@@ -197,9 +246,12 @@ public class ArbreGenealogiquePanel extends JPanel {
             }
         }
     }
-    
+
+    /**
+     * Positions parents above their children in the tree.
+     * This method ensures that parents are centered above their children.
+     */
     private void positionnerParentsAuDessusEnfants() {
-        // Pour chaque groupe parent-enfants, positionner le parent (ou le couple) au-dessus du centre des enfants
         for (Personne parent : arbre.getPersonnes()) {
             List<Personne> enfants = enfantsParParent.getOrDefault(parent, Collections.emptyList());
             
@@ -207,7 +259,6 @@ public class ArbreGenealogiquePanel extends JPanel {
                 Personne conjoint = parent.getConjoint();
                 boolean aConjoint = conjoint != null && arbre.getPersonnes().contains(conjoint);
                 
-                // Calculer le centre du groupe d'enfants
                 int xMinEnfants = enfants.stream()
                         .mapToInt(e -> positions.get(e).x)
                         .min()
@@ -219,11 +270,9 @@ public class ArbreGenealogiquePanel extends JPanel {
                 
                 int centreEnfants = (xMinEnfants + xMaxEnfants) / 2;
                 
-                // Positionner parent(s) au-dessus du centre des enfants
                 Point posParent = positions.get(parent);
                 
                 if (aConjoint) {
-                    // Calculer position pour le couple
                     int xParent = centreEnfants - LARGEUR_NOEUD - DISTANCE_COUPLE/2;
                     positions.put(parent, new Point(xParent, posParent.y));
                     
@@ -231,17 +280,19 @@ public class ArbreGenealogiquePanel extends JPanel {
                     int xConjoint = centreEnfants + DISTANCE_COUPLE/2;
                     positions.put(conjoint, new Point(xConjoint, posConjoint.y));
                 } else {
-                    // Positionner le parent seul
                     int xParent = centreEnfants - LARGEUR_NOEUD/2;
                     positions.put(parent, new Point(xParent, posParent.y));
                 }
             }
         }
         
-        // Après avoir repositionné, vérifier à nouveau les chevauchements
         eviterChevauchements();
     }
-    
+
+    /**
+     * Recalculates the total dimensions of the panel.
+     * This method updates the panel's size based on the positions of all elements.
+     */
     private void recalculerDimensionsTotales() {
         int xMax = 0;
         int yMax = 0;
@@ -258,284 +309,220 @@ public class ArbreGenealogiquePanel extends JPanel {
         hauteurTotale = yMax + ESPACE_VERTICAL;
     }
 
+    /**
+     * Paints the genealogical tree.
+     * This method is called automatically by Swing to render the panel.
+     * 
+     * @param g The graphics context to use for painting
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        if (arbre == null || arbre.getRacine() == null) return;
-        
-        Graphics2D g2d = (Graphics2D) g.create();
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // Dessiner les liens
         dessinerLiens(g2d);
         
-        // Dessiner les personnes
         for (Personne p : arbre.getPersonnes()) {
             dessinerPersonne(g2d, p);
         }
-        
-        g2d.dispose();
     }
-    
+
+    /**
+     * Draws all relationship lines in the tree.
+     * 
+     * @param g2d The graphics context to use for drawing
+     */
     private void dessinerLiens(Graphics2D g2d) {
-        // Configuration initiale pour les liens normaux
-        g2d.setColor(COULEUR_LIEN);
-        g2d.setStroke(new BasicStroke(2.0f)); // Ligne plus épaisse pour être visible
-        
-        // Dessiner d'abord tous les liens parent-enfant avec des lignes droites
         dessinerLiensParentEnfant(g2d);
-        
-        // Ensuite dessiner les liens de fratrie avec des lignes pointillées
         dessinerLiensFratrie(g2d);
-        
-        // Enfin dessiner les liens de couple
         dessinerLiensCouples(g2d);
     }
-    
+
+    /**
+     * Draws parent-child relationship lines.
+     * 
+     * @param g2d The graphics context to use for drawing
+     */
     private void dessinerLiensParentEnfant(Graphics2D g2d) {
         g2d.setColor(COULEUR_LIEN);
-        g2d.setStroke(new BasicStroke(2.0f)); // Ligne solide épaisse
+        g2d.setStroke(new BasicStroke(2));
         
-        Set<String> liensTraces = new HashSet<>();
-        
-        for (Lien lien : arbre.getLiensParente().getLiens()) {
-            if (lien.getType() == TypeRelation.PARENT_ENFANT) {
-                Personne parent = lien.getPersonneSource();
-                Personne enfant = lien.getPersonneDestination();
+        for (Personne parent : arbre.getPersonnes()) {
+            Point posParent = positions.get(parent);
+            if (posParent == null) continue;
+            
+            for (Personne enfant : parent.getEnfants()) {
+                Point posEnfant = positions.get(enfant);
+                if (posEnfant == null) continue;
                 
-                String cleUnique = parent.hashCode() + "-" + enfant.hashCode();
+                int x1 = posParent.x + LARGEUR_NOEUD/2;
+                int y1 = posParent.y + HAUTEUR_NOEUD;
+                int x2 = posEnfant.x + LARGEUR_NOEUD/2;
+                int y2 = posEnfant.y;
                 
-                if (positions.containsKey(parent) && positions.containsKey(enfant) && !liensTraces.contains(cleUnique)) {
-                    liensTraces.add(cleUnique);
-                    
-                    Point posParent = positions.get(parent);
-                    Point posEnfant = positions.get(enfant);
-                    
-                    // Ligne droite du parent vers l'enfant
-                    int x1 = posParent.x + LARGEUR_NOEUD / 2;  // Centre du parent
-                    int y1 = posParent.y + HAUTEUR_NOEUD;      // Bas du parent
-                    int x2 = posEnfant.x + LARGEUR_NOEUD / 2;  // Centre de l'enfant
-                    int y2 = posEnfant.y;                      // Haut de l'enfant
-                    
-                    g2d.drawLine(x1, y1, x2, y2);
-                    
-                    // Flèche vers l'enfant
-                    dessinerFleche(g2d, x1, y1, x2, y2);
-                }
+                dessinerFleche(g2d, x1, y1, x2, y2);
             }
         }
     }
-    
+
+    /**
+     * Draws sibling relationship lines.
+     * 
+     * @param g2d The graphics context to use for drawing
+     */
     private void dessinerLiensFratrie(Graphics2D g2d) {
         g2d.setColor(COULEUR_LIEN);
-        // Ligne pointillée pour les fratries
-        float[] dashPattern = {8.0f, 4.0f}; // 8 pixels de trait, 4 pixels d'espace
-        g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0.0f));
+        g2d.setStroke(new BasicStroke(1));
         
-        Set<String> liensTraces = new HashSet<>();
-        
-        for (Lien lien : arbre.getLiensParente().getLiens()) {
-            if (lien.getType() == TypeRelation.FRERE_SOEUR) {
-                Personne source = lien.getPersonneSource();
-                Personne destination = lien.getPersonneDestination();
+        for (Personne p : arbre.getPersonnes()) {
+            Point posP = positions.get(p);
+            if (posP == null) continue;
+            
+            for (Personne frereSoeur : p.getFreresEtSoeurs()) {
+                if (frereSoeur.getNom().compareTo(p.getNom()) > 0) continue; // Draw only once
                 
-                // Clé unique bidirectionnelle
-                String cleUnique = Math.min(source.hashCode(), destination.hashCode()) + "-" + 
-                                  Math.max(source.hashCode(), destination.hashCode());
+                Point posFrereSoeur = positions.get(frereSoeur);
+                if (posFrereSoeur == null) continue;
                 
-                if (positions.containsKey(source) && positions.containsKey(destination) && !liensTraces.contains(cleUnique)) {
-                    liensTraces.add(cleUnique);
-                    
-                    Point posSource = positions.get(source);
-                    Point posDest = positions.get(destination);
-                    
-                    // Déterminer qui est à gauche et qui est à droite
-                    boolean sourceAGauche = posSource.x < posDest.x;
-                    Point posGauche = sourceAGauche ? posSource : posDest;
-                    Point posDroite = sourceAGauche ? posDest : posSource;
-                    
-                    // Ligne horizontale pointillée
-                    int x1 = posGauche.x + LARGEUR_NOEUD;      // Bord droit de la personne de gauche
-                    int y1 = posGauche.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
-                    int x2 = posDroite.x;                      // Bord gauche de la personne de droite
-                    int y2 = posDroite.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
-                    
-                    g2d.drawLine(x1, y1, x2, y2);
-                }
+                int x1 = posP.x;
+                int y1 = posP.y + HAUTEUR_NOEUD/2;
+                int x2 = posFrereSoeur.x + LARGEUR_NOEUD;
+                int y2 = posFrereSoeur.y + HAUTEUR_NOEUD/2;
+                
+                g2d.drawLine(x1, y1, x2, y2);
             }
         }
-        
-        // Remettre le stroke normal après les pointillés
-        g2d.setStroke(new BasicStroke(2.0f));
     }
-    
+
+    /**
+     * Draws spouse relationship lines.
+     * 
+     * @param g2d The graphics context to use for drawing
+     */
     private void dessinerLiensCouples(Graphics2D g2d) {
-        Set<String> couplesTraites = new HashSet<>();
+        g2d.setColor(COULEUR_LIEN_COUPLE);
+        g2d.setStroke(new BasicStroke(2));
         
         for (Personne p : arbre.getPersonnes()) {
             Personne conjoint = p.getConjoint();
+            if (conjoint == null || p.getNom().compareTo(conjoint.getNom()) > 0) continue; // Draw only once
             
-            if (conjoint != null && arbre.getPersonnes().contains(conjoint)) {
-                String idCouple = Math.min(p.hashCode(), conjoint.hashCode()) + "-" + 
-                                 Math.max(p.hashCode(), conjoint.hashCode());
-                
-                if (!couplesTraites.contains(idCouple)) {
-                    couplesTraites.add(idCouple);
-                    
-                    Point posP = positions.get(p);
-                    Point posConjoint = positions.get(conjoint);
-                    
-                    // Déterminer qui est à gauche et qui est à droite
-                    boolean pAGauche = posP.x < posConjoint.x;
-                    Point posGauche = pAGauche ? posP : posConjoint;
-                    Point posDroite = pAGauche ? posConjoint : posP;
-                    
-                    // Ligne rouge épaisse pour le couple
-                    int x1 = posGauche.x + LARGEUR_NOEUD;      // Bord droit de la personne de gauche
-                    int y1 = posGauche.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
-                    int x2 = posDroite.x;                      // Bord gauche de la personne de droite
-                    int y2 = posDroite.y + HAUTEUR_NOEUD / 2;  // Milieu vertical
-                    
-                    g2d.setColor(COULEUR_LIEN_COUPLE);
-                    g2d.setStroke(new BasicStroke(3.0f));  // Ligne encore plus épaisse pour les couples
-                    g2d.drawLine(x1, y1, x2, y2);
-                    
-                    // Dessiner un petit cœur au milieu du lien
-                    int xMilieu = (x1 + x2) / 2;
-                    int yMilieu = (y1 + y2) / 2;
-                    dessinerCoeur(g2d, xMilieu, yMilieu);
-                }
-            }
+            Point posP = positions.get(p);
+            Point posConjoint = positions.get(conjoint);
+            if (posP == null || posConjoint == null) continue;
+            
+            int x1 = posP.x + LARGEUR_NOEUD;
+            int y1 = posP.y + HAUTEUR_NOEUD/2;
+            int x2 = posConjoint.x;
+            int y2 = posConjoint.y + HAUTEUR_NOEUD/2;
+            
+            g2d.drawLine(x1, y1, x2, y2);
+            dessinerCoeur(g2d, (x1 + x2)/2, (y1 + y2)/2);
         }
-        
-        // Remettre les paramètres par défaut
-        g2d.setColor(COULEUR_LIEN);
-        g2d.setStroke(new BasicStroke(2.0f));
     }
-    
+
+    /**
+     * Draws a heart symbol for spouse relationships.
+     * 
+     * @param g2d The graphics context to use for drawing
+     * @param x The x-coordinate of the heart's center
+     * @param y The y-coordinate of the heart's center
+     */
     private void dessinerCoeur(Graphics2D g2d, int x, int y) {
-        // Dessiner un petit cœur simple
+        int taille = 10;
         g2d.setColor(COULEUR_LIEN_COUPLE);
-        
-        // Cœur simple avec deux cercles et un triangle
-        int taille = 6;
-        
-        // Deux cercles du haut
-        g2d.fillOval(x - taille, y - taille/2, taille, taille);
-        g2d.fillOval(x, y - taille/2, taille, taille);
-        
-        // Triangle du bas
-        int[] xPoints = {x - taille, x + taille, x + taille/2};
-        int[] yPoints = {y, y, y + taille};
-        g2d.fillPolygon(xPoints, yPoints, 3);
+        g2d.fillOval(x - taille/2, y - taille/2, taille, taille);
     }
-    
+
+    /**
+     * Draws an arrow for parent-child relationships.
+     * 
+     * @param g2d The graphics context to use for drawing
+     * @param x1 The x-coordinate of the start point
+     * @param y1 The y-coordinate of the start point
+     * @param x2 The x-coordinate of the end point
+     * @param y2 The y-coordinate of the end point
+     */
     private void dessinerFleche(Graphics2D g2d, int x1, int y1, int x2, int y2) {
-        // Calculer l'angle de la ligne
+        g2d.drawLine(x1, y1, x2, y2);
+        
+        int taille = 8;
         double angle = Math.atan2(y2 - y1, x2 - x1);
         
-        // Taille de la flèche
-        int taillePointe = 8;
+        int[] xPoints = {x2, x2 - taille, x2 - taille};
+        int[] yPoints = {y2, y2 - taille/2, y2 + taille/2};
         
-        // Calculer les points de la pointe de flèche
-        int x3 = (int) (x2 - taillePointe * Math.cos(angle - Math.PI / 6));
-        int y3 = (int) (y2 - taillePointe * Math.sin(angle - Math.PI / 6));
-        int x4 = (int) (x2 - taillePointe * Math.cos(angle + Math.PI / 6));
-        int y4 = (int) (y2 - taillePointe * Math.sin(angle + Math.PI / 6));
-        
-        // Dessiner la pointe de flèche
-        int[] xPoints = {x2, x3, x4};
-        int[] yPoints = {y2, y3, y4};
+        AffineTransform oldTransform = g2d.getTransform();
+        g2d.translate(x2, y2);
+        g2d.rotate(angle);
         g2d.fillPolygon(xPoints, yPoints, 3);
+        g2d.setTransform(oldTransform);
     }
-    
+
+    /**
+     * Draws a person's information box.
+     * 
+     * @param g2d The graphics context to use for drawing
+     * @param p The person to draw
+     */
     private void dessinerPersonne(Graphics2D g2d, Personne p) {
         Point pos = positions.get(p);
         if (pos == null) return;
         
-        // Déterminer la couleur en fonction du genre
-        Color couleurFond = (p.getGenre() == Genre.HOMME) ? COULEUR_HOMME : COULEUR_FEMME;
-        
-        // Mettre en évidence la racine
-        if (p.equals(arbre.getRacine())) {
-            g2d.setColor(new Color(255, 215, 0, 80));  // Or transparent pour la racine
-            g2d.fillRoundRect(pos.x - 3, pos.y - 3, LARGEUR_NOEUD + 6, HAUTEUR_NOEUD + 6, 15, 15);
-        }
-        
-        // Différencier les côtés paternel et maternel
-        if (p.getCote() == Cote.PATERNEL) {
-            // Bord bleu pour côté paternel
-            g2d.setColor(new Color(0, 0, 150));
-            g2d.setStroke(new BasicStroke(2.0f));
-            g2d.drawRoundRect(pos.x, pos.y, LARGEUR_NOEUD, HAUTEUR_NOEUD, 10, 10);
-        } else if (p.getCote() == Cote.MATERNEL) {
-            // Bord rouge pour côté maternel
-            g2d.setColor(new Color(150, 0, 0));
-            g2d.setStroke(new BasicStroke(2.0f));
-            g2d.drawRoundRect(pos.x, pos.y, LARGEUR_NOEUD, HAUTEUR_NOEUD, 10, 10);
-        }
-        
-        // Rectangle arrondi pour la personne
-        g2d.setColor(couleurFond);
+        // Draw background
+        g2d.setColor(p.getGenre() == Genre.HOMME ? COULEUR_HOMME : COULEUR_FEMME);
         g2d.fillRoundRect(pos.x, pos.y, LARGEUR_NOEUD, HAUTEUR_NOEUD, 10, 10);
         
-        g2d.setColor(Color.DARK_GRAY);
-        g2d.setStroke(new BasicStroke(1.0f));
+        // Draw border
+        g2d.setColor(COULEUR_TEXTE);
+        g2d.setStroke(new BasicStroke(2));
         g2d.drawRoundRect(pos.x, pos.y, LARGEUR_NOEUD, HAUTEUR_NOEUD, 10, 10);
         
-        // Texte pour la personne
-        g2d.setColor(COULEUR_TEXTE);
+        // Draw name
         g2d.setFont(FONT_PERSONNE);
-        
+        String nomComplet = p.getNomComplet();
         FontMetrics fm = g2d.getFontMetrics();
-        String nom = p.getNom();
-        String prenom = p.getPrenom();
+        String nomTronque = tronquerTexte(nomComplet, fm, LARGEUR_NOEUD - 10);
+        g2d.drawString(nomTronque, pos.x + 5, pos.y + 20);
         
-        // Tronquer les noms trop longs
-        if (fm.stringWidth(nom) > LARGEUR_NOEUD - 10) {
-            nom = tronquerTexte(nom, fm, LARGEUR_NOEUD - 10);
-        }
-        if (fm.stringWidth(prenom) > LARGEUR_NOEUD - 10) {
-            prenom = tronquerTexte(prenom, fm, LARGEUR_NOEUD - 10);
-        }
-        
-        int yNom = pos.y + 20;
-        int yPrenom = pos.y + 40;
-        
-        // Centrer le texte
-        int xNom = pos.x + (LARGEUR_NOEUD - fm.stringWidth(nom)) / 2;
-        int xPrenom = pos.x + (LARGEUR_NOEUD - fm.stringWidth(prenom)) / 2;
-        
-        g2d.drawString(nom, xNom, yNom);
-        g2d.drawString(prenom, xPrenom, yPrenom);
-        
-        // Afficher l'année de naissance
+        // Draw dates
         g2d.setFont(FONT_INFO);
-        fm = g2d.getFontMetrics();
+        String dates = formatDates(p);
+        g2d.drawString(dates, pos.x + 5, pos.y + 35);
         
-        String anneeNaissance = "";
-        if (p.getDateNaissance() != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(p.getDateNaissance());
-            anneeNaissance = String.valueOf(cal.get(Calendar.YEAR));
+        // Draw nationality
+        if (p.getNationalite() != null) {
+            g2d.drawString(p.getNationalite(), pos.x + 5, pos.y + 50);
         }
-        
-        // Afficher l'année de décès si disponible
-        if (p.getDateDeces() != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(p.getDateDeces());
-            anneeNaissance += " - " + cal.get(Calendar.YEAR);
-        } else if (p.getDateNaissance() != null) {
-            anneeNaissance += " - ";
-        }
-        
-        int xAnnee = pos.x + (LARGEUR_NOEUD - fm.stringWidth(anneeNaissance)) / 2;
-        int yAnnee = pos.y + 60;
-        
-        g2d.drawString(anneeNaissance, xAnnee, yAnnee);
     }
-    
+
+    /**
+     * Formats a person's birth and death dates.
+     * 
+     * @param p The person whose dates to format
+     * @return A string containing the formatted dates
+     */
+    private String formatDates(Personne p) {
+        StringBuilder sb = new StringBuilder();
+        if (p.getDateNaissance() != null) {
+            sb.append(p.getDateNaissance().getYear() + 1900);
+        }
+        sb.append(" - ");
+        if (p.getDateDeces() != null) {
+            sb.append(p.getDateDeces().getYear() + 1900);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Truncates text to fit within a maximum width.
+     * 
+     * @param texte The text to truncate
+     * @param fm The font metrics to use for measuring
+     * @param largeurMax The maximum width allowed
+     * @return The truncated text
+     */
     private String tronquerTexte(String texte, FontMetrics fm, int largeurMax) {
         if (fm.stringWidth(texte) <= largeurMax) return texte;
         
@@ -543,17 +530,24 @@ public class ArbreGenealogiquePanel extends JPanel {
         while (fm.stringWidth(resultat + "...") > largeurMax && resultat.length() > 0) {
             resultat = resultat.substring(0, resultat.length() - 1);
         }
-        
         return resultat + "...";
     }
 
+    /**
+     * Returns the preferred size of the panel.
+     * 
+     * @return The preferred dimensions of the panel
+     */
     @Override
     public Dimension getPreferredSize() {
-        // Retourner une dimension calculée en fonction des positions des personnes
         return new Dimension(largeurTotale, hauteurTotale);
     }
-    
-    // Méthode pour mettre à jour l'arbre et recalculer les positions
+
+    /**
+     * Updates the panel with a new genealogical tree.
+     * 
+     * @param nouveauArbre The new genealogical tree to display
+     */
     public void mettreAJour(ArbreGenealogique nouveauArbre) {
         this.arbre = nouveauArbre;
         calculerPositions();

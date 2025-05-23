@@ -2,7 +2,6 @@ package com.cytech;
 
 import java.io.IOException;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,7 +15,6 @@ import com.cytech.fenetres.ModifierProfilUtilisateurController;
 import com.cytech.fenetres.PageAccueilController;
 import com.cytech.fenetres.PageAdministrateurController;
 import com.cytech.fenetres.PageAjoutListeDeroulanteController;
- 
 import com.cytech.fenetres.PageChangementMDPController;
 import com.cytech.fenetres.PageConnexionAdministrateurController;
 import com.cytech.fenetres.PageConnexionUtilisateurController;
@@ -26,28 +24,40 @@ import com.cytech.fenetres.PagePrincipaleUtilisateurController;
 import com.cytech.fenetres.PageRequetesController;
 
 import javafx.application.Application;
-
- 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ * Main class of the genealogical tree application.
+ * This class manages the initialization and navigation between different windows of the application.
+ * It inherits from the JavaFX Application class to handle the graphical interface.
+ */
 public class Main extends Application {
+    /** The main window of the application */
     private Stage primaryStage;
+    
+    /** The root layout of the application */
     private BorderPane rootLayout;
-    public static  String utilisateur = "user";
-    public static String motDePasse ="Password123!";
     
+    /** Default username */
+    public static String utilisateur = "user";
     
-	
-	
-	
-	@Override
+    /** Default password */
+    public static String motDePasse = "Password123!";
+    
+    /**
+     * Main entry point of the application.
+     * Initializes the main window and displays the home page.
+     * 
+     * @param primaryStage The main window of the application
+     */
+    @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Accueil");
+        this.primaryStage.setTitle("Home");
         insererAdministrateur();
         initRootLayout();
         
@@ -55,7 +65,8 @@ public class Main extends Application {
     }
     
     /**
-     * Initializes the root layout.
+     * Initializes the root layout of the application.
+     * Loads the RacinePrincipale.fxml file and configures the main scene.
      */
     public void initRootLayout() {
         try {
@@ -74,7 +85,8 @@ public class Main extends Application {
     }
     
     /**
-     * Shows the person overview inside the root layout.
+     * Displays the home page in the root layout.
+     * Loads and configures the home page with its controller.
      */
     public void afficherAccueil() {
         try {
@@ -91,26 +103,32 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-	
     
+    /**
+     * Displays the user login page.
+     * Loads and configures the login page with its controller.
+     */
     public void afficherUtilisateurPageConnexion() {
-    	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(Main.class.getResource("fenetres/PageConnexionUtilisateur.fxml"));
-    	try {
-			AnchorPane connexion = (AnchorPane) loader.load();
-			
-			PageConnexionUtilisateurController controller = loader.getController();
-			controller.setMain(this);
-			
-			 
-			rootLayout.setCenter(connexion);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("fenetres/PageConnexionUtilisateur.fxml"));
+        try {
+            AnchorPane connexion = (AnchorPane) loader.load();
+            
+            PageConnexionUtilisateurController controller = loader.getController();
+            controller.setMain(this);
+            
+            rootLayout.setCenter(connexion);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
+    /**
+     * Displays the user information page.
+     * 
+     * @param email The email of the user whose information to display
+     */
     public void afficherPageInformationUtilisateur(String email) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("fenetres/PageInformationUtilisateur.fxml"));
@@ -118,75 +136,91 @@ public class Main extends Application {
             AnchorPane pageInformationUtilisateur = loader.load();
             PageInformationUtilisateurController controller = loader.getController();
             controller.setMain(this);
-            controller.afficherInformationsUtilisateur(email); // <<< Appel ici après le chargement du FXML
+            controller.afficherInformationsUtilisateur(email);
 
             rootLayout.setCenter(pageInformationUtilisateur);
-            this.primaryStage.setTitle("Page Administrateur");
+            this.primaryStage.setTitle("Administrator Page");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Displays the administrator login page.
+     * Loads and configures the administrator login page with its controller.
+     */
     public void afficherAdministrateurPageConnexion() {
-    	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(Main.class.getResource("fenetres/PageConnexionAdministrateur.fxml"));
-    	try {
-			AnchorPane administrateurPageConnexion = (AnchorPane) loader.load();
-			
-			PageConnexionAdministrateurController controller = loader.getController();
-			controller.setMain(this);
-			
-			 
-			rootLayout.setCenter(administrateurPageConnexion);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("fenetres/PageConnexionAdministrateur.fxml"));
+        try {
+            AnchorPane administrateurPageConnexion = (AnchorPane) loader.load();
+            
+            PageConnexionAdministrateurController controller = loader.getController();
+            controller.setMain(this);
+            
+            rootLayout.setCenter(administrateurPageConnexion);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
+    /**
+     * Displays the administrator page.
+     * Loads and configures the administrator page with its controller.
+     */
     public void afficherPageAdministrateur() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("fenetres/PageAdministrateur.fxml"));
         try {
             AnchorPane pageAdministrateur = (AnchorPane) loader.load();
             PageAdministrateurController controller = loader.getController();
-            // Crée une instance de PageInformationUtilisateurController
+            // Create an instance of PageInformationUtilisateurController
             PageInformationUtilisateurController pageInfoController = new PageInformationUtilisateurController();
-            // Passe l'instance de PageInformationUtilisateurController à PageAdministrateurController
+            // Pass the PageInformationUtilisateurController instance to PageAdministrateurController
             controller.setMain(this, pageInfoController);
             rootLayout.setCenter(pageAdministrateur);
-            this.primaryStage.setTitle("Page Administrateur"); 
+            this.primaryStage.setTitle("Administrator Page"); 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    
+    /**
+     * Displays the password change page.
+     * 
+     * @param codePrive The user's private code
+     */
     public void afficherPageChangementMDP(int codePrive) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("fenetres/PageChangementMDP.fxml"));
         try {
             AnchorPane page = loader.load();
 
-            // Récupération du contrôleur FXML
+            // Get the FXML controller
             PageChangementMDPController controller = loader.getController();
 
-            // Injection du Main (important !)
+            // Inject Main (important!)
             controller.setMain(this);
 
-            // Injection du code privé dans le contrôleur
+            // Inject the private code into the controller
             controller.setCodePrive(codePrive);
 
-            // Affichage de la page
+            // Display the page
             rootLayout.setCenter(page);
-            this.primaryStage.setTitle("Changer de mot de passe");
+            this.primaryStage.setTitle("Change Password");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    
+    /**
+     * Displays the main user page.
+     * 
+     * @param codePrive The user's private code
+     * @param arbre The genealogical tree associated with the user
+     */
     public void afficherPagePrincipaleUtilisateurController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -196,18 +230,22 @@ public class Main extends Application {
             PagePrincipaleUtilisateurController controller = loader.getController();
             controller.setMain(this);
             controller.setCodePrive(codePrive);
-            controller.setArbre(arbre); //  on transmet l’arbre
+            controller.setArbre(arbre); // Pass the tree
 
             rootLayout.setCenter(page);
-            primaryStage.setTitle("Page principale utilisateur");
+            primaryStage.setTitle("Main User Page");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    
-    
+    /**
+     * Displays the user profile.
+     * 
+     * @param codePrive The user's private code
+     * @param arbre The genealogical tree associated with the user
+     */
     public void afficherProfilUtilisateurController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -215,20 +253,24 @@ public class Main extends Application {
             AnchorPane page = loader.load();
 
             AfficherProfilUtilisateurController controller = loader.getController();
-            // Appelle la méthode pour charger et afficher les infos avec le codePrive
+            // Call the method to load and display info with codePrive
             controller.chargerProfil(codePrive,arbre);
-            //controller.setArbre(arbre); //  
             controller.setMain(this);
 
             rootLayout.setCenter(page);
-            primaryStage.setTitle("Votre profil");
+            primaryStage.setTitle("Your Profile");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    
+
+    /**
+     * Displays the user profile modification page.
+     * 
+     * @param codePrive The user's private code
+     * @param arbre The genealogical tree associated with the user
+     */
     public void afficherModifierProfilUtilisateurController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -236,21 +278,25 @@ public class Main extends Application {
             AnchorPane page = loader.load();
 
             ModifierProfilUtilisateurController controller = loader.getController();
-            // Appelle la méthode pour charger et afficher les infos avec le codePrive
-            controller.chargerProfil(codePrive);     // charge le code privé
-            
-            controller.chargerArbre(arbre);          // charge l'arbre
-            controller.setMain(this);                //
+            // Call the method to load and display info with codePrive
+            controller.chargerProfil(codePrive);     // Load private code
+            controller.chargerArbre(arbre);          // Load tree
+            controller.setMain(this);                // Set main
 
             rootLayout.setCenter(page);
-            primaryStage.setTitle("Modifier Votre profil");
+            primaryStage.setTitle("Modify Your Profile");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    
+
+    /**
+     * Displays the dropdown list addition page.
+     * 
+     * @param codePrive The user's private code
+     * @param arbre The genealogical tree associated with the user
+     */
     public void afficherPageAjoutListeDeroulanteController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -263,14 +309,19 @@ public class Main extends Application {
             controller.setMain(this);  
 
             rootLayout.setCenter(page);
-            primaryStage.setTitle("Ajouter personne");
+            primaryStage.setTitle("Add Person");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    
+
+    /**
+     * Displays the queries page.
+     * 
+     * @param codePrive The user's private code
+     * @param arbre The genealogical tree associated with the user
+     */
     public void afficherPageRequetesController(int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -281,13 +332,20 @@ public class Main extends Application {
             controller.chargerProfil(codePrive,arbre);  
             controller.setMain(this);
             rootLayout.setCenter(page);
-            primaryStage.setTitle("Page Requetes");
+            primaryStage.setTitle("Queries Page");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Displays the person addition form.
+     * 
+     * @param personne The person to add
+     * @param codePrive The user's private code
+     * @param arbre The genealogical tree associated with the user
+     */
     public void afficherFormulaireAjoutPersonneController(Personne personne, int codePrive, ArbreGenealogique arbre) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -300,58 +358,70 @@ public class Main extends Application {
             controller.setPersonneReference(personne);
             controller.setArbre(arbre); 
             rootLayout.setCenter(page);
-            primaryStage.setTitle("Ajouter une personne liée");
+            primaryStage.setTitle("Add a Linked Person");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    public void afficherPageInscription() {
-    	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(Main.class.getResource("fenetres/PageInscription.fxml"));
-    	try {
-    		AnchorPane inscription = (AnchorPane) loader.load();
-    		PageInscriptionController controller = loader.getController();
-    		controller.setMain(this);
-    		rootLayout.setCenter(inscription);
-    		
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
-    }
-    
-    public void insererAdministrateur(){
-		 
-		
-		String url = "jdbc:mysql://localhost:3306/arbre_genealogique"; // Remplacez par l'URL de votre base de données
-        
 
-         
-        // Connexion à la base de données
+    /**
+     * Displays the registration page.
+     * Loads and configures the registration page with its controller.
+     */
+    public void afficherPageInscription() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("fenetres/PageInscription.fxml"));
+        try {
+            AnchorPane inscription = (AnchorPane) loader.load();
+            PageInscriptionController controller = loader.getController();
+            controller.setMain(this);
+            rootLayout.setCenter(inscription);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inserts the default administrator into the database.
+     * This method is called when the application starts.
+     */
+    public void insererAdministrateur() {
+        String url = "jdbc:mysql://localhost:3306/arbre_genealogique";
+        
+        // Connect to the database
         try (Connection conn = DriverManager.getConnection(url, utilisateur, motDePasse)) {
-            // Requête d'insertion SQL
+            // SQL insertion query
             String sql = "INSERT INTO administrateur (identifiant, mot_de_passe) VALUES (?, ?)";
 
-            // Préparation de la requête avec des paramètres
+            // Prepare the query with parameters
             try (PreparedStatement cursor = conn.prepareStatement(sql)) {
-                
-            	cursor.setString(1, "admin"); // identifiant de l'utilisateur
-            	cursor.setString(2, "admin123"); // mot de passe de l'utilisateur
+                cursor.setString(1, "admin"); // user identifier
+                cursor.setString(2, "admin123"); // user password
 
-                // Exécuter la requête d'insertion
+                // Execute the insertion query
                 cursor.executeUpdate();
-                
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-	}
-    
+    }
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
+    /**
+     * Returns the main window of the application.
+     * 
+     * @return The main window (Stage)
+     */
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
+    /**
+     * Application entry point.
+     * Launches the JavaFX application.
+     * 
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }

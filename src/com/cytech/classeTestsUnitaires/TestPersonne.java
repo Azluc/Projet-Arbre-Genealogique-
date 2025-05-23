@@ -3,24 +3,36 @@ package com.cytech.classeTestsUnitaires;
 import java.util.Calendar;
 import java.util.Date;
 
-
 import com.cytech.classeProjet.Personne;
- 
 
-public class TestPersonne{
+/**
+ * Test class for Personne functionality.
+ * This class contains unit tests for the Personne class,
+ * verifying the correct behavior of person creation, date validation,
+ * and attribute management.
+ */
+public class TestPersonne {
 
-     public static void main(String[] args) {
+    /**
+     * Main method to run all tests for Personne.
+     * Executes tests for person creation and date validation.
+     */
+    public static void main(String[] args) {
         testConstructeurPersonne();
         testVerifierCoherenceDates();
     }
 
+    /**
+     * Tests the Personne constructor and attribute management.
+     * Verifies that a person can be created with valid attributes
+     * and that all getters return the correct values.
+     */
     public static void testConstructeurPersonne() {
 
         // Création d'une Personne
         String nom = "nom1";
         String prenom = "prenom1";
         String nationalite = "France";
-
 
         Calendar calendrier = Calendar.getInstance();
         calendrier.set(2000, Calendar.JANUARY, 1);  // 1er janvier 2000
@@ -29,8 +41,6 @@ public class TestPersonne{
         Calendar calendrier2 = Calendar.getInstance();
         calendrier2.set(2010, Calendar.MAY, 16);  // 16 Mai 2010
         Date dateDeces = calendrier2.getTime();
-
-
 
         Personne personne = new Personne(nom, prenom, nationalite, dateNaissance, dateDeces);
 
@@ -74,6 +84,12 @@ public class TestPersonne{
         }
     }
 
+    /**
+     * Tests the date validation functionality.
+     * Verifies that the system correctly validates birth and death dates,
+     * ensuring that birth date is before death date.
+     * Tests both valid and invalid date combinations.
+     */
     public static void testVerifierCoherenceDates() {
         String nom = "nomPersonne";
         String prenom = "prenomPersonne";
@@ -114,13 +130,4 @@ public class TestPersonne{
             System.out.println("Échec - exception inattendue : " + e.getMessage());
         }
     }
-
-
-
-
-
-
-
-
-
 }
