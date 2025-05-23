@@ -1,4 +1,7 @@
-package com.cytech.classeProjet;
+package com.cytech.classeTestsUnitaires;
+
+import com.cytech.classeProjet.Administrateur;
+import com.cytech.classeProjet.Utilisateur;
 
 public class TestAdministrateur {
     public static void main(String[] args) {

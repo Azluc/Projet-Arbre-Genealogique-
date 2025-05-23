@@ -1,4 +1,6 @@
-package com.cytech.classeProjet;
+package com.cytech.classeTestsUnitaires;
+
+import com.cytech.classeProjet.Genre;
 
 public class TestGenre {
     public static void main(String[] args) {

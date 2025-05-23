@@ -1,4 +1,6 @@
-package com.cytech.classeProjet;
+package com.cytech.classeTestsUnitaires;
+
+import com.cytech.classeProjet.Cote;
 
 public class TestCote {
     public static void main(String[] args) {

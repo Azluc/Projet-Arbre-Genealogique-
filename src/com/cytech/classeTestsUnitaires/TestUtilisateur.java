@@ -1,6 +1,8 @@
-package com.cytech.classeProjet;
+package com.cytech.classeTestsUnitaires;
 
-public class TestUtilisateur_Console {
+import com.cytech.classeProjet.Utilisateur;
+
+public class TestUtilisateur {
     public static void main(String[] args) {
 
         Utilisateur u = new Utilisateur("Dupont", "Marie", "marie@exemple.com", "mdp123");
